@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:visibility="visible"
+    android:background="@color/colorDeliverBackgroundLightGrayII"
+    android:id="@+id/container_float_loading"
+    android:layout_width="match_parent"
+    android:layout_height="30dp">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+        <include layout="@layout/view_progress_bar_ii"/>
+        <TextView
+            android:id="@+id/txt_container_loading_label"
+            android:gravity="center"
+            android:layout_marginStart="@dimen/margin_length_5"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/log_in"/>
+    </LinearLayout>
+
+</FrameLayout>

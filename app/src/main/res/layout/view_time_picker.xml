@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:theme="@style/AppTheme"
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/fragment_outside_dialog"
+    android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorTransparency">
+    </View>
+
+    <FrameLayout android:background="@color/colorTransparency"
+        android:padding="@dimen/margin_length_5"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/container_time_picker"
+        android:baselineAligned="true"
+        android:orientation="vertical"
+        android:background="@drawable/shape_box_i"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_address_dialog">
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs_times_picker"
+            app:tabIndicatorColor="@color/colorDeliverPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager_times_picker"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/time_deliver_recycler_height"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btn_time_picker_set_time"
+                android:background="@color/colorDeliverBackground"
+                android:layout_margin="@dimen/margin_length_3"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:textSize="@dimen/simple_font_size"
+                android:textColor="@color/colorDeliverPrimary"
+                android:text="Set deliver time"/>
+        </LinearLayout>
+    </LinearLayout>
+    </FrameLayout>
+</android.support.design.widget.CoordinatorLayout>
+

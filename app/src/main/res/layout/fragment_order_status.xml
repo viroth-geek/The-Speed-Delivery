@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/item_orders_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    </android.support.v7.widget.RecyclerView>
+    <FrameLayout
+        android:layout_alignParentBottom="true"
+        android:visibility="visible"
+        android:background="@color/colorTransparency"
+        android:id="@+id/container_float_loading"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="bottom">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+            <include layout="@layout/view_progress_bar_ii"/>
+            <TextView
+                android:id="@+id/txt_container_loading_label"
+                android:gravity="center"
+                android:layout_marginLeft="@dimen/margin_length_5"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/simple_font_size"
+                android:text="Loading.."/>
+        </LinearLayout>
+
+    </FrameLayout>
+</RelativeLayout>

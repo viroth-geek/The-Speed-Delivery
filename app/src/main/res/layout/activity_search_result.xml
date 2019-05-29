@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:focusable="true"
+        android:background="@color/colorDeliverPrimary"
+        android:focusableInTouchMode="true">
+
+        <ImageButton
+            android:layout_marginLeft="16dp"
+            android:id="@+id/img_btn_back"
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:src="@drawable/ic_action_back_white"
+            android:background="@null"
+            android:contentDescription="@string/place_autocomplete_search_hint"/>
+
+        <EditText
+            android:id="@+id/edt_search_input"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
+            android:textColor="#f5ede5"
+            android:textColorHint="@color/white"
+            android:textSize="20dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:singleLine="true"
+            android:lines="1"
+            android:maxLines="1"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:hint="@string/place_autocomplete_search_hint"
+            android:focusable="true"
+            android:focusableInTouchMode="true"/>
+
+        <ImageButton
+            android:layout_marginRight="16dp"
+            android:id="@+id/img_btn_search"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_weight="0"
+            android:padding="@dimen/place_autocomplete_button_padding"
+            android:src="@drawable/ic_action_search_white"
+            android:background="@null"
+            android:contentDescription="@string/place_autocomplete_clear_button"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/container_float_loading"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/colorTransparency">
+        <include
+            layout="@layout/view_progress_bar_ii"/>
+        <TextView
+            android:id="@+id/txt_search_indicator"
+            android:layout_marginLeft="@dimen/margin_length_5"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/text_size_T5"
+            android:text="Searching"/>
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list_search_result"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </android.support.v7.widget.RecyclerView>
+        <ProgressBar
+            android:id="@+id/progress_bar_load_store"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
+</LinearLayout>
+

@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/parent_panel"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="com.iota.eshopping.activity.SearchActivity">
+
+    <include layout="@layout/view_toolbar"
+        android:id="@+id/toolbar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:fillViewport="true" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <me.gujun.android.taggroup.TagGroup
+                android:textAlignment="center"
+                android:id="@+id/tag_group"
+                android:padding="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:atg_textSize="12dp"
+                app:atg_horizontalPadding="8dp"
+                app:atg_verticalPadding="2dp"
+                app:atg_textColor="@color/colorDeliverPrimary"
+                app:atg_borderColor="@color/colorDeliverPrimary"
+                app:atg_borderStrokeWidth="1dp"
+                style="@style/TagGroup.Small" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/container_sponsor_stores"
+        style="@style/DeliveryImageI"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/slider_header_image_height">
+        <LinearLayout
+            android:id="@+id/progress_sponsor_stores"
+            android:background="@color/colorTransparency"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+            <include layout="@layout/view_progress_bar_ii"/>
+        </LinearLayout>
+        <com.daimajia.slider.library.SliderLayout
+            android:id="@+id/img_sponsor_shop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <LinearLayout
+            android:background="@color/colorTransparencyGray"
+            android:layout_alignBottom="@id/img_sponsor_shop"
+            android:padding="@dimen/margin_length_3"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="30dp">
+
+            <TextView
+                android:id="@+id/txt_sponsor_shop"
+                android:layout_marginLeft="@dimen/margin_length_5"
+                style="@style/TextViewHeaderA4"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/simple_font_size"
+                android:text="@string/sponsor_shop"/>
+        </LinearLayout>
+        <com.daimajia.slider.library.Indicators.PagerIndicator
+            android:layout_alignParentBottom="true"
+            android:id="@+id/custom_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_weight="1"
+            android:id="@+id/container_recommended_stores"
+            style="@style/DeliveryImageI"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/slider_child_image_height">
+            <LinearLayout
+                android:id="@+id/progress_recommended_stores"
+                android:background="@color/colorTransparency"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+                <include layout="@layout/view_progress_bar_ii"/>
+            </LinearLayout>
+            <com.daimajia.slider.library.SliderLayout
+                android:id="@+id/img_new_shop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <LinearLayout
+                android:background="@color/colorTransparencyGray"
+                android:layout_alignBottom="@id/img_new_shop"
+                android:padding="@dimen/margin_length_3"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="30dp">
+
+                <TextView
+                    android:id="@+id/txt_new_arrival_shop"
+                    android:layout_marginLeft="@dimen/margin_length_5"
+                    style="@style/TextViewHeaderA4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/simple_font_size"
+                    android:text="@string/new_arrival_shop"/>
+            </LinearLayout>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_weight="1"
+            android:id="@+id/container_new_stores"
+            style="@style/DeliveryImageI"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/slider_child_image_height">
+            <LinearLayout
+                android:id="@+id/progress_new_stores"
+                android:background="@color/colorTransparency"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+                <include layout="@layout/view_progress_bar_ii"/>
+            </LinearLayout>
+            <com.daimajia.slider.library.SliderLayout
+                android:id="@+id/img_recommend_shop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <LinearLayout
+                android:background="@color/colorTransparencyGray"
+                android:layout_alignBottom="@id/img_recommend_shop"
+                android:padding="@dimen/margin_length_3"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="30dp">
+
+                <TextView
+                    android:id="@+id/txt_recommend_shop"
+                    android:layout_marginLeft="@dimen/margin_length_5"
+                    style="@style/TextViewHeaderA4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/simple_font_size"
+                    android:text="@string/recommend_shop"/>
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_weight="1"
+            android:id="@+id/container_most_order_stores"
+            style="@style/DeliveryImageI"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/slider_child_image_height">
+
+            <LinearLayout
+                android:id="@+id/progress_most_order_stores"
+                android:background="@color/colorTransparency"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+                <include layout="@layout/view_progress_bar_ii"/>
+            </LinearLayout>
+            <com.daimajia.slider.library.SliderLayout
+                android:id="@+id/img_most_order_shop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <LinearLayout
+                android:background="@color/colorTransparencyGray"
+                android:layout_alignBottom="@id/img_most_order_shop"
+                android:padding="@dimen/margin_length_3"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="30dp">
+
+                <TextView
+                    android:id="@+id/txt_most_order_shop"
+                    android:layout_marginLeft="@dimen/margin_length_5"
+                    style="@style/TextViewHeaderA4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/simple_font_size"
+                    android:text="@string/most_order_shop"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_weight="1"
+            android:id="@+id/container_most_love_stores"
+            style="@style/DeliveryImageI"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/slider_child_image_height">
+
+            <LinearLayout
+                android:id="@+id/progress_most_love_stores"
+                android:background="@color/colorTransparency"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+                <include layout="@layout/view_progress_bar_ii"/>
+            </LinearLayout>
+
+            <com.daimajia.slider.library.SliderLayout
+                android:id="@+id/img_most_love_shop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <LinearLayout
+                android:background="@color/colorTransparencyGray"
+                android:layout_alignBottom="@id/img_most_love_shop"
+                android:padding="@dimen/margin_length_3"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="30dp">
+
+                <TextView
+                    android:id="@+id/txt_most_love_shop"
+                    android:layout_marginLeft="@dimen/margin_length_5"
+                    style="@style/TextViewHeaderA4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/simple_font_size"
+                    android:text="@string/most_love_shop"/>
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:padding="5dp"
+        android:background="@color/colorDeliverPrimary"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/product_option_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="18dp"
+            android:text="Option for product `Product Name`"/>
+
+        <TextView
+            android:id="@+id/product_option_sub_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:text="Product name"/>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/product_option_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/title"
+        android:layout_above="@+id/view_bottom">
+    </android.support.v7.widget.RecyclerView>
+
+    <ProgressBar
+        android:id="@+id/get_item_progress_bar"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
+
+    <RelativeLayout
+        android:id="@+id/view_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:paddingLeft="15dp"
+        android:gravity="center_vertical"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorDeliverPrimary">
+
+        <ImageButton
+            android:id="@+id/btn_decrease_item"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_minus_red"
+            android:background="@android:color/transparent"/>
+
+        <TextView
+            android:id="@+id/txt_product_qty"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_toEndOf="@id/btn_decrease_item"
+            android:layout_toRightOf="@id/btn_decrease_item"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            android:text="1"/>
+
+        <ImageButton
+            android:id="@+id/btn_increase_item"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:layout_toEndOf="@id/txt_product_qty"
+            android:layout_toRightOf="@id/txt_product_qty"
+            android:src="@drawable/ic_add_green"
+            android:background="@android:color/transparent"/>
+
+        <Button
+            android:id="@+id/btn_add_item"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/btn_increase_item"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/btn_increase_item"
+            android:background="@android:color/transparent"
+            android:textColor="@android:color/white"
+            android:layout_marginRight="10dp"
+            android:text="Add items" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

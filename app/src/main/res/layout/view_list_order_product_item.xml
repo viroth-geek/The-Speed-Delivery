@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardUseCompatPadding="true"
+    android:elevation="@dimen/margin_length_5">
+    <LinearLayout
+        android:layout_margin="@dimen/margin_length_3"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_margin="@dimen/margin_length_5"
+            style="@style/TextViewDefault"
+            android:id="@+id/txt_item_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/simple_font_size"
+            android:text="Food Name "/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/img_product_item"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:layout_width="110dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorDeliverBackgroundLightGrayI"/>
+            <LinearLayout
+                android:padding="@dimen/margin_length_5"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_alignParentLeft="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/simple_font_size"
+                        android:text="Quantity :"/>
+                    <TextView
+                        android:layout_alignParentRight="true"
+                        android:id="@+id/txt_item_quantity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/simple_font_size"
+                        android:text="00"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_alignParentLeft="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/simple_font_size"
+                        android:text="Price :"/>
+                    <TextView
+                        android:layout_alignParentRight="true"
+                        android:id="@+id/txt_item_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/simple_font_size"
+                        android:text="00"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_alignParentLeft="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/simple_font_size"
+                        android:text="Total :"/>
+                    <TextView
+                        android:layout_alignParentRight="true"
+                        android:id="@+id/txt_item_total"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/simple_font_size"
+                        android:text="00"/>
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>
+
+

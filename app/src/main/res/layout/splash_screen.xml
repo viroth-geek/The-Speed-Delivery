@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	android:background="@color/colorDeliverBackground">
+    
+    <RelativeLayout 
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center">
+    	
+        <ImageView 
+            android:id="@+id/logo_splashscreen"
+            android:src="@drawable/the_speed_logo"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@string/app_name"/>
+            
+        <TextView 
+            android:layout_below="@+id/logo_splashscreen"
+            android:text="@string/splash_screen_desc"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:typeface="sans"
+            android:textSize="24sp"
+            android:lineSpacingExtra="2dp"
+            android:gravity="center"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_centerHorizontal="true"/>
+        
+    </RelativeLayout>
+	
+    <RelativeLayout 
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:paddingTop="5dp"
+    	android:paddingRight="10dp"
+    	android:paddingLeft="10dp"
+		android:layout_marginBottom="25dp"
+    	android:gravity="center">
+        
+        <LinearLayout 
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:gravity="center">
+			
+	        <TextView 
+	            android:text="@string/label_engineered_by"
+	            android:textColor="@color/black"
+	            android:textSize="12dp"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"/>
+        	
+	        <ImageView 
+	            android:src="@drawable/ic_nokor_logo"
+	            android:layout_width="80dp"
+	            android:layout_height="103dp"
+	            android:contentDescription="@string/app_name"/>
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

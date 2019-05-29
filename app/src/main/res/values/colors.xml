@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="the_speed_color_with_opacity">#def7bf3f</color>
+
+    <!--<color name="colorDeliverPrimary">#00CCBC</color>-->
+    <!--<color name="colorDeliverPrimaryDark">#00C1B2</color>-->
+    <!--<color name="colorDeliverAccent">#DE56DF</color>-->
+
+    <color name="colorDeliverPrimary">#FCB502</color>
+    <color name="colorDeliverPrimaryDark">#C99100</color>
+    <color name="colorDeliverAccent">#FF5D1F</color>
+    <color name="colorDeliverBackground">#F9FAFA</color>
+    <color name="colorDeliverBackgroundGray">#b7bfbf</color>
+    <color name="colorDeliverBackgroundLightGrayI">#dfdfdf</color>
+    <color name="colorDeliverBackgroundLightGrayII">#eaeaea</color>
+    <color name="colorDeliverySilver">#eaeaea</color>
+
+    <color name="textColorDeliverWhite">#FFFFFF</color>
+    <color name="textColorDeliverDark">#282828</color>
+    <color name="textColorDeliverWhiteShadow">#FF000000</color>
+    <color name="textColorDeliverDarkShadow">#b3b1b1</color>
+
+    <!--<color name="buttonColorDeliverBackground">#00A396</color>-->
+    <!--<color name="buttonColorDeliverBackgroundPress">#27DACC</color>-->
+
+    <color name="buttonColorDeliverBackground">#FCB502</color>
+    <color name="buttonColorDeliverBackgroundPress">#b9a46d</color>
+
+    <color name="colorDeliverBorderDark">#888E8D</color>
+    <color name="colorDeliverBorderWhite">#89cc</color>
+    <color name="colorTransparency">#3CC5DEDE</color>
+    <color name="colorTransparencyGray">#3c141515</color>
+
+    <color name="black">#000</color>
+    <color name="blue">#FF375BF1</color>
+    <color name="green">#FF34A350</color>
+    <color name="red">#FFC93437</color>
+    <color name="yellow">#FFF7D23E</color>
+    <color name="white">#ffffff</color>
+    <color name="gray">#989898</color>
+    <color name="transparent">#00000000</color>​
+
+    <color name="link">#4488e4</color>
+    <color name="menu_item">#333333</color>
+</resources>

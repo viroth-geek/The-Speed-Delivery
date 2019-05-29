@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/loading_progress_bar"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+    android:layout_gravity="center_vertical|center_horizontal"
+    android:background="@drawable/background_loading_progress_bar">
+
+    <ProgressBar
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:indeterminateTint="@color/white"
+        android:layout_centerInParent="true"/>
+
+</RelativeLayout>

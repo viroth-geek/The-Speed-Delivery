@@ -1,0 +1,189 @@
+<resources>
+    <string name="app_name">The Speed</string>
+    <string name="img_not_found">Not Found</string>
+    <string name="loading">Loading...</string>
+
+    <string name="splash_screen_desc">The Speed Delivery</string>
+    <string name="label_ministry">Ministry of Tourism of Cambodia</string>
+    <string name="label_cooperated_with">In cooperation with</string>
+    <string name="label_engineered_by">Engineered by</string>
+
+    <string name="label_ok">OK</string>
+    <string name="label_cancel">Cancel</string>
+    <string name="label_advance">Advance</string>
+    <string name="label_search">Search</string>
+    <string name="label_advance_search">Advance Search</string>
+    <string name="label_reset">Reset</string>
+    <string name="label_last_visited">Last visited</string>
+    <string name="label_near_me">Near me</string>
+    <string name="label_view_all">View All</string>
+    <string name="label_view_map">View Map</string>
+    <string name="label_finding_current_location">Finding current location....</string>
+    <string name="label_current_location">Phnom Penh, Cambodia</string>
+    <string name="label_rate_it">Rate It!</string>
+    <string name="label_comment">Comment</string>
+    <string name="label_average">Average</string>
+    <string name="label_read_all">Read All</string>
+    <string name="label_title">Title</string>
+    <string name="label_desc">Description</string>
+    <string name="label_contact">Contact</string>
+    <string name="label_category">Category</string>
+    <string name="label_datetime">Date/Time</string>
+
+    <string name="label_five_star">5 Star</string>
+    <string name="label_four_star">4 Star</string>
+    <string name="label_three_star">3 Star</string>
+    <string name="label_two_star">2 Star</string>
+    <string name="label_one_star">1 Star</string>
+
+    <string name="label_select_province">Select Province</string>
+    <string name="label_select_category">Select Category</string>
+    <string name="label_input_search">Input Search Value</string>
+
+    <string name="label_web">Web</string>
+    <string name="label_direction">Direction</string>
+    <string name="label_call">Call</string>
+    <string name="label_email">E-mail</string>
+    <string name="label_facebook">Facebook</string>
+
+    <string name="sort_name_a_z">Name A-Z</string>
+    <string name="sort_name_z_a">Name Z-A</string>
+    <string name="sort_low_price">Low Price</string>
+    <string name="sort_high_price">High Price</string>
+
+    <string name="tab_desc">Description</string>
+    <string name="tab_contact">Contact</string>
+    <string name="tab_photos">Photos</string>
+    <string name="tab_services">Services</string>
+    <string name="tab_events">Events</string>
+    <string name="tab_comments">Comments</string>
+
+    <string name="province">Province</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_base">The Speed Delivery</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_tab">TabActivity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_tab_detail">TabDetailActivity</string>
+    <string name="title_activity_maps">Map</string>
+
+    <string name="search">Search</string>
+    <string name="deliver_asap">Deliver Now</string>
+    <string name="to">To</string>
+    <string name="select_location">Select Location</string>
+
+    <string name="find_food">Find Food</string>
+
+    <string-array name="language_entities">
+        <item>Khmer</item>
+        <item>English</item>
+    </string-array>
+
+    <string-array name="static_deliver_time_today">
+        <item>Now</item>
+    </string-array>
+
+    <string-array name="static_deliver_time_tomorrow">
+        <item>00:00</item>
+        <item>03:00</item>
+        <item>04:00</item>
+        <item>05:00</item>
+        <item>06:00</item>
+        <item>07:00</item>
+        <item>08:00</item>
+        <item>09:00</item>
+        <item>10:00</item>
+    </string-array>
+
+    <string name="action_refresh">Refresh</string>
+    <string name="progressBar_pref_key">progressBar_pref_key</string>
+    <string name="progressBar_pref_defValue">0</string>
+    <string name="pref_colors_header_title">ProgressBar colors</string>
+    <string name="firstcolor_pref_key">firstcolor_pref_key</string>
+    <string name="secondcolor_pref_key">secondcolor_pref_key</string>
+    <string name="thirdcolor_pref_key">thirdcolor_pref_key</string>
+    <string name="fourthcolor_pref_key">fourthcolor_pref_key</string>
+    <string name="privacy_policy">This section is for the link to your privacy policy on the App Store and not in the actual app. There is a link form for privacy policy URLs when you submit your app for review. Fill that in. In iTunes Connect, under “My Apps”, you will find “Localisable Information”, among which you will also find the privacy policy URL. Fill in a privacy policy for each language that your app is translated into (iubenda offers 8 privacy policy languages out of the box at the moment) When you visit the app page that the store generates for you, e.g.</string>
+    <string name="search_hint">Search</string>
+    <string name="sponsor_shop">Sponsor Shop</string>
+    <string name="recommend_shop">Recommend Shop</string>
+    <string name="search_store">Search Store</string>
+    <string name="most_love_shop">Most Love Shop</string>
+    <string name="new_arrival_shop">New Arrival Shop</string>
+    <string name="open_hour">Open hour</string>
+    <string name="sponsor_store">Sponsor Store</string>
+    <string name="recommend_store">Recommend</string>
+    <string name="rated">rated</string>
+    <string name="cannot_get_product">Cannot Get Product</string>
+    <string name="no_product_found">No Product Found</string>
+    <string name="my_basket">My Basket</string>
+    <string name="checkout">Checkout</string>
+    <string name="my_order">My Order</string>
+    <string name="my_detail">My Detail</string>
+    <string name="login">Login</string>
+    <string name="signing">Signin</string>
+    <string name="payment_method">Payment Method</string>
+    <string name="deliver_address">Deliver Address</string>
+    <string name="about">About</string>
+    <string name="notification">Notification</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="tel_sample">Phone number</string>
+    <string name="most_order_shop">Most Order Shop</string>
+    <string name="header_section">Header Section</string>
+    <string name="fetch_data_text">fetching data...</string>
+    <string name="items">%d Item(s)</string>
+    <string name="contact_information">Contact Information</string>
+    <string name="address">Address</string>
+    <string name="add_new_address">Add New Address</string>
+    <string name="total_price_in_riel">Total Price in Riel</string>
+    <string name="no_address_found">No address found.</string>
+    <string name="updating_price">Updating price...</string>
+    <string name="btn_title_update">Update</string>
+    <string name="get_current_location">Get Current Location</string>
+    <string name="my_delivery_address">My Delivery Address</string>
+    <string name="product_price">Price</string>
+    <string name="food_title">Food Title</string>
+    <string name="food_description">Food Description</string>
+    <string name="btn_title_done">Done</string>
+
+    <bool name="isLarge">false</bool>
+
+    <!--Facebook APP ID-->
+    <string name="facebook_app_id">641389056228040</string>
+    <string name="fb_login_protocol_scheme">fb641389056228040</string>
+    <string name="login_with_facebook">Login with Facebook</string>
+    <string name="login_with_google">Login with Google</string>
+    <string name="title_activity_forget_password">ForgetPasswordActivity</string>
+    <string name="forget_password_email">Email:</string>
+    <string name="forgot_your_password">Forgot password?</string>
+    <string name="forget_password_text_description">Please enter your email address below to receive a password reset link.</string>
+    <string name="btn_title_forget_password_submit">Submit</string>
+    <string name="email_address">Email</string>
+    <string name="password">Password</string>
+    <string name="it_must_be_at_least_8_characters_and_include_numbers">It must be at least 8 characters and include numbers.</string>
+    <string name="create_a_new_account">Create a new account?</string>
+    <string name="btn_title_login">Login</string>
+    <string name="or_login_with">OR LOGIN WITH:</string>
+    <string name="loading_categories">Loading categories</string>
+    <string name="special_promotion">Special Promotion</string>
+    <string name="order_id">Order ID:</string>
+    <string name="create_an_account">CREATE AN ACCOUNT</string>
+    <string name="log_in">Logging in …</string>
+    <string name="error_getting_data">Error getting data</string>
+
+    <string name="alert_info">Info</string>
+    <string name="alert_warning">Warning</string>
+    <string name="alert_error">Error</string>
+    <string name="image_notification">image_notification</string>
+    <string name="or">OR</string>
+    <string name="didn_t_have_an_account">Didn\'t have an account?</string>
+    <string name="signup">Signup</string>
+    <string name="continue_with_facebook">Continue with Facebook</string>
+    <string name="continue_with_google">Continue with Google</string>
+
+</resources>

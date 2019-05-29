@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container_product_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/margin_length_5"
+    android:paddingBottom="@dimen/margin_length_5"
+    android:paddingLeft="@dimen/margin_length_20"
+    android:paddingRight="@dimen/margin_length_20"
+    android:layout_margin="5dp"
+    android:gravity="center_vertical"
+    android:background="@drawable/selector_selected_items">
+
+    <ImageView
+        android:id="@+id/img_product"
+        android:layout_alignParentLeft="true"
+        android:scaleType="centerCrop"
+        android:layout_width="@dimen/search_product_img_width"
+        android:layout_height="@dimen/search_product_img_height"
+        android:background="@color/colorDeliverBackgroundLightGrayI"/>
+
+    <LinearLayout
+        android:layout_marginLeft="@dimen/margin_length_5"
+        android:id="@+id/container_product_info"
+        android:layout_toRightOf="@id/img_product"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/txt_product_name"
+            style="@style/TextViewHeaderA4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/simple_font_size"
+            android:textColorHighlight="@color/yellow"
+            android:text="Product Name"/>
+
+        <TextView
+            android:id="@+id/txt_store_name"
+            style="@style/TextViewParagraphItalic"
+            android:textColor="@color/gray"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/simple_font_size"
+            android:text="Pizza Company"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

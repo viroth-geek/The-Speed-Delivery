@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin_address_dialog">100dp</dimen>
+    <dimen name="box_ads_height_100">170dp</dimen>
+    <dimen name="delivery_address_recycler_height">500dp</dimen>
+
+    <dimen name="estore_item_appbar">250dp</dimen>
+
+    <!--Store Activity-->
+    <dimen name="product_image_width">30dp</dimen>
+    <dimen name="product_image_height">100dp</dimen>
+
+    <dimen name="button_location_time_height">30dp</dimen>
+
+    <dimen name="time_deliver_recycler_height">400dp</dimen>
+
+    <dimen name="simple_font_size">17sp</dimen>
+
+    <!--Search Store and Product-->
+    <dimen name="search_product_img_width">80dp</dimen>
+    <dimen name="search_product_img_height">60dp</dimen>
+
+    <!--Search Activity-->
+    <dimen name="slider_header_image_height">300dp</dimen>
+    <dimen name="slider_child_image_height">200dp</dimen>
+</resources>

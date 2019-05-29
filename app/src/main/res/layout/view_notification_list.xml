@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="@dimen/margin_length_5"
+    app:cardElevation="@dimen/margin_length_5">
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:paddingEnd="@dimen/margin_length_5"
+            android:paddingStart="0dp"
+            android:id="@+id/txt_date"
+            android:textColor="@color/green"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:textSize="@dimen/simple_font_size"
+            android:text="Monday, 12 Jan 2018"/>
+
+        <ImageView
+            android:id="@+id/img_notification"
+            android:layout_width="75dp"
+            android:scaleType="fitCenter"
+            android:layout_height="75dp"
+            android:layout_margin="10dp"
+            android:contentDescription="@string/image_notification"/>
+
+        <LinearLayout
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_date"
+            android:layout_toEndOf="@+id/img_notification">
+
+            <TextView
+                android:id="@+id/txt_title"
+                style="@style/TextViewHeaderA4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/simple_font_size"
+                android:text="Title Notification"/>
+
+            <TextView
+                android:id="@+id/txt_body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:maxLines="3"
+                android:ellipsize="end"
+                android:text="This is my notification for magento system."/>
+
+        </LinearLayout>
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
+
+
+

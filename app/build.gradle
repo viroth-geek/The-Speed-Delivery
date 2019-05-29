@@ -1,0 +1,169 @@
+plugins {
+    id 'com.onesignal.androidsdk.onesignal-gradle-plugin' version '0.8.1'
+}
+apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao'
+
+android {
+
+    compileSdkVersion 26
+    buildToolsVersion '26.0.2'
+    defaultConfig {
+        applicationId "com.iota.eshopping"
+
+        minSdkVersion 21
+        targetSdkVersion 26
+        versionCode 27
+        versionName '1.6.7'
+
+        multiDexEnabled true
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath true
+            }
+        }
+
+        // TODO: Please update the OneSignal ID below to yours!
+        manifestPlaceholders = [onesignal_app_id               : "15533f79-e2fa-4c4c-914b-9115e8fa05cb",
+                                // Project number pulled from dashboard, local value is ignored.
+                                onesignal_google_project_number: 'REMOTE']
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+repositories {
+    maven { url "https://clojars.org/repo/" }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.android.support:support-v4:26.1.0'
+    implementation 'com.android.support:design:26.1.0'
+    implementation 'com.android.support:recyclerview-v7:26.1.0'
+    implementation 'com.android.support:cardview-v7:26.1.0'
+    implementation 'org.apache.commons:commons-lang3:3.6'
+
+    //testImplementation 'junit:junit:4.12'
+
+    //androidTestImplementation 'com.android.support.test:runner:1.0.1'
+
+    //androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    implementation 'com.google.android.gms:play-services-maps:12.0.1'
+    implementation 'com.google.android.gms:play-services-location:12.0.1'
+    implementation 'com.google.android.gms:play-services-places:12.0.1'
+
+    //Icepick is an Android library that eliminates the boilerplate of saving and restoring instance state.
+
+    //It uses annotation processing to generate code that does bundle manipulation and key generation,
+
+    //so that you don't have to write it yourself.
+
+    // compile 'frankiesardo:icepick:3.2.0'
+
+    // provided 'frankiesardo:icepick-processor:3.2.0'
+
+    //Bind Android views and callbacks to fields and methods.
+
+    // compile 'com.jakewharton:butterknife:8.8.1'
+
+    // annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+    // Because RxAndroid releases are few and far between, it is recommended you also
+
+    // explicitly depend on RxJava's latest version for bug fixes and new features.
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.7'
+    implementation 'io.reactivex:rxandroid:1.0.1'
+
+    //RxJava binding APIs for Android UI widgets from the platform and support libraries.
+    implementation 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
+
+    //A logger with a small, extensible API which provides utility on top of Android's normal Log class.
+    implementation 'com.jakewharton.timber:timber:4.6.0'
+
+    //An HTTP & HTTP/2 client for Android and Java applications
+    implementation 'com.squareup.okhttp3:okhttp:3.9.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
+
+    //Type-safe HTTP client for Android and Java by Square, Inc.
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+
+    //compile 'com.squareup.retrofit2:adapter-rxjava:2.3.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+
+    //Android library to display different kind of google related animations for the progressBar.
+    implementation 'com.jpardogo.googleprogressbar:library:1.2.0'
+
+    //GreenDAO is a light & fast ORM for Android that maps objects to SQLite databases.
+
+    //Being highly optimized for Android, greenDAO offers great performance and consumes minimal memory.
+
+    //compile 'org.greenrobot:greendao:3.2.2'
+
+    // Glide is a fast and efficient open source media management and image loading framework
+
+    // for Android that wraps media decoding, memory and disk caching, and resource pooling
+
+    // into a simple and easy to use interface.
+    implementation 'com.github.bumptech.glide:glide:4.3.1'
+    implementation 'com.google.firebase:firebase-config:12.0.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.3.1'
+    implementation('com.github.bumptech.glide:okhttp3-integration:4.0.0') {
+        exclude group: 'glide-parent'
+    }
+
+    //Images add much-needed context and visual flair to Android applications.
+
+    //Picasso allows for hassle-free image loading in your application—often in one line of code!
+
+    //compile 'com.squareup.picasso:picasso:2.5.2'
+
+    //compile 'com.codemybrainsout.placesearchdialog:placesearch:1.0.1'
+
+    //    compile 'mobility.asia.iota.location:iotalocationcore:1.1'
+
+    //    compile 'mobility.asia.iota.frmk:iotafrmkservices:1.1'
+
+    //    compileOnly "org.projectlombok:lombok:1.16.16"
+
+    //    compile "com.android.support:support-v4:+"
+    implementation 'com.squareup.picasso:picasso:2.3.2'
+    implementation 'com.nineoldandroids:library:2.4.0'
+    implementation 'com.daimajia.slider:library:1.1.5@aar'
+
+    // OneSignal SDK
+    implementation 'com.onesignal:OneSignal:[3.8.1, 3.99.99)'
+
+    // Google map service
+    implementation 'com.google.maps:google-maps-services:0.2.7'
+    implementation 'org.slf4j:slf4j-nop:1.7.25'
+    implementation 'org.greenrobot:eventbus:3.1.1'
+
+    // Facebook Login
+    implementation 'com.facebook.android:facebook-login:[4,5)'
+
+    // Google SignIn
+    compile 'com.google.android.gms:play-services-auth:12.0.1'
+
+    // JSOUP
+    compile 'org.jsoup:jsoup:1.11.3'
+
+    compile 'me.gujun.android.taggroup:library:1.4@aar'
+}
+apply plugin: 'com.google.gms.google-services'

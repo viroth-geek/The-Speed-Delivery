@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.iota.eshopping.activity.PromotionActivity">
+    <include layout="@layout/view_toolbar"
+        android:id="@+id/toolbar"/>
+    <LinearLayout
+        android:layout_below="@id/toolbar"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/default_promotion_view"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/TextViewHeader2"
+                android:background="@color/colorTransparency"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:text="New Promotion"
+                android:layout_height="30dp" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@color/colorTransparencyGray"
+                android:src="@drawable/ic_default_w200xh200"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/web_promotion_view"
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <WebView
+                android:id="@+id/webview"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:visibility="visible"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>

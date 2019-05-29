@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:theme="@style/AppTheme">
+
+    <View
+        android:clickable="true"
+        android:focusable="true"
+        android:id="@+id/fragment_outside_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorTransparency"/>
+
+    <LinearLayout
+        android:id="@+id/container_dialog"
+        android:clickable="false"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/colorTransparency"
+        android:layout_margin="@dimen/margin_address_dialog"
+        android:padding="@dimen/margin_length_5">
+
+        <LinearLayout
+            android:clickable="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_box_i"
+            android:baselineAligned="true"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/margin_length_3">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/delivery_address_recycler_height"
+                    android:layout_margin="@dimen/margin_length_5"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:gravity="center_horizontal"
+                        android:id="@+id/txt_product_name"
+                        style="@style/TextViewHeaderA3"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:textAlignment="center"
+                        android:background="@color/colorDeliverPrimary"
+                        android:textColor="@color/white"
+                        android:text="@string/my_delivery_address" />
+
+                    <View
+                        android:layout_marginBottom="@dimen/margin_length_5"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorTransparencyGray"/>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/list_address"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp">
+                    </android.support.v7.widget.RecyclerView>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <Button
+                    android:visibility="gone"
+                    android:layout_weight="0.5"
+                    android:id="@+id/btn_use_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_margin="@dimen/margin_length_3"
+                    android:background="@color/colorDeliverBackground"
+                    android:text="Use Address"
+                    android:textColor="@color/gray" />
+                <Button
+                    android:visibility="visible"
+                    android:layout_weight="0.5"
+                    android:id="@+id/btn_update_current_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_margin="@dimen/margin_length_3"
+                    android:background="@color/colorDeliverBackground"
+                    android:text="@string/get_current_location"
+                    android:textColor="@color/colorDeliverPrimary" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
+

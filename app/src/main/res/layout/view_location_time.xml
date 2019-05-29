@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/estore_item_margin_10dp"
+    android:paddingRight="@dimen/estore_item_margin_10dp"
+    android:paddingLeft="@dimen/estore_item_margin_10dp"
+    android:paddingBottom="@dimen/estore_item_margin_10dp"
+    android:weightSum="5">
+
+    <Button
+        android:id="@+id/btn_deliver_time"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_location_time_height"
+        android:layout_weight="2.35"
+        style="@style/ButtonCornerReverse"
+        android:text="@string/deliver_asap"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/button_location_time_height"
+        android:layout_weight="0.3"
+        style="@style/TextViewDeliverWhite"
+        android:text="@string/to"/>
+
+    <Button
+        android:id="@+id/btn_selected_location"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_location_time_height"
+        android:layout_weight="2.35"
+        style="@style/ButtonCornerReverse"
+        android:text="@string/select_location"/>
+
+</LinearLayout>
