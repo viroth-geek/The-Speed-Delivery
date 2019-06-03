@@ -5,13 +5,13 @@ import com.iota.eshopping.model.ExchangeRate;
 import com.iota.eshopping.model.ServerDateTime;
 import com.iota.eshopping.model.StoreDeliveryFee;
 import com.iota.eshopping.model.Tag;
+import com.iota.eshopping.model.direction.Direction;
 import com.iota.eshopping.model.form.FormForGetDeliveryFee;
 import com.iota.eshopping.model.form.FormForGetDirection;
 import com.iota.eshopping.model.magento.store.StoreFee;
 import com.iota.eshopping.model.magento.store.storeList.ListStore;
 import com.iota.eshopping.model.magento.store.storeList.StoreRestriction;
 import com.iota.eshopping.model.magento.store.storeList.StoreView;
-import com.iota.eshopping.model.direction.Direction;
 
 import java.util.List;
 
@@ -54,7 +54,10 @@ public interface StoreService {
      * @return Observable<List<StoreView>>
      */
     @GET("V2/eshopping/store/getStoreById/{storeId}/productList/{productSize}")
-    Observable<List<StoreView>> getStoreViewByIdWithSizeProduct(@Path("storeId") Long storeId, @Path("productSize") int productSize);
+    Observable<List<StoreView>> getStoreViewByIdWithSizeProduct(
+            @Path("storeId") Long storeId,
+            @Path("productSize") int productSize
+    );
 
     /**
      * Get store view as paging
@@ -95,6 +98,19 @@ public interface StoreService {
      */
     @POST("V2/eshopping/storeList")
     Observable<List<ListStore>> getStoreList(@Body StoreRestriction restriction);
+
+    /**
+     * Get list store by filter store
+     *
+     * @param restriction
+     * @return List of list store
+     * @see StoreRestriction
+     * @see ListStore
+     */
+
+    @POST("V2/eshopping/storeList")
+    Observable<List<ListStore>> getStoreListByFilter(@Body StoreRestriction restriction);
+
 
     /**
      *

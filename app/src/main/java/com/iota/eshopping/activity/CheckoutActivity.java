@@ -1,7 +1,6 @@
 package com.iota.eshopping.activity;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -50,7 +49,6 @@ import com.iota.eshopping.util.AlertUtils;
 import com.iota.eshopping.util.AuthUtils;
 import com.iota.eshopping.util.ExceptionUtils;
 import com.iota.eshopping.util.LoggerHelper;
-import com.iota.eshopping.util.NumberUtils;
 import com.iota.eshopping.util.PhoneNumberField;
 import com.iota.eshopping.util.preference.LocationPreference;
 import com.iota.eshopping.util.preference.StorePreference;

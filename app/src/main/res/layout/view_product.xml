@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:layout_margin="@dimen/margin_length_3"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/shape_button_bg_corner_dark"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="@dimen/margin_length_3">
 
     <LinearLayout
         android:layout_margin="@dimen/margin_length_3"
@@ -13,18 +13,25 @@
         android:layout_height="wrap_content"
         android:background="@drawable/selector_selected_items">
 
-        <ImageView
-            android:id="@+id/img_product"
-            android:adjustViewBounds="true"
-            android:layout_margin="@dimen/margin_length_5"
+        <android.support.v7.widget.CardView
+            android:layout_width="130dp"
             android:layout_height="100dp"
-            android:layout_width="70dp"
-            android:layout_weight="0.20"
-            android:background="@color/colorDeliverBackgroundLightGrayI" />
+            android:layout_margin="@dimen/margin_length_3"
+            app:cardElevation="3dp">
+
+            <ImageView
+                android:id="@+id/img_product"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_margin="@dimen/margin_length_5"
+                android:adjustViewBounds="true" />
+
+        </android.support.v7.widget.CardView>
 
         <RelativeLayout
             android:id="@+id/container_product_info"
             android:layout_width="0dp"
+            android:layout_marginLeft="@dimen/margin_length_3"
             android:layout_height="match_parent"
             android:layout_weight="0.40"
             android:minHeight="100dp">
@@ -77,7 +84,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginRight="@dimen/estore_item_margin_10dp">
 
             <TextView
                 android:id="@+id/txt_product_price"

@@ -11,11 +11,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.iota.eshopping.R;
 import com.iota.eshopping.activity.RegisterLocationActivity;
 import com.iota.eshopping.adapter.AddressListRecyclerAdapter;
 import com.iota.eshopping.constant.ConstantValue;
+import com.iota.eshopping.event.ISaveAddress;
 import com.iota.eshopping.model.Address;
 import com.iota.eshopping.server.DatabaseHelper;
 import com.iota.eshopping.service.datahelper.datasource.offine.address.FetchAddressDAO;
@@ -26,7 +28,7 @@ import java.util.List;
 /**
  * @author channarith.bong
  */
-public class DeliveryAddressFragment extends Fragment {
+public class DeliveryAddressFragment extends Fragment{
 
     private RecyclerView list_address;
 
@@ -139,4 +141,5 @@ public class DeliveryAddressFragment extends Fragment {
         intent.putExtra(ConstantValue.SAVE_ADDRESS, true);
         startActivityForResult(intent, ConstantValue.INTENT_ACTIVITY_TAG_CODE);
     }
+
 }

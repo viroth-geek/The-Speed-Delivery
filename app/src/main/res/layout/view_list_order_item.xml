@@ -4,7 +4,8 @@
     android:layout_width="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardUseCompatPadding="true"
-    android:elevation="@dimen/margin_length_5">
+    android:elevation="@dimen/margin_length_5"
+    android:foreground="?android:attr/selectableItemBackground">
     <LinearLayout
         android:layout_margin="@dimen/margin_length_3"
         android:orientation="vertical"
@@ -53,6 +54,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/simple_font_size"
                         android:text="Order time :"/>
+
                     <TextView
                         android:id="@+id/txt_order_time"
                         android:layout_marginLeft="@dimen/margin_length_5"
@@ -102,7 +104,9 @@
                 android:layout_height="100dp"
                 android:background="@color/colorDeliverBackgroundLightGrayI"/>
             <LinearLayout
-                android:padding="@dimen/estore_item_margin_5dp"
+                android:paddingLeft="@dimen/estore_item_margin_5dp"
+                android:paddingRight="@dimen/estore_item_margin_5dp"
+                android:paddingBottom="@dimen/estore_item_margin_5dp"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">

@@ -17,6 +17,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,7 +27,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,13 +39,12 @@ import com.iota.eshopping.activity.SearchActivity;
 import com.iota.eshopping.adapter.StoreRecyclerAdapter;
 import com.iota.eshopping.constant.ApplicationConfiguration;
 import com.iota.eshopping.constant.ConstantValue;
+import com.iota.eshopping.event.ISaveAddress;
 import com.iota.eshopping.fragment.time.NkrTimePicker;
 import com.iota.eshopping.model.ServerDateTime;
-import com.iota.eshopping.model.enumeration.DayType;
 import com.iota.eshopping.model.magento.search.SearchStoreRestriction;
 import com.iota.eshopping.model.magento.store.storeList.ListStore;
 import com.iota.eshopping.model.magento.store.storeList.StoreRestriction;
-import com.iota.eshopping.model.magento.store.storeList.StoreView;
 import com.iota.eshopping.model.modelForView.Product;
 import com.iota.eshopping.model.modelForView.ProductItem;
 import com.iota.eshopping.model.modelForView.Store;
@@ -53,12 +52,10 @@ import com.iota.eshopping.security.CurrencyConfiguration;
 import com.iota.eshopping.security.ProductLocalService;
 import com.iota.eshopping.service.base.InvokeOnCompleteAsync;
 import com.iota.eshopping.service.datahelper.datasource.online.FetchListStores;
-import com.iota.eshopping.service.datahelper.datasource.online.FetchNearestStores;
 import com.iota.eshopping.service.datahelper.datasource.online.FetchServerDateTime;
 import com.iota.eshopping.service.datahelper.mapper.DataMatcher;
 import com.iota.eshopping.util.DateUtil;
 import com.iota.eshopping.util.DeliveryAnimationUtils;
-import com.iota.eshopping.util.ExceptionUtils;
 import com.iota.eshopping.util.LoggerHelper;
 import com.iota.eshopping.util.NumberUtils;
 import com.iota.eshopping.util.preference.LocationPreference;
@@ -71,7 +68,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -79,7 +75,7 @@ import io.reactivex.Observable;
 /**
  * @author channarith.bong
  */
-public class HomeFragment extends Fragment implements View.OnClickListener {
+public class HomeFragment extends Fragment implements View.OnClickListener, ISaveAddress {
 
     private FrameLayout viewBasket;
 
@@ -175,6 +171,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         btn_deliver_time.setText(TimeDeliveryPreference.getTimeDeliveryText(getContext()));
 
+
+        Log.d("data", "Lat Long " + mAddress);
         return view;
     }
 
@@ -369,7 +367,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             this.productItems.clear();
         }
 
-        for (com.iota.eshopping.model.modelForView.Product product : products) {
+        for (Product product : products) {
             this.productItems.add(new ProductItem<>(product.getId(), product.getCount(), product.getPrice(), product));
         }
 
@@ -438,17 +436,17 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         return storeRestriction;
     }
 
+
     /**
      * Get all available store for agent
      */
     private void loadStoreList(final StoreRestriction restriction) {
 
+
         if (loadingProgressBar.getVisibility() == View.GONE) {
             loadingProgressBar.setVisibility(View.VISIBLE);
         }
-
         new FetchListStores(restriction, new FetchListStores.InvokeOnCompleteAsync() {
-
             @Override
             public void onComplete(List<ListStore> listStores) {
                 if (listStores != null && !listStores.isEmpty()) {
@@ -721,6 +719,38 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             adapter.notifyDataSetChanged();
         }
     }
+
+    @Override
+    public void onAddressSave(String type) {
+
+        Toast.makeText(getContext(), "value of " + type, Toast.LENGTH_SHORT).show();
+
+        storeList.clear();
+        adapter.notifyDataSetChanged();
+
+        if (type.equals(ConstantValue.PRODUCT_ALL)) {
+
+            StoreRestriction storeRestriction = new StoreRestriction();
+            SearchStoreRestriction searchStoreRestriction = new SearchStoreRestriction();
+            searchStoreRestriction.setLatitude(mAddress.getLatitude());
+            searchStoreRestriction.setLongitude(mAddress.getLongitude());
+            searchStoreRestriction.setOpen(0);
+            storeRestriction.setStoreRestriction(searchStoreRestriction);
+            loadStoreList(storeRestriction);
+
+        } else if (type.equals(ConstantValue.PRODUCT_OPEN)) {
+
+            StoreRestriction storeRestriction = new StoreRestriction();
+            SearchStoreRestriction searchStoreRestriction = new SearchStoreRestriction();
+            searchStoreRestriction.setLatitude(mAddress.getLatitude());
+            searchStoreRestriction.setLongitude(mAddress.getLongitude());
+            searchStoreRestriction.setOpen(1);
+            storeRestriction.setStoreRestriction(searchStoreRestriction);
+            loadStoreList(storeRestriction);
+
+        }
+    }
+
 }
 
 

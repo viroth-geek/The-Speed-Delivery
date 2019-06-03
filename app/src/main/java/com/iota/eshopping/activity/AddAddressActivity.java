@@ -2,6 +2,7 @@ package com.iota.eshopping.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -16,6 +17,8 @@ import android.widget.Toast;
 
 import com.iota.eshopping.R;
 import com.iota.eshopping.constant.ConstantValue;
+import com.iota.eshopping.event.ISaveAddress;
+import com.iota.eshopping.fragment.page.DeliveryAddressFragment;
 import com.iota.eshopping.model.Customer;
 import com.iota.eshopping.model.modelForView.Address;
 import com.iota.eshopping.model.modelForView.CreateAddress;
@@ -24,10 +27,8 @@ import com.iota.eshopping.server.DatabaseHelper;
 import com.iota.eshopping.service.datahelper.datasource.offine.address.FetchAddressDAO;
 import com.iota.eshopping.service.datahelper.datasource.online.AddNewAddress;
 import com.iota.eshopping.service.datahelper.datasource.online.UpdateAddress;
-import com.iota.eshopping.util.LoggerHelper;
 import com.iota.eshopping.util.PhoneNumberField;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -70,6 +71,7 @@ public class AddAddressActivity extends AppCompatActivity {
     
     private Boolean isEdit = false;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +79,7 @@ public class AddAddressActivity extends AppCompatActivity {
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -116,8 +119,7 @@ public class AddAddressActivity extends AppCompatActivity {
             if (isEdit) {
                 updateAddress(address);
                 db.updateAddress(address);
-            }
-            else {
+            } else {
                 saveAddress(address);
             }
         });

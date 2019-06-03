@@ -485,6 +485,8 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
                 categoryPagerFragment.setOptionLoadingProgressBar(optionLoadingProgressBar);
                 categoryPagerFragment.setOnLoadProductCompletedListener(this);
                 categoryPagerFragments.add(categoryPagerFragment);
+
+
             }
 
             CategoryPagerAdapter categoryPagerAdapter = new CategoryPagerAdapter(getSupportFragmentManager(), categoryPagerFragments);

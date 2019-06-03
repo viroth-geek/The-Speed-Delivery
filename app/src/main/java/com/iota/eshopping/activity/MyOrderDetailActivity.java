@@ -136,6 +136,7 @@ public class MyOrderDetailActivity extends AppCompatActivity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_order_detail);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         txt_order_status = findViewById(R.id.txt_order_status);
         txt_order_id = findViewById(R.id.txt_order_id);

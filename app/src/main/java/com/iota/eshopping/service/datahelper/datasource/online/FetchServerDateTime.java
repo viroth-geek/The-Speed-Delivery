@@ -1,5 +1,7 @@
 package com.iota.eshopping.service.datahelper.datasource.online;
 
+import android.util.Log;
+
 import com.iota.eshopping.model.ServerDateTime;
 import com.iota.eshopping.server.ServiceGenerator;
 import com.iota.eshopping.service.api.store.StoreService;
@@ -26,6 +28,7 @@ public class FetchServerDateTime extends BaseService<List<ServerDateTime>> {
     public FetchServerDateTime(InvokeOnCompleteAsync<List<ServerDateTime>> onCompleteAsync) {
         super(onCompleteAsync);
         request();
+
     }
 
     /**

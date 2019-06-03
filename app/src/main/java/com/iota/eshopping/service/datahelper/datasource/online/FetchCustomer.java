@@ -4,7 +4,6 @@ import com.iota.eshopping.model.Customer;
 import com.iota.eshopping.model.UserSecure;
 import com.iota.eshopping.server.ServiceGenerator;
 import com.iota.eshopping.service.api.user.CustomerService;
-import com.iota.eshopping.util.LoggerHelper;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;

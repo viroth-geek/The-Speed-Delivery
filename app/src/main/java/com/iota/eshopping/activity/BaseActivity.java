@@ -26,6 +26,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +46,7 @@ import com.google.android.gms.tasks.Task;
 import com.iota.eshopping.R;
 import com.iota.eshopping.constant.ConstantValue;
 import com.iota.eshopping.constant.entity.FacebookAccessScope;
+import com.iota.eshopping.event.ISaveAddress;
 import com.iota.eshopping.fragment.page.AboutFragment;
 import com.iota.eshopping.fragment.page.DeliveryAddressFragment;
 import com.iota.eshopping.fragment.page.HomeFragment;
@@ -59,7 +61,6 @@ import com.iota.eshopping.model.UserPlayerId;
 import com.iota.eshopping.model.enumeration.SocialType;
 import com.iota.eshopping.model.form.FormSocialUser;
 import com.iota.eshopping.model.form.SocialLoginForm;
-import com.iota.eshopping.security.ForceUpdateChecker;
 import com.iota.eshopping.security.UserAccount;
 import com.iota.eshopping.server.DatabaseHelper;
 import com.iota.eshopping.service.base.InvokeOnCompleteAsync;
@@ -84,7 +85,7 @@ import java.util.List;
  * @author channarith.bong
  */
 public class BaseActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, ForceUpdateChecker.OnUpdateNeededListener {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     private Toolbar toolbar;
     private ActionBarDrawerToggle toggle;
@@ -95,6 +96,8 @@ public class BaseActivity extends AppCompatActivity
     private TextView txt_user_email;
     private NavigationView navigationView;
     private MenuItem searchMenuItem;
+    private MenuItem filterMenuItem;
+    private LinearLayout productFilterLayout;
 
     private Snackbar snackbar;
 
@@ -120,6 +123,20 @@ public class BaseActivity extends AppCompatActivity
 
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
 
+    private ISaveAddress listener;
+
+    private TextView openStore;
+    private TextView allStore;
+
+
+    @Override
+    public void onAttachFragment(Fragment fragment) {
+        super.onAttachFragment(fragment);
+        if (fragment instanceof ISaveAddress) {
+            listener = (HomeFragment) fragment;
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,9 +147,12 @@ public class BaseActivity extends AppCompatActivity
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        productFilterLayout = findViewById(R.id.lyt_pro_filter);
+
         fetchAddressDAO = new FetchAddressDAO(DatabaseHelper.getInstance(this).getDatabase());
 
         initToolbar();
+        initFilterProductComponent();
 
         if (getIntent().hasExtra(ConstantValue.NOTIFICATION) && checkUserData()) {
             if (getIntent().hasExtra(ConstantValue.ITEMS)) {
@@ -140,8 +160,7 @@ public class BaseActivity extends AppCompatActivity
                 intent.putExtra(ConstantValue.ITEMS, getIntent().getSerializableExtra(ConstantValue.ITEMS));
                 intent.putExtra(ConstantValue.HOME_CALLING, true);
                 startActivity(intent);
-            }
-            else {
+            } else {
                 checkNewNotification();
             }
         } else {
@@ -150,6 +169,15 @@ public class BaseActivity extends AppCompatActivity
 
         configureFacebookLogin();
         configureGoogleSignIn();
+
+    }
+
+    private void initFilterProductComponent() {
+        allStore = findViewById(R.id.txt_pro_filter_all);
+        openStore = findViewById(R.id.txt_pro_filter_open);
+
+        allStore.setOnClickListener(this::onClick);
+        openStore.setOnClickListener(this::onClick);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -158,6 +186,7 @@ public class BaseActivity extends AppCompatActivity
         int id = item.getItemId();
         if (searchMenuItem != null) {
             searchMenuItem.setVisible(false);
+            filterMenuItem.setVisible(false);
         }
         switch (id) {
             case R.id.nav_find_product:
@@ -187,6 +216,7 @@ public class BaseActivity extends AppCompatActivity
             default:
                 checkToHome();
         }
+
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -196,10 +226,13 @@ public class BaseActivity extends AppCompatActivity
         if (isShowAds) {
             getMenuInflater().inflate(R.menu.menu_main, menu);
             searchMenuItem = menu.findItem(R.id.action_search);
+            filterMenuItem = menu.findItem(R.id.action_filter);
             if (fragmentName == null || HomeFragment.class.getSimpleName().equals(fragmentName)) {
                 searchMenuItem.setVisible(true);
+                filterMenuItem.setVisible(true);
             } else {
                 searchMenuItem.setVisible(false);
+                filterMenuItem.setVisible(false);
             }
         }
         return super.onCreateOptionsMenu(menu);
@@ -210,6 +243,12 @@ public class BaseActivity extends AppCompatActivity
         if (item.getItemId() == R.id.action_search) {
             Intent intent = new Intent(this, SearchActivity.class);
             startActivity(intent);
+        } else if (item.getItemId() == R.id.action_filter) {
+            if (productFilterLayout.getVisibility() == View.GONE) {
+                productFilterLayout.setVisibility(View.VISIBLE);
+            } else {
+                productFilterLayout.setVisibility(View.GONE);
+            }
         } else if (item.getItemId() == android.R.id.home) {
             if (!isShowAds) {
                 finish();
@@ -254,7 +293,7 @@ public class BaseActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
 
-        ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
+        //ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
 
         if (isCanBroadCast) {
 //            if (homeFragment != null) {
@@ -368,6 +407,7 @@ public class BaseActivity extends AppCompatActivity
     /**
      * Check if Ready Logged
      */
+
     private boolean checkUserData() {
         UserAccount userAccount = new UserAccount(this);
         customer = userAccount.getCustomer();
@@ -382,6 +422,7 @@ public class BaseActivity extends AppCompatActivity
         homeFragment = new HomeFragment();
         if (searchMenuItem != null) {
             searchMenuItem.setVisible(true);
+            filterMenuItem.setVisible(true);
         }
         displaySelectedFragment(homeFragment);
     }
@@ -544,18 +585,27 @@ public class BaseActivity extends AppCompatActivity
         displaySelectedFragment(notificationFragment);
     }
 
+
+    /**
+     * Check for new notification
+     */
+
+    private void checkVerificationCode() {
+        toolbar.setTitle(R.string.comfirm_sms_code);
+
+    }
+
     /**
      * Loads the specified fragment to the frame
      *
      * @param fragment Fragment
      */
     private void displaySelectedFragment(Fragment fragment) {
-//        if (fragmentName == null || !fragment.getClass().getSimpleName().equals(fragmentName)) {
+        productFilterLayout.setVisibility(View.GONE);
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.frame_container, fragment);
+        fragmentTransaction.replace(R.id.frame_container, fragment, "HomeFragment");
             fragmentTransaction.commit();
             fragmentName = fragment.getClass().getSimpleName();
-//        }
     }
 
     /**
@@ -804,6 +854,13 @@ public class BaseActivity extends AppCompatActivity
             facebookLoginButton.performClick();
         } else if (btn_google_login.equals(view)) {
             signInWithGoogle();
+        } else if (view.equals(allStore)) {
+            productFilterLayout.setVisibility(View.GONE);
+            listener.onAddressSave(ConstantValue.PRODUCT_ALL);
+
+        } else if (view.equals(openStore)) {
+            productFilterLayout.setVisibility(View.GONE);
+            listener.onAddressSave(ConstantValue.PRODUCT_OPEN);
         }
     }
 
@@ -835,17 +892,17 @@ public class BaseActivity extends AppCompatActivity
         snackbar.show();
     }
 
-    @Override
-    public void onUpdateNeeded(String updateUrl) {
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle("New version available")
-                .setMessage("Please, update app to new version to continue.")
-                .setPositiveButton("Update",
-                        (dialog1, which) -> redirectStore(updateUrl))
-                .setCancelable(false)
-                .create();
-        dialog.show();
-    }
+//    @Override
+//    public void onUpdateNeeded(String updateUrl) {
+//        AlertDialog dialog = new AlertDialog.Builder(this)
+//                .setTitle("New version available")
+//                .setMessage("Please, update app to new version to continue.")
+//                .setPositiveButton("Update",
+//                        (dialog1, which) -> redirectStore(updateUrl))
+//                .setCancelable(false)
+//                .create();
+//        dialog.show();
+//    }
 
     /**
      * redirect to play store
