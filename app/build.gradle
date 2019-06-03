@@ -24,8 +24,15 @@ android {
             }
         }
 
+//        // TODO: Please update the OneSignal ID below to yours!
+//        manifestPlaceholders = [onesignal_app_id               : "15533f79-e2fa-4c4c-914b-9115e8fa05cb",
+//                                // Project number pulled from dashboard, local value is ignored.
+//                                onesignal_google_project_number: 'REMOTE']
+//
+
+//        planb one signal
         // TODO: Please update the OneSignal ID below to yours!
-        manifestPlaceholders = [onesignal_app_id               : "15533f79-e2fa-4c4c-914b-9115e8fa05cb",
+        manifestPlaceholders = [onesignal_app_id               : "65ac04a0-c2bf-43e2-a444-d811977bbd51",
                                 // Project number pulled from dashboard, local value is ignored.
                                 onesignal_google_project_number: 'REMOTE']
     }
