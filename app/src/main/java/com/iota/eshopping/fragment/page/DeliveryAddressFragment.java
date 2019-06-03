@@ -4,23 +4,30 @@ import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.iota.eshopping.R;
+import com.iota.eshopping.activity.AddAddressActivity;
 import com.iota.eshopping.activity.RegisterLocationActivity;
 import com.iota.eshopping.adapter.AddressListRecyclerAdapter;
 import com.iota.eshopping.constant.ConstantValue;
 import com.iota.eshopping.event.ISaveAddress;
 import com.iota.eshopping.model.Address;
+import com.iota.eshopping.model.Customer;
+import com.iota.eshopping.model.singleton.Singleton;
 import com.iota.eshopping.server.DatabaseHelper;
+import com.iota.eshopping.service.base.InvokeOnCompleteAsync;
 import com.iota.eshopping.service.datahelper.datasource.offine.address.FetchAddressDAO;
+import com.iota.eshopping.service.datahelper.datasource.online.FetchAddressList;
 import com.iota.eshopping.util.LoggerHelper;
 
 import java.util.List;
@@ -31,22 +38,33 @@ import java.util.List;
 public class DeliveryAddressFragment extends Fragment{
 
     private RecyclerView list_address;
-
     private FetchAddressDAO db;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_delivery_address, container, false);
+
+        Log.d("ooooo", "here onCreateView");
 
         FloatingActionButton floatingActionButton = view.findViewById(R.id.fab);
         list_address = view.findViewById(R.id.list_address);
         list_address.setLayoutManager(new LinearLayoutManager(getActivity()));
         list_address.setHasFixedSize(true);
-        floatingActionButton.setOnClickListener(v -> showMap());
+
         checkDB();
         bindData();
+
+        floatingActionButton.setOnClickListener(v -> showMap());
         return view;
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        checkAddressList();
     }
 
     @Override
@@ -84,6 +102,24 @@ public class DeliveryAddressFragment extends Fragment{
         } catch (Exception e) {
             LoggerHelper.showErrorLog("Address Table Error " + e.getMessage());
         }
+    }
+
+    /**
+     * fetch address list from server
+     */
+    private void checkAddressList(){
+        new FetchAddressList(Singleton.userId, new InvokeOnCompleteAsync<Customer>() {
+            @Override
+            public void onComplete(Customer data) {
+                AddressListRecyclerAdapter recyclerAdapter = new AddressListRecyclerAdapter(getContext(), data.getAddresses(), db);
+                list_address.setAdapter(recyclerAdapter);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Toast.makeText(getContext(), "Something went wrong!", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
 //    /**

@@ -101,7 +101,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_checkout);
         Toolbar toolbar = findViewById(R.id.toolbar);
         userAccount = new UserAccount(this);
-        btn_change_address = findViewById(R.id.btn_change_address);
+        btn_change_address = findViewById(R.id.btn_change_address1);
 
         txt_delivery_address = findViewById(R.id.txt_delivery_address);
         txt_delivery_address.setOnClickListener(view -> this.loadMap());

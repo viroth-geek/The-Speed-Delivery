@@ -21,6 +21,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -61,6 +62,8 @@ import com.iota.eshopping.model.UserPlayerId;
 import com.iota.eshopping.model.enumeration.SocialType;
 import com.iota.eshopping.model.form.FormSocialUser;
 import com.iota.eshopping.model.form.SocialLoginForm;
+import com.iota.eshopping.model.singleton.Singleton;
+import com.iota.eshopping.security.ForceUpdateChecker;
 import com.iota.eshopping.security.UserAccount;
 import com.iota.eshopping.server.DatabaseHelper;
 import com.iota.eshopping.service.base.InvokeOnCompleteAsync;
@@ -78,6 +81,7 @@ import com.onesignal.OneSignal;
 
 import org.json.JSONException;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -160,7 +164,8 @@ public class BaseActivity extends AppCompatActivity
                 intent.putExtra(ConstantValue.ITEMS, getIntent().getSerializableExtra(ConstantValue.ITEMS));
                 intent.putExtra(ConstantValue.HOME_CALLING, true);
                 startActivity(intent);
-            } else {
+            }
+            else {
                 checkNewNotification();
             }
         } else {
@@ -372,12 +377,15 @@ public class BaseActivity extends AppCompatActivity
      * save user player id
      * @see UserPlayerId
      * @param userPlayerId UserPlayerId
+     * @see UserPlayerId
      */
     private void saveUserPlayerId(UserPlayerId userPlayerId) {
         new SaveUserPlayerId(userPlayerId, new SaveUserPlayerId.InvokeOnCompleteAsync() {
             @Override
             public void onComplete(List<UserPlayerId> userPlayerIds) {
                 LoggerHelper.showDebugLog("===> Save user player id successfully" + userPlayerId.toString());
+                Singleton.userId =  Long.parseLong(userPlayerId.getUserId());
+                Log.d("oooooId", Singleton.userId.toString());
             }
 
             @Override

@@ -44,7 +44,7 @@
                 android:ellipsize="end"
                 android:maxLines="3"
                 android:textSize="@dimen/simple_font_size"
-                android:text="#312, Sensok, Phnom Penh #312, Sensok, Phnom Penh#312, Sensok, Phnom Penh#312, Sensok, Phnom Penh#312, Sensok, Phnom Penh#312, Sensok, Phnom Penh#312, Sensok, Phnom Penh#312, Sensok, Phnom Penh#312, Sensok, Phnom Penh#312, Sensok, Phnom Penh#312, Sensok, Phnom Penh" />
+                android:text="#312, Sensok, Phnom Penh #312" />
 
             <TextView
                 android:visibility="gone"

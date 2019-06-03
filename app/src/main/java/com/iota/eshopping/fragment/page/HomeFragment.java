@@ -442,7 +442,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
      */
     private void loadStoreList(final StoreRestriction restriction) {
 
-
         if (loadingProgressBar.getVisibility() == View.GONE) {
             loadingProgressBar.setVisibility(View.VISIBLE);
         }
@@ -724,9 +723,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
     public void onAddressSave(String type) {
 
         Toast.makeText(getContext(), "value of " + type, Toast.LENGTH_SHORT).show();
-
-        storeList.clear();
-        adapter.notifyDataSetChanged();
 
         if (type.equals(ConstantValue.PRODUCT_ALL)) {
 
