@@ -93,6 +93,10 @@ public class AddressListRecyclerAdapter extends RecyclerView.Adapter<AddressList
         return addressList.size();
     }
 
+    public void clear(){
+        addressList.clear();
+    }
+
     /**
      * @param position int
      */

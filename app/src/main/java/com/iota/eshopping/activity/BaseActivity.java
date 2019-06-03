@@ -21,6 +21,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -59,6 +60,7 @@ import com.iota.eshopping.model.UserPlayerId;
 import com.iota.eshopping.model.enumeration.SocialType;
 import com.iota.eshopping.model.form.FormSocialUser;
 import com.iota.eshopping.model.form.SocialLoginForm;
+import com.iota.eshopping.model.singleton.Singleton;
 import com.iota.eshopping.security.ForceUpdateChecker;
 import com.iota.eshopping.security.UserAccount;
 import com.iota.eshopping.server.DatabaseHelper;
@@ -77,6 +79,7 @@ import com.onesignal.OneSignal;
 
 import org.json.JSONException;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -84,7 +87,7 @@ import java.util.List;
  * @author channarith.bong
  */
 public class BaseActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, ForceUpdateChecker.OnUpdateNeededListener {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     private Toolbar toolbar;
     private ActionBarDrawerToggle toggle;
@@ -115,6 +118,7 @@ public class BaseActivity extends AppCompatActivity
 
     private String fragmentName;
     private HomeFragment homeFragment;
+    DeliveryAddressFragment deliveryAddressFragment;
 
     private boolean isCanBroadCast = false;
 
@@ -130,6 +134,8 @@ public class BaseActivity extends AppCompatActivity
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        deliveryAddressFragment = new DeliveryAddressFragment();
+
         fetchAddressDAO = new FetchAddressDAO(DatabaseHelper.getInstance(this).getDatabase());
 
         initToolbar();
@@ -140,8 +146,7 @@ public class BaseActivity extends AppCompatActivity
                 intent.putExtra(ConstantValue.ITEMS, getIntent().getSerializableExtra(ConstantValue.ITEMS));
                 intent.putExtra(ConstantValue.HOME_CALLING, true);
                 startActivity(intent);
-            }
-            else {
+            } else {
                 checkNewNotification();
             }
         } else {
@@ -150,7 +155,9 @@ public class BaseActivity extends AppCompatActivity
 
         configureFacebookLogin();
         configureGoogleSignIn();
+
     }
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -254,7 +261,7 @@ public class BaseActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
 
-        ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
+        // ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
 
         if (isCanBroadCast) {
 //            if (homeFragment != null) {
@@ -331,14 +338,17 @@ public class BaseActivity extends AppCompatActivity
 
     /**
      * save user player id
-     * @see UserPlayerId
+     *
      * @param userPlayerId UserPlayerId
+     * @see UserPlayerId
      */
     private void saveUserPlayerId(UserPlayerId userPlayerId) {
         new SaveUserPlayerId(userPlayerId, new SaveUserPlayerId.InvokeOnCompleteAsync() {
             @Override
             public void onComplete(List<UserPlayerId> userPlayerIds) {
                 LoggerHelper.showDebugLog("===> Save user player id successfully" + userPlayerId.toString());
+                Singleton.userId =  Long.parseLong(userPlayerId.getUserId());
+                Log.d("oooooId", Singleton.userId.toString());
             }
 
             @Override
@@ -350,6 +360,7 @@ public class BaseActivity extends AppCompatActivity
 
     /**
      * prepare for UserPlayerId
+     *
      * @param userId
      * @return
      */
@@ -531,7 +542,7 @@ public class BaseActivity extends AppCompatActivity
      */
     private void addMoreAddress() {
         toolbar.setTitle(R.string.deliver_address);
-        DeliveryAddressFragment deliveryAddressFragment = new DeliveryAddressFragment();
+
         displaySelectedFragment(deliveryAddressFragment);
     }
 
@@ -551,10 +562,10 @@ public class BaseActivity extends AppCompatActivity
      */
     private void displaySelectedFragment(Fragment fragment) {
 //        if (fragmentName == null || !fragment.getClass().getSimpleName().equals(fragmentName)) {
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.frame_container, fragment);
-            fragmentTransaction.commit();
-            fragmentName = fragment.getClass().getSimpleName();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frame_container, fragment);
+        fragmentTransaction.commit();
+        fragmentName = fragment.getClass().getSimpleName();
 //        }
     }
 
@@ -835,20 +846,21 @@ public class BaseActivity extends AppCompatActivity
         snackbar.show();
     }
 
-    @Override
-    public void onUpdateNeeded(String updateUrl) {
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle("New version available")
-                .setMessage("Please, update app to new version to continue.")
-                .setPositiveButton("Update",
-                        (dialog1, which) -> redirectStore(updateUrl))
-                .setCancelable(false)
-                .create();
-        dialog.show();
-    }
+//    @Override
+//    public void onUpdateNeeded(String updateUrl) {
+//        AlertDialog dialog = new AlertDialog.Builder(this)
+//                .setTitle("New version available")
+//                .setMessage("Please, update app to new version to continue.")
+//                .setPositiveButton("Update",
+//                        (dialog1, which) -> redirectStore(updateUrl))
+//                .setCancelable(false)
+//                .create();
+//        dialog.show();
+//    }
 
     /**
      * redirect to play store
+     *
      * @param updateUrl String
      */
     private void redirectStore(String updateUrl) {

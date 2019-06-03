@@ -21,11 +21,17 @@ public class ApplicationConfiguration {
 //    public static final String ADMIN_TOKEN = "mf50dv8lgttmllneuabg2qp4gfn9p2l5";
 //    public static final String CERT_NAME = "eshopping_test.crt";
 
-    public static final String BASE_URL = "https://www.thespeeddelivery.com/index.php/rest/";
-    public static final String PRODUCT_IMAGE_URL = "https://www.thespeeddelivery.com/pub/media/catalog/product/";
-    public static final String STORE_IMAGE_URL = "https://www.thespeeddelivery.com/pub/media/catalog/category/";
-    public static final String ADMIN_TOKEN = "tuy3kac6tr4o33eorfs9xtkyqufrhvpo";
-    public static final String CERT_NAME = "fullchain.pem";
+//    public static final String BASE_URL = "https://www.thespeeddelivery.com/index.php/rest/";
+//    public static final String PRODUCT_IMAGE_URL = "https://www.thespeeddelivery.com/pub/media/catalog/product/";
+//    public static final String STORE_IMAGE_URL = "https://www.thespeeddelivery.com/pub/media/catalog/category/";
+//    public static final String ADMIN_TOKEN = "tuy3kac6tr4o33eorfs9xtkyqufrhvpo";
+//    public static final String CERT_NAME = "fullchain.pem";
+
+    public static final String BASE_URL = "http://thespeed.planbtesting.club/index.php/rest/";
+    public static final String PRODUCT_IMAGE_URL = "http://thespeed.planbtesting.club/pub/media/catalog/product/";
+    public static final String STORE_IMAGE_URL = "http://thespeed.planbtesting.club/pub/media/catalog/category/";
+    public static final String ADMIN_TOKEN = "hpsewqv17mc06e9uns3e5lrn8rsmbbow";
+    public static final String CERT_NAME = "planbchain.pem";
 
     // Enable all 'Log.d()' when DEVELOPER_MODE = true
     public static final Boolean DEVELOPER_MODE = true; // PRODUCTION_MODE or DEVELOPER_MODE = false

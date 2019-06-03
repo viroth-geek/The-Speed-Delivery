@@ -81,4 +81,5 @@ public class ConstantValue {
     // Wat Phnom Coordinate
     public static final double DEFAULT_LAT = 11.576142;
     public static final double DEFAULT_LNT = 104.923050;
+
 }
