@@ -63,7 +63,6 @@ import com.iota.eshopping.model.enumeration.SocialType;
 import com.iota.eshopping.model.form.FormSocialUser;
 import com.iota.eshopping.model.form.SocialLoginForm;
 import com.iota.eshopping.model.singleton.Singleton;
-import com.iota.eshopping.security.ForceUpdateChecker;
 import com.iota.eshopping.security.UserAccount;
 import com.iota.eshopping.server.DatabaseHelper;
 import com.iota.eshopping.service.base.InvokeOnCompleteAsync;
@@ -81,7 +80,6 @@ import com.onesignal.OneSignal;
 
 import org.json.JSONException;
 
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -250,9 +248,11 @@ public class BaseActivity extends AppCompatActivity
             startActivity(intent);
         } else if (item.getItemId() == R.id.action_filter) {
             if (productFilterLayout.getVisibility() == View.GONE) {
+                productFilterLayout.animate().translationY(0F);
                 productFilterLayout.setVisibility(View.VISIBLE);
             } else {
                 productFilterLayout.setVisibility(View.GONE);
+                productFilterLayout.animate().translationY(-50F);
             }
         } else if (item.getItemId() == android.R.id.home) {
             if (!isShowAds) {

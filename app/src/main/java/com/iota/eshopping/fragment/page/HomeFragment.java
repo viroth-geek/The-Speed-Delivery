@@ -112,6 +112,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
 
     private String serverDateTime = DateUtil.getNowAdd45Mn();
 
+    private int typeOfFilter = 0;
+
     /**
      * @return HomeFragment
      */
@@ -426,6 +428,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
     private StoreRestriction prepareForGetStore(com.iota.eshopping.model.Address address) {
         StoreRestriction storeRestriction = new StoreRestriction();
         SearchStoreRestriction restriction = new SearchStoreRestriction();
+        restriction.setOpen(typeOfFilter);
         restriction.setPage(PAGE);
         restriction.setLimit(ApplicationConfiguration.LIMIT);
         if (address != null) {
@@ -719,13 +722,17 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
         }
     }
 
+
+    /**
+     * @return click when filter
+     */
     @Override
     public void onAddressSave(String type) {
 
-        Toast.makeText(getContext(), "value of " + type, Toast.LENGTH_SHORT).show();
-
+        storeList.clear();
+        adapter.notifyDataSetChanged();
         if (type.equals(ConstantValue.PRODUCT_ALL)) {
-
+            typeOfFilter = 0;
             StoreRestriction storeRestriction = new StoreRestriction();
             SearchStoreRestriction searchStoreRestriction = new SearchStoreRestriction();
             searchStoreRestriction.setLatitude(mAddress.getLatitude());
@@ -733,9 +740,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
             searchStoreRestriction.setOpen(0);
             storeRestriction.setStoreRestriction(searchStoreRestriction);
             loadStoreList(storeRestriction);
-
         } else if (type.equals(ConstantValue.PRODUCT_OPEN)) {
-
+            typeOfFilter = 1;
             StoreRestriction storeRestriction = new StoreRestriction();
             SearchStoreRestriction searchStoreRestriction = new SearchStoreRestriction();
             searchStoreRestriction.setLatitude(mAddress.getLatitude());
@@ -743,7 +749,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
             searchStoreRestriction.setOpen(1);
             storeRestriction.setStoreRestriction(searchStoreRestriction);
             loadStoreList(storeRestriction);
-
         }
     }
 
