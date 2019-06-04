@@ -17,60 +17,79 @@ public class Address extends Entity {
     @SerializedName("id")
     @Expose
     private Long id;
+
     @SerializedName("customer_id")
     @Expose
     private Long customerId;
+
     @SerializedName("region_id")
     @Expose
     private Long regionId;
+
     @SerializedName("country_id")
     @Expose
     private String countryId;
+
     @SerializedName("street")
     @Expose
     private List<String> street = null;
+
     @SerializedName("telephone")
     @Expose
     private String telephone;
+
     @SerializedName("postcode")
     @Expose
     private String postcode;
+
     @SerializedName("city")
     @Expose
     private String city;
+
     @SerializedName("firstname")
     @Expose
     private String firstname;
+
     @SerializedName("lastname")
     @Expose
     private String lastname;
+
     @SerializedName("email")
     @Expose
     private String email;
+
     @SerializedName("default_shipping")
     @Expose
     private Boolean defaultShipping;
+
     @SerializedName("default_billing")
     @Expose
     private Boolean defaultBilling;
+
     @SerializedName("latitude")
     @Expose
     private Double latitude;
+
     @SerializedName("longitude")
     @Expose
     private Double longitude;
+
     @SerializedName("country_code")
     @Expose
     private String countryCode;
+
     @SerializedName("country_name")
     @Expose
     private String countryName;
+
     @SerializedName("address_lines")
     @Expose
     private String addressLine;
+
     @SerializedName("extension_attributes")
     @Expose
     private ExtensionAttribute extensionAttribute;
+
     @SerializedName("custom_attributes")
     @Expose
     private List<CustomAttribute> customAttributes;

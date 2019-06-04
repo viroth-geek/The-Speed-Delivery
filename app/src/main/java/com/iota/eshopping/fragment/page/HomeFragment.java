@@ -729,8 +729,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
     @Override
     public void onAddressSave(String type) {
 
-        storeList.clear();
-        adapter.notifyDataSetChanged();
+        try {
+            if (storeList.size() > 0 && storeList != null) {
+                storeList.clear();
+                adapter.notifyDataSetChanged();
+            }
+        } catch (Exception e) {
+
+        }
         if (type.equals(ConstantValue.PRODUCT_ALL)) {
             typeOfFilter = 0;
             StoreRestriction storeRestriction = new StoreRestriction();

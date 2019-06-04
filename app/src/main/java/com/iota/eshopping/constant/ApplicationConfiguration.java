@@ -45,4 +45,6 @@ public class ApplicationConfiguration {
     public static final String PAGE_SPECIAL_PROMOTION= "special-promotion";
 
     public static final int LIMIT = 20;
+    public static final String TAG = "DATA";
+    public static final String VERIFICATION_ID = "verification_id";
 }

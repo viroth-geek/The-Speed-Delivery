@@ -27,6 +27,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,8 +44,18 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.iota.eshopping.R;
+import com.iota.eshopping.constant.ApplicationConfiguration;
 import com.iota.eshopping.constant.ConstantValue;
 import com.iota.eshopping.constant.entity.FacebookAccessScope;
 import com.iota.eshopping.event.ISaveAddress;
@@ -82,9 +93,11 @@ import org.json.JSONException;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author channarith.bong
+ * @author viroth.ty
  */
 public class BaseActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
@@ -99,7 +112,9 @@ public class BaseActivity extends AppCompatActivity
     private NavigationView navigationView;
     private MenuItem searchMenuItem;
     private MenuItem filterMenuItem;
-    private LinearLayout productFilterLayout;
+    private LinearLayout llProductFilter;
+    private EditText etPhoneNumber;
+    private Button btPhoneOk;
 
     private Snackbar snackbar;
 
@@ -130,6 +145,12 @@ public class BaseActivity extends AppCompatActivity
     private TextView openStore;
     private TextView allStore;
 
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
+    private FirebaseAuth mAuth;
+
+    private String mVerificationId;
+    private PhoneAuthProvider.ForceResendingToken mResendToken;
+
 
     @Override
     public void onAttachFragment(Fragment fragment) {
@@ -149,12 +170,15 @@ public class BaseActivity extends AppCompatActivity
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        productFilterLayout = findViewById(R.id.lyt_pro_filter);
+        llProductFilter = findViewById(R.id.lyt_pro_filter);
 
         fetchAddressDAO = new FetchAddressDAO(DatabaseHelper.getInstance(this).getDatabase());
 
         initToolbar();
         initFilterProductComponent();
+
+        mAuth = FirebaseAuth.getInstance();
+        phoneAuthCallBack();
 
         if (getIntent().hasExtra(ConstantValue.NOTIFICATION) && checkUserData()) {
             if (getIntent().hasExtra(ConstantValue.ITEMS)) {
@@ -172,6 +196,7 @@ public class BaseActivity extends AppCompatActivity
 
         configureFacebookLogin();
         configureGoogleSignIn();
+        configurePhoneAuthentication();
 
     }
 
@@ -247,12 +272,12 @@ public class BaseActivity extends AppCompatActivity
             Intent intent = new Intent(this, SearchActivity.class);
             startActivity(intent);
         } else if (item.getItemId() == R.id.action_filter) {
-            if (productFilterLayout.getVisibility() == View.GONE) {
-                productFilterLayout.animate().translationY(0F);
-                productFilterLayout.setVisibility(View.VISIBLE);
+            if (llProductFilter.getVisibility() == View.GONE) {
+                llProductFilter.animate().translationY(0F);
+                llProductFilter.setVisibility(View.VISIBLE);
             } else {
-                productFilterLayout.setVisibility(View.GONE);
-                productFilterLayout.animate().translationY(-50F);
+                llProductFilter.setVisibility(View.GONE);
+                llProductFilter.animate().translationY(-50F);
             }
         } else if (item.getItemId() == android.R.id.home) {
             if (!isShowAds) {
@@ -341,6 +366,7 @@ public class BaseActivity extends AppCompatActivity
         txt_user_name = navigationView.getHeaderView(0).findViewById(R.id.txt_user_name);
         btn_sign_up = navigationView.getHeaderView(1).findViewById(R.id.btn_sign_up);
         btn_log_in = navigationView.getHeaderView(1).findViewById(R.id.btn_log_in);
+        btPhoneOk = navigationView.getHeaderView(1).findViewById(R.id.btn_ok);
         drawViewSideMenu();
     }
 
@@ -609,7 +635,7 @@ public class BaseActivity extends AppCompatActivity
      * @param fragment Fragment
      */
     private void displaySelectedFragment(Fragment fragment) {
-        productFilterLayout.setVisibility(View.GONE);
+        llProductFilter.setVisibility(View.GONE);
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frame_container, fragment, "HomeFragment");
             fragmentTransaction.commit();
@@ -862,12 +888,20 @@ public class BaseActivity extends AppCompatActivity
             facebookLoginButton.performClick();
         } else if (btn_google_login.equals(view)) {
             signInWithGoogle();
+        } else if (view.equals(btPhoneOk)) {
+            String _mPhoneNumber = etPhoneNumber.getText().toString();
+
+            FireBasePhoneAuthentication("+855" + _mPhoneNumber);
+
+            Toast.makeText(this, "click", Toast.LENGTH_SHORT).show();
+
+
         } else if (view.equals(allStore)) {
-            productFilterLayout.setVisibility(View.GONE);
+            llProductFilter.setVisibility(View.GONE);
             listener.onAddressSave(ConstantValue.PRODUCT_ALL);
 
         } else if (view.equals(openStore)) {
-            productFilterLayout.setVisibility(View.GONE);
+            llProductFilter.setVisibility(View.GONE);
             listener.onAddressSave(ConstantValue.PRODUCT_OPEN);
         }
     }
@@ -921,4 +955,89 @@ public class BaseActivity extends AppCompatActivity
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
+
+
+    /**
+     * phone authentication
+     */
+
+    private void configurePhoneAuthentication() {
+        etPhoneNumber = navigationView.getHeaderView(1).findViewById(R.id.edt_phone_nubmer);
+        btPhoneOk = navigationView.getHeaderView(1).findViewById(R.id.btn_ok);
+        btPhoneOk.setOnClickListener(this);
+    }
+
+    private boolean validatePhoneNumber(String phone_number) {
+        if (!phone_number.matches("[a-zA-Z ]*\\d+.*")) {
+            if (phone_number.length() >= 8) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void FireBasePhoneAuthentication(String phoneNumber) {
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                phoneNumber,
+                60L,
+                TimeUnit.SECONDS,
+                this,
+                mCallbacks);
+    }
+
+    private void phoneAuthCallBack() {
+        mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            @Override
+            public void onVerificationCompleted(PhoneAuthCredential credential) {
+                signInWithPhoneAuthCredential(credential);
+            }
+
+            @Override
+            public void onVerificationFailed(FirebaseException e) {
+            }
+
+            @Override
+            public void onCodeSent(String verificationId,
+                                   PhoneAuthProvider.ForceResendingToken token) {
+                mVerificationId = verificationId;
+                mResendToken = token;
+                Intent intent = new Intent(BaseActivity.this, VericationCodeActivity.class);
+                intent.putExtra(ApplicationConfiguration.VERIFICATION_ID, mVerificationId);
+                startActivity(intent);
+            }
+        };
+    }
+
+
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+
+                            final FirebaseUser user = task.getResult().getUser();
+                            Log.d(ApplicationConfiguration.TAG, "Firebase user " + user.getDisplayName() + " " + user.getEmail());
+
+                            user.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<GetTokenResult> task) {
+                                    if (task.isSuccessful()) {
+                                        Log.d(ApplicationConfiguration.TAG, "tokenId " + task.toString());
+                                    }
+                                }
+                            });
+                        } else {
+                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                                // The verification code entered was invalid
+                            }
+                        }
+                    }
+                });
+    }
+
+
+
 }

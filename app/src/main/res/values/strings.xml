@@ -191,5 +191,10 @@
     <string name="all">All</string>
     <string name="open">Open</string>
     <string name="filter">Filter</string>
+    <string name="confirm_sms_code">Confirm SMS code</string>
+    <string name="did_not_get_the_code">didn\'t get the code?</string>
+    <string name="code_can_be_resend_in">Code can be send in</string>
 
+    <string name="we_have_send_you_and_sms_with_the_code_to">We have sent you and SMS with the code to +855 </string>
+    <string name="by_intering_sms_code_i_agree_with_the">By Entering SMS code I agree with the</string>
 </resources>

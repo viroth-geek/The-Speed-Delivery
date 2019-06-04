@@ -51,7 +51,9 @@
     <dimen name="list_item_margin_5dp">5dp</dimen>
     <dimen name="list_item_margin_10dp">10dp</dimen>
     <dimen name="list_item_margin_15dp">15dp</dimen>
+    <dimen name="list_item_margin_16dp">16dp</dimen>
     <dimen name="list_item_margin_20dp">20dp</dimen>
+    <dimen name="list_item_margin_24dp">24dp</dimen>
 
     <!-- General margin -->
     <dimen name="margin_length_3">3dp</dimen>

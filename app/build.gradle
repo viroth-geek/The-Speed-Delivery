@@ -130,6 +130,8 @@ dependencies {
     // into a simple and easy to use interface.
     implementation 'com.github.bumptech.glide:glide:4.3.1'
     implementation 'com.google.firebase:firebase-config:12.0.1'
+    implementation 'com.google.firebase:firebase-core:12.0.1'
+    implementation 'com.google.firebase:firebase-auth:12.0.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.3.1'
     implementation('com.github.bumptech.glide:okhttp3-integration:4.0.0') {
         exclude group: 'glide-parent'
@@ -166,11 +168,12 @@ dependencies {
     implementation 'com.facebook.android:facebook-login:[4,5)'
 
     // Google SignIn
-    compile 'com.google.android.gms:play-services-auth:12.0.1'
+    implementation 'com.google.android.gms:play-services-auth:12.0.1'
 
     // JSOUP
-    compile 'org.jsoup:jsoup:1.11.3'
+    implementation 'org.jsoup:jsoup:1.11.3'
 
-    compile 'me.gujun.android.taggroup:library:1.4@aar'
+    implementation 'me.gujun.android.taggroup:library:1.4@aar'
+
 }
 apply plugin: 'com.google.gms.google-services'

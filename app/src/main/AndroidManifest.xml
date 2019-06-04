@@ -2,39 +2,32 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.iota.eshopping">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-
-    <!-- Access Google based webservices -->
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
-    <!-- My Location -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- Access Google based webservices -->
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" /> <!-- My Location -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="com.example.mapdemo.permission.MAPS_RECEIVE" />
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <application
-        android:usesCleartextTraffic="true"
         android:name=".security.DeliveryApplication"
         android:allowBackup="true"
         android:icon="@drawable/the_speed_logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".activity.VericationCodeActivity"></activity>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
-
-        <!-- Disable SSL for load image from https server -->
+            android:value="@string/google_maps_key" /> <!-- Disable SSL for load image from https server -->
         <meta-data
             android:name="com.iota.eshopping.security.glide.UnsafeOkHttpGlideModule"
-            android:value="AppGlideModule" />
-
-        <!-- Disable opening of launcher Activity -->
+            android:value="AppGlideModule" /> <!-- Disable opening of launcher Activity -->
         <meta-data
             android:name="com.onesignal.NotificationOpened.DEFAULT"
-            android:value="DISABLE" />
-
-        <!-- Facebook Configuration -->
+            android:value="DISABLE" /> <!-- Facebook Configuration -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -154,9 +147,7 @@
             android:name=".activity.AddAddressActivity"
             android:label="@string/add_new_address"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <!-- Android Service -->
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- Android Service -->
         <service android:name=".service.location.LocationService" />
 
         <activity android:name=".activity.AppErrorHandlerActivity" />

@@ -498,7 +498,6 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
     private void prepareBeforeCheckout() {
         container_float_loading.setVisibility(View.VISIBLE);
 
-
         fetchProductFromLocalCart();
 
         if (itemsUpdated != null) {
