@@ -1,5 +1,7 @@
 package com.iota.eshopping.constant;
 
+import android.util.Log;
+
 /**
  * Created by channarith.bong on 12/21/17.
  * @author channarith.bong
@@ -45,7 +47,11 @@ public class ApplicationConfiguration {
     public static final String PAGE_SPECIAL_PROMOTION= "special-promotion";
 
     public static final int LIMIT = 20;
-    public static final String TAG = "DATA";
+    public static final String TAG = "data";
     public static final String VERIFICATION_ID = "verification_id";
     public static final String PHONE_NUMBER = "phone_number";
+
+    public void log(String title) {
+        Log.d(ApplicationConfiguration.TAG, "Message is " + title);
+    }
 }

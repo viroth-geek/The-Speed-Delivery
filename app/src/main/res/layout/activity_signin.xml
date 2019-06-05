@@ -129,4 +129,6 @@
                 android:text="Registering .."/>
         </LinearLayout>
     </FrameLayout>
+
+
 </RelativeLayout>
