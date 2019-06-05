@@ -47,4 +47,5 @@ public class ApplicationConfiguration {
     public static final int LIMIT = 20;
     public static final String TAG = "DATA";
     public static final String VERIFICATION_ID = "verification_id";
+    public static final String PHONE_NUMBER = "phone_number";
 }

@@ -1,6 +1,7 @@
 package com.iota.eshopping.service.api.user;
 
 import com.iota.eshopping.model.Customer;
+import com.iota.eshopping.model.PhoneNumber;
 import com.iota.eshopping.model.UserSecure;
 import com.iota.eshopping.model.form.ForgetPasswordForm;
 import com.iota.eshopping.model.modelForView.Address;
@@ -89,4 +90,8 @@ public interface CustomerService {
 
     @PUT("V1/customers/password")
     Observable<Boolean> sendForgetPassword(@Body ForgetPasswordForm forgetPasswordForm);
+
+    @POST("V2/eshopping/customer/registerPhoneNumber")
+    Observable<Customer> getCustomerByPhone(@Body PhoneNumber phoneNumber);
+
 }

@@ -890,12 +890,11 @@ public class BaseActivity extends AppCompatActivity
             signInWithGoogle();
         } else if (view.equals(btPhoneOk)) {
             String _mPhoneNumber = etPhoneNumber.getText().toString();
-
-            FireBasePhoneAuthentication("+855" + _mPhoneNumber);
-
-            Toast.makeText(this, "click", Toast.LENGTH_SHORT).show();
-
-
+            if (validatePhoneNumber(_mPhoneNumber)) {
+                FireBasePhoneAuthentication("+855" + _mPhoneNumber);
+            } else {
+                Toast.makeText(this, "Please check phone number again.", Toast.LENGTH_SHORT).show();
+            }
         } else if (view.equals(allStore)) {
             llProductFilter.setVisibility(View.GONE);
             listener.onAddressSave(ConstantValue.PRODUCT_ALL);
@@ -968,7 +967,7 @@ public class BaseActivity extends AppCompatActivity
     }
 
     private boolean validatePhoneNumber(String phone_number) {
-        if (!phone_number.matches("[a-zA-Z ]*\\d+.*")) {
+        if (phone_number != null || phone_number != "") {
             if (phone_number.length() >= 8) {
                 return true;
             }
@@ -1004,6 +1003,7 @@ public class BaseActivity extends AppCompatActivity
                 mResendToken = token;
                 Intent intent = new Intent(BaseActivity.this, VericationCodeActivity.class);
                 intent.putExtra(ApplicationConfiguration.VERIFICATION_ID, mVerificationId);
+                intent.putExtra(ApplicationConfiguration.PHONE_NUMBER, etPhoneNumber.getText().toString());
                 startActivity(intent);
             }
         };

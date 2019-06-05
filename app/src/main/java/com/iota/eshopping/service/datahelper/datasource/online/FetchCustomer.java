@@ -1,6 +1,7 @@
 package com.iota.eshopping.service.datahelper.datasource.online;
 
 import com.iota.eshopping.model.Customer;
+import com.iota.eshopping.model.PhoneNumber;
 import com.iota.eshopping.model.UserSecure;
 import com.iota.eshopping.server.ServiceGenerator;
 import com.iota.eshopping.service.api.user.CustomerService;
@@ -50,6 +51,24 @@ public class FetchCustomer implements Observer<Customer> {
     public FetchCustomer(UserSecure customer, String token, InvokeOnCompleteAsync completeAsync) {
         this.completeAsync = completeAsync;
         requestUpdate(customer, token);
+    }
+
+    /**
+     * @param phone
+     * @param completeAsync
+     */
+    public FetchCustomer(PhoneNumber phone, InvokeOnCompleteAsync completeAsync) {
+        this.completeAsync = completeAsync;
+        requestCustomerByPhone(phone);
+    }
+
+    private void requestCustomerByPhone(PhoneNumber phone) {
+        ServiceGenerator
+                .createService(CustomerService.class)
+                .getCustomerByPhone(phone)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(this);
     }
 
     /**
@@ -126,6 +145,14 @@ public class FetchCustomer implements Observer<Customer> {
      */
     public interface InvokeOnCompleteAsync {
         void onComplete(Customer customerInfo);
+
         void onError(Throwable e);
     }
+
+    /**
+     *
+     * @return
+     */
+
+
 }
