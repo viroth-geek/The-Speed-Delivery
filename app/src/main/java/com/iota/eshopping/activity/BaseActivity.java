@@ -86,6 +86,7 @@ import com.iota.eshopping.service.location.LocationService;
 import com.iota.eshopping.util.AlertUtils;
 import com.iota.eshopping.util.ExceptionUtils;
 import com.iota.eshopping.util.LoggerHelper;
+import com.iota.eshopping.util.Utils;
 import com.onesignal.OSPermissionSubscriptionState;
 import com.onesignal.OneSignal;
 
@@ -100,8 +101,9 @@ import java.util.concurrent.TimeUnit;
  * @author viroth.ty
  */
 public class BaseActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, DrawerLayout.DrawerListener {
 
+    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private Toolbar toolbar;
     private ActionBarDrawerToggle toggle;
     private DrawerLayout drawer;
@@ -115,31 +117,20 @@ public class BaseActivity extends AppCompatActivity
     private LinearLayout llProductFilter;
     private EditText etPhoneNumber;
     private Button btPhoneOk;
-
     private Snackbar snackbar;
-
     private UserAccount userAccount;
-
     private CallbackManager callbackManager;
-
     private LoginButton facebookLoginButton;
     private Button btn_facebook_login;
-
     private GoogleSignInClient mGoogleSignInClient;
     //    private SignInButton googleSignInButton;
     private Button btn_google_login;
-
     private boolean isShowAds = true;
     private Customer customer;
     private FetchAddressDAO fetchAddressDAO;
-
     private String fragmentName;
     private HomeFragment homeFragment;
-
     private boolean isCanBroadCast = false;
-
-    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-
     private ISaveAddress listener;
 
     private TextView openStore;
@@ -167,6 +158,7 @@ public class BaseActivity extends AppCompatActivity
 
         toolbar = findViewById(R.id.toolbar);
         drawer = findViewById(R.id.drawer_layout);
+        drawer.addDrawerListener(this);
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -186,8 +178,7 @@ public class BaseActivity extends AppCompatActivity
                 intent.putExtra(ConstantValue.ITEMS, getIntent().getSerializableExtra(ConstantValue.ITEMS));
                 intent.putExtra(ConstantValue.HOME_CALLING, true);
                 startActivity(intent);
-            }
-            else {
+            } else {
                 checkNewNotification();
             }
         } else {
@@ -197,6 +188,7 @@ public class BaseActivity extends AppCompatActivity
         configureFacebookLogin();
         configureGoogleSignIn();
         configurePhoneAuthentication();
+
 
     }
 
@@ -401,8 +393,9 @@ public class BaseActivity extends AppCompatActivity
 
     /**
      * save user player id
-     * @see UserPlayerId
+     *
      * @param userPlayerId UserPlayerId
+     * @see UserPlayerId
      * @see UserPlayerId
      */
     private void saveUserPlayerId(UserPlayerId userPlayerId) {
@@ -410,7 +403,7 @@ public class BaseActivity extends AppCompatActivity
             @Override
             public void onComplete(List<UserPlayerId> userPlayerIds) {
                 LoggerHelper.showDebugLog("===> Save user player id successfully" + userPlayerId.toString());
-                Singleton.userId =  Long.parseLong(userPlayerId.getUserId());
+                Singleton.userId = Long.parseLong(userPlayerId.getUserId());
                 Log.d("oooooId", Singleton.userId.toString());
             }
 
@@ -423,6 +416,7 @@ public class BaseActivity extends AppCompatActivity
 
     /**
      * prepare for UserPlayerId
+     *
      * @param userId
      * @return
      */
@@ -636,10 +630,10 @@ public class BaseActivity extends AppCompatActivity
      */
     private void displaySelectedFragment(Fragment fragment) {
         llProductFilter.setVisibility(View.GONE);
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frame_container, fragment, "HomeFragment");
-            fragmentTransaction.commit();
-            fragmentName = fragment.getClass().getSimpleName();
+        fragmentTransaction.commit();
+        fragmentName = fragment.getClass().getSimpleName();
     }
 
     /**
@@ -947,6 +941,7 @@ public class BaseActivity extends AppCompatActivity
 
     /**
      * redirect to play store
+     *
      * @param updateUrl String
      */
     private void redirectStore(String updateUrl) {
@@ -968,11 +963,8 @@ public class BaseActivity extends AppCompatActivity
 
     private boolean validatePhoneNumber(String phone_number) {
         if (phone_number != null || phone_number != "") {
-            if (phone_number.length() >= 8) {
-                return true;
-            }
+            return phone_number.length() >= 8;
         }
-
         return false;
     }
 
@@ -1038,6 +1030,27 @@ public class BaseActivity extends AppCompatActivity
                 });
     }
 
+
+    @Override
+    public void onDrawerSlide(View drawerView, float slideOffset) {
+
+    }
+
+    @Override
+    public void onDrawerOpened(View drawerView) {
+
+    }
+
+    @Override
+    public void onDrawerClosed(View drawerView) {
+        Utils.hideKeyboard(this);
+
+    }
+
+    @Override
+    public void onDrawerStateChanged(int newState) {
+
+    }
 
 
 }

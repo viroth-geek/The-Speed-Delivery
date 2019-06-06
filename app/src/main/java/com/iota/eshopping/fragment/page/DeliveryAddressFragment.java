@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,14 +12,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.iota.eshopping.R;
-import com.iota.eshopping.activity.AddAddressActivity;
 import com.iota.eshopping.activity.RegisterLocationActivity;
 import com.iota.eshopping.adapter.AddressListRecyclerAdapter;
 import com.iota.eshopping.constant.ConstantValue;
-import com.iota.eshopping.event.ISaveAddress;
 import com.iota.eshopping.model.Address;
 import com.iota.eshopping.model.Customer;
 import com.iota.eshopping.model.singleton.Singleton;
@@ -34,11 +34,16 @@ import java.util.List;
 
 /**
  * @author channarith.bong
+ * @author viroth.ty
  */
 public class DeliveryAddressFragment extends Fragment{
 
     private RecyclerView list_address;
     private FetchAddressDAO db;
+
+    private FrameLayout flLoadingContainer;
+    private ProgressBar pbLoading;
+    private TextView tvLoadingLabel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,6 +56,10 @@ public class DeliveryAddressFragment extends Fragment{
         list_address = view.findViewById(R.id.list_address);
         list_address.setLayoutManager(new LinearLayoutManager(getActivity()));
         list_address.setHasFixedSize(true);
+
+        flLoadingContainer = view.findViewById(R.id.container_float_loading);
+        pbLoading = view.findViewById(R.id.delivery_address_loading);
+        tvLoadingLabel = view.findViewById(R.id.txt_container_loading_label);
 
         checkDB();
         bindData();
@@ -111,8 +120,15 @@ public class DeliveryAddressFragment extends Fragment{
         new FetchAddressList(Singleton.userId, new InvokeOnCompleteAsync<Customer>() {
             @Override
             public void onComplete(Customer data) {
-                AddressListRecyclerAdapter recyclerAdapter = new AddressListRecyclerAdapter(getContext(), data.getAddresses(), db);
-                list_address.setAdapter(recyclerAdapter);
+                if (data.getAddresses().size() > 0) {
+                    flLoadingContainer.setVisibility(View.GONE);
+                    AddressListRecyclerAdapter recyclerAdapter = new AddressListRecyclerAdapter(getContext(), data.getAddresses(), db);
+                    list_address.setAdapter(recyclerAdapter);
+                } else {
+                    pbLoading.setVisibility(View.GONE);
+                    tvLoadingLabel.setText(R.string.empty_delivery_address);
+                }
+
             }
 
             @Override

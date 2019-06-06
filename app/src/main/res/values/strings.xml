@@ -197,4 +197,6 @@
 
     <string name="we_have_send_you_and_sms_with_the_code_to">We have sent you and SMS with the code to +855 </string>
     <string name="by_intering_sms_code_i_agree_with_the">By Entering SMS code I agree with the</string>
+    <string name="empty_delivery_address">Empty delivery address</string>
+    <string name="empty_notification">Notification is empty</string>
 </resources>

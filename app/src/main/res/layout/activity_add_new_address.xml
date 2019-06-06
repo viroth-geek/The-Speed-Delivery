@@ -1,31 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".activity.AddAddressActivity">
-    <include layout="@layout/view_toolbar"
-        android:id="@+id/toolbar"/>
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/view_toolbar" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_margin="15dp">
+        android:layout_margin="15dp"
+        android:orientation="vertical">
 
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:text="@string/contact_information"/>
+            android:text="@string/contact_information"
+            android:textStyle="bold" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="5dp"
-            android:background="@color/gray"/>
+            android:background="@color/gray" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,15 +36,15 @@
             <TextView
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="First name:"/>
+                android:text="First name:" />
 
             <EditText
                 android:id="@+id/txt_first_name"
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:textSize="15sp"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
-                android:layout_height="wrap_content"/>
+                android:layout_weight="1"
+                android:textSize="15sp" />
 
         </LinearLayout>
 
@@ -53,15 +55,15 @@
             <TextView
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Last name:"/>
+                android:text="Last name:" />
 
             <EditText
                 android:id="@+id/txt_last_name"
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
-                android:textSize="15sp"
-                android:layout_height="wrap_content" />
+                android:layout_weight="1"
+                android:textSize="15sp" />
 
         </LinearLayout>
 
@@ -72,31 +74,31 @@
             <TextView
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Phone Number:"/>
+                android:text="Phone Number:" />
 
             <com.iota.eshopping.util.PhoneNumberField
-                android:maxLength="12"
                 android:id="@+id/txt_phone_number"
-                android:inputType="phone"
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
-                android:textSize="15sp"
-                android:layout_height="wrap_content" />
+                android:layout_weight="1"
+                android:inputType="phone"
+                android:maxLength="12"
+                android:textSize="15sp" />
 
         </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:text="@string/address"/>
+            android:text="@string/address"
+            android:textStyle="bold" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="5dp"
-            android:background="@color/gray"/>
+            android:background="@color/gray" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -105,16 +107,16 @@
             <TextView
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Street"/>
+                android:text="Street" />
 
             <EditText
                 android:id="@+id/txt_street"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginEnd="5dp"
-                android:textSize="15sp"
-                android:enabled="false"/>
+                android:layout_weight="1"
+                android:enabled="false"
+                android:textSize="15sp" />
 
         </LinearLayout>
 
@@ -125,16 +127,16 @@
             <TextView
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:visibility="invisible"
-                android:text="Street"/>
+                android:text="Street"
+                android:visibility="invisible" />
 
             <EditText
                 android:id="@+id/txt_street_1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginEnd="5dp"
-                android:textSize="15sp"/>
+                android:layout_weight="1"
+                android:textSize="15sp" />
 
         </LinearLayout>
 
@@ -145,16 +147,16 @@
             <TextView
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="City"/>
+                android:text="City" />
 
             <EditText
                 android:id="@+id/txt_city"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginEnd="5dp"
-                android:textSize="15sp"
-                android:enabled="false"/>
+                android:layout_weight="1"
+                android:enabled="false"
+                android:textSize="15sp" />
 
         </LinearLayout>
 
@@ -165,16 +167,16 @@
             <TextView
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="State/Province"/>
+                android:text="State/Province" />
 
             <EditText
                 android:id="@+id/txt_province"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginEnd="5dp"
-                android:textSize="15sp"
-                android:enabled="false"/>
+                android:layout_weight="1"
+                android:enabled="false"
+                android:textSize="15sp" />
 
         </LinearLayout>
 
@@ -185,16 +187,16 @@
             <TextView
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Country"/>
+                android:text="Country" />
 
             <EditText
                 android:id="@+id/txt_country"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginEnd="5dp"
-                android:textSize="15sp"
-                android:enabled="false"/>
+                android:layout_weight="1"
+                android:enabled="false"
+                android:textSize="15sp" />
 
         </LinearLayout>
 
@@ -202,55 +204,58 @@
             android:id="@+id/chk_default_billing"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Use as my default billing address"/>
+            android:text="Use as my default billing address" />
 
         <CheckBox
             android:id="@+id/chk_default_shipping"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Use as my default shipping address"/>
+            android:text="Use as my default shipping address" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
+
         <FrameLayout
-            android:layout_alignParentBottom="true"
-            android:visibility="gone"
-            android:background="@drawable/shape_border_top_bottom_line"
             android:id="@+id/container_float_loading"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_gravity="bottom">
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:background="@drawable/shape_border_top_bottom_line"
+            android:visibility="gone">
+
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center">
-                <include layout="@layout/view_progress_bar_ii"/>
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <include layout="@layout/view_progress_bar_ii" />
+
                 <TextView
                     android:id="@+id/txt_container_loading_label"
-                    android:gravity="center"
-                    android:layout_marginLeft="@dimen/margin_length_5"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="Processing... "/>
+                    android:layout_marginLeft="@dimen/margin_length_5"
+                    android:gravity="center"
+                    android:text="Processing... "
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
             </LinearLayout>
         </FrameLayout>
 
         <Button
-            android:visibility="visible"
             android:id="@+id/btn_save_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/background_corner_radius_color_primary"
-            android:text="Save"/>
+            android:text="Save"
+            android:visibility="visible" />
 
     </LinearLayout>
-
 
 
 </LinearLayout>

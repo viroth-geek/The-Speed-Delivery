@@ -10,10 +10,10 @@
         layout="@layout/view_toolbar" />
 
     <RelativeLayout
-        android:layout_below="@id/toolbar"
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
         android:background="@color/white">
 
 
@@ -87,10 +87,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:padding="@dimen/list_item_margin_15dp"
-            android:gravity="center_horizontal"
             android:background="@color/colorDeliverBorderWhite"
-            android:orientation="vertical">
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="@dimen/list_item_margin_15dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -129,7 +129,7 @@
 
 
     </RelativeLayout>
-    
+
     <FrameLayout
         android:id="@+id/container_float_loading"
         android:layout_width="match_parent"

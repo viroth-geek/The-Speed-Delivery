@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -33,6 +34,7 @@ import com.iota.eshopping.service.datahelper.datasource.online.FetchCustomer;
 import com.iota.eshopping.service.datahelper.datasource.online.FetchCustomerByPhone;
 import com.iota.eshopping.util.ExceptionUtils;
 import com.iota.eshopping.util.LoggerHelper;
+import com.iota.eshopping.util.Utils;
 
 public class VericationCodeActivity extends AppCompatActivity implements TextWatcher {
 
@@ -61,7 +63,6 @@ public class VericationCodeActivity extends AppCompatActivity implements TextWat
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-
         etCode = findViewById(R.id.edit_text_pin_code);
         etCode.addTextChangedListener(this);
         parentPanel = findViewById(R.id.parentPanel);
@@ -71,7 +72,6 @@ public class VericationCodeActivity extends AppCompatActivity implements TextWat
         mPhoneNumber = getIntent().getStringExtra(ApplicationConfiguration.PHONE_NUMBER);
 
         db = new FetchAddressDAO(DatabaseHelper.getInstance(this).getDatabase());
-
     }
 
     @Override
@@ -83,7 +83,7 @@ public class VericationCodeActivity extends AppCompatActivity implements TextWat
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
         if (charSequence.length() == 6) {
-
+            Utils.hideKeyboard(this);
             PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, charSequence.toString());
             signInWithPhoneAuthCredential(credential);
         }
@@ -117,10 +117,10 @@ public class VericationCodeActivity extends AppCompatActivity implements TextWat
             @Override
             public void onComplete(PhoneResponse phoneResponse) {
                 String token = phoneResponse.getPhone().getRpToken();
+
+                Log.d(ApplicationConfiguration.TAG, token);
                 try {
-
                     if (userAccount.assignToken(token)) {
-
                         requestCustomerInfo(token);
                     }
 
@@ -134,7 +134,8 @@ public class VericationCodeActivity extends AppCompatActivity implements TextWat
             @Override
             public void onError(Throwable e) {
                 container_float_loading.setVisibility(View.GONE);
-                Snackbar.make(parentPanel, "Logged fail: " + ExceptionUtils.translateExceptionMessage(e), Snackbar.LENGTH_LONG).show();
+                Log.d(ApplicationConfiguration.TAG, "Getting token is error " + e.getMessage());
+                //Snackbar.make(parentPanel, "Logged fail: " + ExceptionUtils.translateExceptionMessage(e), Snackbar.LENGTH_LONG).show();
             }
         });
     }
@@ -168,8 +169,8 @@ public class VericationCodeActivity extends AppCompatActivity implements TextWat
 
             @Override
             public void onError(Throwable e) {
-                Log.d(ApplicationConfiguration.TAG, e.getMessage());
-                //Snackbar.make(parentPanel, "You logged fail: " + ExceptionUtils.translateExceptionMessage(e), Snackbar.LENGTH_LONG).show();
+                Log.d(ApplicationConfiguration.TAG, "Error fetching customer infor " + e.getMessage());
+                Snackbar.make(parentPanel, "You logged fail: " + ExceptionUtils.translateExceptionMessage(e), Snackbar.LENGTH_LONG).show();
                 LoggerHelper.showErrorLog("409, Login Page: ", e);
                 container_float_loading.setVisibility(View.GONE);
             }
@@ -209,5 +210,12 @@ public class VericationCodeActivity extends AppCompatActivity implements TextWat
         });
     }
 
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

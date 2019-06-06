@@ -187,7 +187,7 @@ public class AddressListRecyclerAdapter extends RecyclerView.Adapter<AddressList
      * @param position int
      */
     private void showConfirm(Context context, int position) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
         builder.setTitle(R.string.app_name);
         builder.setMessage("Do you want to delete this address?");
         builder.setPositiveButton("Yes", (dialog, id) -> {

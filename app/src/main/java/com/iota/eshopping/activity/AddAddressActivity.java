@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,10 +27,8 @@ import com.iota.eshopping.server.DatabaseHelper;
 import com.iota.eshopping.service.datahelper.datasource.offine.address.FetchAddressDAO;
 import com.iota.eshopping.service.datahelper.datasource.online.AddNewAddress;
 import com.iota.eshopping.service.datahelper.datasource.online.UpdateAddress;
-import com.iota.eshopping.util.LoggerHelper;
 import com.iota.eshopping.util.PhoneNumberField;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
