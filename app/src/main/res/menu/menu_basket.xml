@@ -4,5 +4,5 @@
     <item
         android:id="@+id/action_clear_basket"
         android:title="Clear basket"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
 </menu>

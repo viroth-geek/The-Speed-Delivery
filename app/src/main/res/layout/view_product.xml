@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/shape_button_bg_corner_dark"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="@dimen/margin_length_3">
+    android:layout_margin="@dimen/margin_length_3"
+    android:background="@drawable/shape_button_bg_corner_dark">
 
     <LinearLayout
-        android:layout_margin="@dimen/margin_length_3"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/selector_selected_items">
+        android:layout_margin="@dimen/margin_length_3"
+        android:background="@drawable/selector_selected_items"
+        android:orientation="horizontal">
 
         <android.support.v7.widget.CardView
             android:layout_width="130dp"
@@ -24,16 +24,16 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_margin="@dimen/margin_length_5"
-                android:scaleType="centerCrop"
-                android:adjustViewBounds="true" />
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop" />
 
         </android.support.v7.widget.CardView>
 
         <RelativeLayout
             android:id="@+id/container_product_info"
             android:layout_width="0dp"
-            android:layout_marginLeft="@dimen/margin_length_3"
             android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/margin_length_3"
             android:layout_weight="0.40"
             android:minHeight="100dp">
 
@@ -41,33 +41,32 @@
                 android:id="@+id/txt_product_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/simple_font_size"
-                android:text="@string/food_title" />
+                android:text="@string/food_title"
+                android:textSize="@dimen/simple_font_size" />
 
             <TextView
                 android:id="@+id/txt_product_detail"
-                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txt_product_name"
+                android:layout_marginTop="5dp"
+                android:ellipsize="end"
+                android:maxLines="2"
                 android:text="@string/food_description"
                 android:textSize="13sp"
-                android:maxLines="2"
-                android:ellipsize="end"
                 android:textStyle="italic" />
 
             <TextView
-                android:visibility="gone"
                 android:id="@+id/txt_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginEnd="3dp"
                 android:layout_marginBottom="4dp"
-                android:text="0"/>
+                android:text="0"
+                android:visibility="gone" />
 
             <RatingBar
-                android:visibility="gone"
                 android:id="@+id/ratingBar"
                 style="?android:attr/ratingBarStyleSmall"
                 android:layout_width="wrap_content"
@@ -78,36 +77,37 @@
                 android:isIndicator="true"
                 android:numStars="1"
                 android:rating="1"
-                android:stepSize="0.1" />
+                android:stepSize="0.1"
+                android:visibility="gone" />
 
         </RelativeLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginRight="@dimen/estore_item_margin_10dp">
+            android:layout_marginRight="@dimen/estore_item_margin_10dp"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/txt_product_price"
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="$ 0.00"
                 android:textAlignment="textEnd"
+                android:textColor="@color/green"
                 android:textSize="@dimen/simple_font_size"
-                android:textStyle="bold"
-                android:textColor="@color/green" />
+                android:textStyle="bold" />
 
             <TextView
-                android:layout_gravity="center_vertical"
                 android:id="@+id/txt_selected_items"
-                android:layout_marginTop="15dp"
+                style="@style/TextViewItemsCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/simple_font_size"
-                style="@style/TextViewItemsCount"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="15dp"
+                android:text="x00"
                 android:textAlignment="center"
-                android:text="x00"/>
+                android:textSize="@dimen/simple_font_size" />
 
         </LinearLayout>
 

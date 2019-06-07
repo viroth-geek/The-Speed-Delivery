@@ -496,8 +496,8 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
      * Get all select items from view and request to server
      */
     private void prepareBeforeCheckout() {
-        container_float_loading.setVisibility(View.VISIBLE);
 
+        container_float_loading.setVisibility(View.VISIBLE);
         fetchProductFromLocalCart();
 
         if (itemsUpdated != null) {

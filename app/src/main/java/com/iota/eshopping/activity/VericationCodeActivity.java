@@ -3,6 +3,7 @@ package com.iota.eshopping.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,8 +13,10 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
@@ -36,18 +39,28 @@ import com.iota.eshopping.util.ExceptionUtils;
 import com.iota.eshopping.util.LoggerHelper;
 import com.iota.eshopping.util.Utils;
 
-public class VericationCodeActivity extends AppCompatActivity implements TextWatcher {
+import java.util.concurrent.TimeUnit;
+
+public class VericationCodeActivity extends AppCompatActivity {
 
     private EditText etCode;
     private String mPhoneNumber;
-    private String mVerificationId;
-
-    private FirebaseAuth mAuth;
+    private TextView tvInformation;
+    private TextView tvCodeCountdown;
+    private TextView tvResendCode;
     private View container_float_loading;
     private View parentPanel;
 
     private UserAccount userAccount;
     private FetchAddressDAO db;
+
+    private Handler handler;
+
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
+    private FirebaseAuth mAuth;
+
+    private String mVerificationId;
+    private PhoneAuthProvider.ForceResendingToken mResendToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +77,9 @@ public class VericationCodeActivity extends AppCompatActivity implements TextWat
         }
 
         etCode = findViewById(R.id.edit_text_pin_code);
-        etCode.addTextChangedListener(this);
+        tvInformation = findViewById(R.id.txt_information);
+        tvCodeCountdown = findViewById(R.id.txt_code_countdown);
+        tvResendCode = findViewById(R.id.txt_resend_code);
         parentPanel = findViewById(R.id.parentPanel);
         container_float_loading = findViewById(R.id.container_float_loading);
 
@@ -72,27 +87,38 @@ public class VericationCodeActivity extends AppCompatActivity implements TextWat
         mPhoneNumber = getIntent().getStringExtra(ApplicationConfiguration.PHONE_NUMBER);
 
         db = new FetchAddressDAO(DatabaseHelper.getInstance(this).getDatabase());
+        tvInformation.setText("We have sent you an SMS with the code to +855 " + mPhoneNumber);
+
+        handler = new Handler();
+        handler.post(new CountdownTask());
+
+        etCode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.length() == 6) {
+                    Utils.hideKeyboard(VericationCodeActivity.this);
+                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, charSequence.toString());
+                    signInWithPhoneAuthCredential(credential);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        tvResendCode.setOnClickListener(view -> {
+            FireBasePhoneAuthentication("+855" + mPhoneNumber);
+            tvResendCode.setVisibility(View.GONE);
+        });
     }
 
-    @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        if (charSequence.length() == 6) {
-            Utils.hideKeyboard(this);
-            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, charSequence.toString());
-            signInWithPhoneAuthCredential(credential);
-        }
-    }
-
-    @Override
-    public void afterTextChanged(Editable editable) {
-
-    }
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         userAccount = new UserAccount(this);
@@ -217,5 +243,58 @@ public class VericationCodeActivity extends AppCompatActivity implements TextWat
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void FireBasePhoneAuthentication(String phoneNumber) {
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                phoneNumber,
+                30L,
+                TimeUnit.SECONDS,
+                this,
+                mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                    @Override
+                    public void onVerificationCompleted(PhoneAuthCredential credential) {
+
+                    }
+
+                    @Override
+                    public void onVerificationFailed(FirebaseException e) {
+                    }
+
+                    @Override
+                    public void onCodeSent(String verificationId,
+                                           PhoneAuthProvider.ForceResendingToken token) {
+                        mVerificationId = verificationId;
+                        mResendToken = token;
+                        handler.post(new CountdownTask());
+
+                    }
+                });
+    }
+
+
+    private class CountdownTask implements Runnable {
+        public Handler handler;
+        long start = 0;
+        long elapse = 0;
+
+        public CountdownTask() {
+            tvCodeCountdown.setVisibility(View.VISIBLE);
+            handler = new Handler();
+            start = System.currentTimeMillis();
+        }
+
+        @Override
+        public void run() {
+            elapse = System.currentTimeMillis() - start;
+            if (elapse <= 30000) {
+                tvCodeCountdown.setText(getString(R.string.sms_can_be_resend_in) + " " + (30 - (elapse / 1000)));
+                handler.postDelayed(this, 1000);
+            } else {
+                tvResendCode.setVisibility(View.VISIBLE);
+                tvCodeCountdown.setVisibility(View.GONE);
+                handler.removeCallbacksAndMessages(null);
+            }
+        }
     }
 }

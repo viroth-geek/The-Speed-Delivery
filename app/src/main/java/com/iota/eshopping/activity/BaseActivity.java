@@ -887,7 +887,7 @@ public class BaseActivity extends AppCompatActivity
             if (validatePhoneNumber(_mPhoneNumber)) {
                 FireBasePhoneAuthentication("+855" + _mPhoneNumber);
             } else {
-                Toast.makeText(this, "Please check phone number again.", Toast.LENGTH_SHORT).show();
+                etPhoneNumber.setError("Please check phone number again.");
             }
         } else if (view.equals(allStore)) {
             llProductFilter.setVisibility(View.GONE);
@@ -971,7 +971,7 @@ public class BaseActivity extends AppCompatActivity
     private void FireBasePhoneAuthentication(String phoneNumber) {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 phoneNumber,
-                60L,
+                30L,
                 TimeUnit.SECONDS,
                 this,
                 mCallbacks);
@@ -986,6 +986,7 @@ public class BaseActivity extends AppCompatActivity
 
             @Override
             public void onVerificationFailed(FirebaseException e) {
+                Log.d(ApplicationConfiguration.TAG, "onVerificationFailed " + e.getMessage());
             }
 
             @Override
@@ -996,6 +997,7 @@ public class BaseActivity extends AppCompatActivity
                 Intent intent = new Intent(BaseActivity.this, VericationCodeActivity.class);
                 intent.putExtra(ApplicationConfiguration.VERIFICATION_ID, mVerificationId);
                 intent.putExtra(ApplicationConfiguration.PHONE_NUMBER, etPhoneNumber.getText().toString());
+                etPhoneNumber.setText("");
                 startActivity(intent);
             }
         };

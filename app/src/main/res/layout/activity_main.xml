@@ -14,10 +14,10 @@
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
-        android:background="@color/colorDeliverBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true"/>
+        android:background="@color/colorDeliverBackground"
+        android:fitsSystemWindows="true" />
 
 </android.support.v4.widget.DrawerLayout>
