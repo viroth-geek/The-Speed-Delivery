@@ -26,7 +26,6 @@ import com.iota.eshopping.model.modelForView.ProductCategory;
 import com.iota.eshopping.model.modelForView.ProductItem;
 import com.iota.eshopping.model.modelForView.Store;
 import com.iota.eshopping.security.CurrencyConfiguration;
-import com.iota.eshopping.security.ProductLocalService;
 import com.iota.eshopping.service.base.InvokeOnCompleteAsync;
 import com.iota.eshopping.service.datahelper.datasource.online.FetchOptionProduct;
 import com.iota.eshopping.util.ExceptionUtils;

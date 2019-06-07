@@ -24,7 +24,6 @@ import java.util.List;
 
 import io.reactivex.Observable;
 
-import static android.support.annotation.Dimension.DP;
 import static android.support.annotation.Dimension.SP;
 
 /**

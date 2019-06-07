@@ -27,7 +27,7 @@ public class AlertUtils {
      * @param listener DialogInterface.OnClickListener
      */
     public static void showConfirmDialog(Context context, String title, String message, String actionName, DialogInterface.OnClickListener listener) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogPrimary);
         builder.setTitle(title)
                 .setMessage(message)
                 .setPositiveButton(actionName, listener)

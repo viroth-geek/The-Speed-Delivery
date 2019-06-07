@@ -19,10 +19,8 @@ import com.iota.eshopping.model.modelForView.ProductItem;
 import com.iota.eshopping.model.modelForView.Store;
 import com.iota.eshopping.security.CurrencyConfiguration;
 import com.iota.eshopping.security.ProductLocalService;
-import com.iota.eshopping.server.DatabaseHelper;
 import com.iota.eshopping.service.datahelper.datasource.offine.optionproduct.OptionProductDAO;
 import com.iota.eshopping.service.datahelper.datasource.offine.productoption.ProductOptionDAO;
-import com.iota.eshopping.service.datahelper.datasource.offine.productoption.ProductOptionLocalService;
 import com.iota.eshopping.util.NumberUtils;
 
 import java.util.List;
@@ -92,7 +90,9 @@ public class ItemAdjustment extends DialogFragment implements View.OnClickListen
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         final View view = inflater.inflate(R.layout.view_item_adjustment, container, false);
+
         btn_update = view.findViewById(R.id.btn_update);
         outside_dialog = view.findViewById(R.id.fragment_outside_dialog);
         View container_dialog = view.findViewById(R.id.container_dialog);

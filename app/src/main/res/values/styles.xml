@@ -9,7 +9,7 @@
         <item name="android:buttonStyle">@style/ButtonWithoutCorner</item>
         <item name="android:actionButtonStyle">@style/ActionButton</item>
         <item name="android:windowContentTransitions">true</item>
-        <item name="android:alertDialogTheme">@style/AlertDialogCustom</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogPrimary</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -247,7 +247,12 @@
         <item name="android:drawablePadding">4dp</item>
     </style>
 
-    <style name="AlertDialogCustom" parent="android:Theme.Material.Light.Dialog.Alert">
+    <style name="AlertDialogPrimary" parent="android:Theme.Material.Light.Dialog.Alert">
+        <item name="android:colorPrimary">#00397F</item>
+        <item name="android:colorAccent">@color/green</item>
+    </style>
+
+    <style name="AlertDialogDanger" parent="android:Theme.Material.Light.Dialog.Alert">
         <item name="android:colorPrimary">#00397F</item>
         <item name="android:colorAccent">@color/red</item>
     </style>

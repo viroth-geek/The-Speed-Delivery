@@ -58,6 +58,7 @@
     <!-- General margin -->
     <dimen name="margin_length_3">3dp</dimen>
     <dimen name="margin_length_5">5dp</dimen>
+    <dimen name="margin_length_8">8dp</dimen>
     <dimen name="margin_length_10">10dp</dimen>
     <dimen name="margin_length_15">15dp</dimen>
     <dimen name="margin_length_20">20dp</dimen>
@@ -110,5 +111,6 @@
     <dimen name="slider_child_image_height">100dp</dimen>
 
     <dimen name="design_navigation_icon_size" tools:override="true">15dp</dimen>
+    <dimen name="radius_corner_loading">100dp</dimen>
 
 </resources>

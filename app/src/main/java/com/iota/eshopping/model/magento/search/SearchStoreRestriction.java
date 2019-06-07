@@ -55,6 +55,7 @@ public class SearchStoreRestriction {
     @SerializedName("store_tages")
     @Expose
     private List<Long> storeTages = null;
+
     @SerializedName("is_open")
     @Expose
     private int isOpen;

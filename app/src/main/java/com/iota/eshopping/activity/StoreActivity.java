@@ -1,6 +1,5 @@
 package com.iota.eshopping.activity;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -32,7 +31,6 @@ import com.iota.eshopping.fragment.cart.ItemAdjustment;
 import com.iota.eshopping.fragment.category.CategoryPagerFragment;
 import com.iota.eshopping.fragment.productoption.ProductOptionDialog;
 import com.iota.eshopping.model.Product;
-import com.iota.eshopping.model.enumeration.DayType;
 import com.iota.eshopping.model.magento.store.storeList.Category;
 import com.iota.eshopping.model.modelForView.OrderItem;
 import com.iota.eshopping.model.modelForView.ProductAttributeOption;
@@ -50,7 +48,6 @@ import com.iota.eshopping.util.ImageViewUtil;
 import com.iota.eshopping.util.LoggerHelper;
 import com.iota.eshopping.util.NumberUtils;
 import com.iota.eshopping.util.preference.StorePreference;
-import com.iota.eshopping.util.preference.TimeDeliveryPreference;
 
 import java.io.Serializable;
 import java.net.SocketTimeoutException;
@@ -525,6 +522,7 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
         adjustment.setStore(store);
         adjustment.setProduct(proItem, this);
         adjustment.setProductAttributeOption(productAttributeOption);
+
         if (getSupportFragmentManager() != null) {
             adjustment.show(getSupportFragmentManager(), "ITEM");
         }
