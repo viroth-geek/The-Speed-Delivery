@@ -18,7 +18,6 @@ import com.iota.eshopping.model.modelForView.Store;
 import com.iota.eshopping.security.CurrencyConfiguration;
 import com.iota.eshopping.util.NumberUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 

@@ -59,11 +59,8 @@ import com.iota.eshopping.util.preference.LocationPreference;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -136,6 +133,7 @@ public class MyOrderDetailActivity extends AppCompatActivity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_order_detail);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         txt_order_status = findViewById(R.id.txt_order_status);
         txt_order_id = findViewById(R.id.txt_order_id);

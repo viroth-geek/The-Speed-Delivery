@@ -185,5 +185,19 @@
     <string name="signup">Signup</string>
     <string name="continue_with_facebook">Continue with Facebook</string>
     <string name="continue_with_google">Continue with Google</string>
+    <string name="ex_012345678">Ex : 012345678</string>
+    <string name="sign_in">SIGN IN</string>
+    <string name="comfirm_sms_code">Confirm SMS Code</string>
+    <string name="all">All</string>
+    <string name="open">Open</string>
+    <string name="filter">Filter</string>
+    <string name="confirm_sms_code">Confirm SMS code</string>
+    <string name="did_not_get_the_code">didn\'t get the code?</string>
+    <string name="code_can_be_resend_in">Code can be send in</string>
 
+    <string name="we_have_send_you_and_sms_with_the_code_to">We have sent you and SMS with the code to +855 </string>
+    <string name="by_intering_sms_code_i_agree_with_the">By Entering SMS code I agree with the</string>
+    <string name="empty_delivery_address">Empty delivery address</string>
+    <string name="empty_notification">Notification is empty</string>
+    <string name="sms_can_be_resend_in">Code resend in</string>
 </resources>

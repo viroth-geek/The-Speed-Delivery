@@ -1,87 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="horizontal"
     android:weightSum="1">
 
-    <FrameLayout
-        android:padding="@dimen/margin_length_3"
-        android:layout_weight="0.5"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/box_ads_height_100">
-
-        <ImageView
-            android:id="@+id/img_ads1x2left"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorDeliverBackgroundLightGrayI"/>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:alpha="0.4"
-            android:background="@android:color/white"
-            android:fitsSystemWindows="true"/>
-
-
-        <com.daimajia.slider.library.SliderLayout
-            android:id="@+id/txt_ads1x2left"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal|center_vertical"
-            style="@style/TextViewHeader3" />
-
-        <TextView
-            android:id="@+id/slide_label_sponsor"
-            android:layout_marginTop="25px"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingEnd="20px"
-            android:text="Sponsor"
-            android:paddingStart="15px"
-            android:paddingBottom="5px"
-            android:background="@color/colorDeliverPrimary"
-            android:textColor="@color/white"
-            android:textSize="12sp"/>
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:padding="@dimen/margin_length_3"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/estore_item_margin_5dp"
         android:layout_weight="0.5"
+        android:elevation="4dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/box_ads_height_100"
+            android:padding="@dimen/margin_length_3">
+
+            <ImageView
+                android:id="@+id/img_ads1x2left"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorDeliverBackgroundLightGrayI" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0.4"
+                android:background="@android:color/white"
+                android:fitsSystemWindows="true" />
+
+
+            <com.daimajia.slider.library.SliderLayout
+                android:id="@+id/txt_ads1x2left"
+                style="@style/TextViewHeader3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal|center_vertical" />
+
+            <TextView
+                android:id="@+id/slide_label_sponsor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25px"
+                android:background="@color/colorDeliverPrimary"
+                android:paddingStart="15px"
+                android:paddingEnd="20px"
+                android:paddingBottom="5px"
+                android:text="Sponsor"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+        </FrameLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/box_ads_height_100">
-        <ImageView
-            android:id="@+id/img_ads1x2right"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorDeliverBackgroundLightGrayI"/>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:alpha="0.4"
-            android:background="@android:color/white"
-            android:fitsSystemWindows="true"/>
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/estore_item_margin_5dp"
+        android:layout_weight="0.5"
+        android:elevation="4dp">
 
-        <com.daimajia.slider.library.SliderLayout
-            android:id="@+id/txt_ads1x2right"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal|center_vertical"
-            style="@style/TextViewHeader3" />
+            android:layout_height="@dimen/box_ads_height_100"
+            android:padding="@dimen/margin_length_3">
 
-        <TextView
-            android:id="@+id/slide_label_recommend"
-            android:layout_marginTop="25px"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Recommended"
-            android:paddingEnd="20px"
-            android:paddingStart="15px"
-            android:paddingBottom="5px"
-            android:background="@color/colorDeliverPrimary"
-            android:textColor="@color/white"
-            android:textSize="12sp"/>
+            <ImageView
+                android:id="@+id/img_ads1x2right"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorDeliverBackgroundLightGrayI" />
 
-    </FrameLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0.4"
+                android:background="@android:color/white"
+                android:fitsSystemWindows="true" />
+
+            <com.daimajia.slider.library.SliderLayout
+                android:id="@+id/txt_ads1x2right"
+                style="@style/TextViewHeader3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal|center_vertical" />
+
+            <TextView
+                android:id="@+id/slide_label_recommend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25px"
+                android:background="@color/colorDeliverPrimary"
+                android:paddingStart="15px"
+                android:paddingEnd="20px"
+                android:paddingBottom="5px"
+                android:text="Recommended"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+        </FrameLayout>
+    </android.support.v7.widget.CardView>
+
+
 </LinearLayout>

@@ -20,7 +20,6 @@ import com.iota.eshopping.model.modelForView.Product;
 import com.iota.eshopping.model.modelForView.ProductItem;
 import com.iota.eshopping.model.modelForView.Store;
 import com.iota.eshopping.security.UserAccount;
-import com.iota.eshopping.service.datahelper.datasource.online.FetchDeliveryDate;
 import com.iota.eshopping.service.datahelper.datasource.online.FetchOrderDetails;
 import com.iota.eshopping.util.ExceptionUtils;
 import com.iota.eshopping.util.LoggerHelper;

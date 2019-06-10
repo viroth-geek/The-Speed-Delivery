@@ -150,7 +150,8 @@
                 android:id="@+id/btn_place_order"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:layout_margin="20dp"
+                android:layout_margin="10dp"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:text="Go To Checkout"/>
 
         </LinearLayout>

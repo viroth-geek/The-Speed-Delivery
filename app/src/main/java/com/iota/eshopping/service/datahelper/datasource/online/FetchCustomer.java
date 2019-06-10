@@ -1,10 +1,11 @@
 package com.iota.eshopping.service.datahelper.datasource.online;
 
 import com.iota.eshopping.model.Customer;
+import com.iota.eshopping.model.PhoneNumber;
 import com.iota.eshopping.model.UserSecure;
+import com.iota.eshopping.model.phone.PhoneResponse;
 import com.iota.eshopping.server.ServiceGenerator;
 import com.iota.eshopping.service.api.user.CustomerService;
-import com.iota.eshopping.util.LoggerHelper;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -52,6 +53,8 @@ public class FetchCustomer implements Observer<Customer> {
         this.completeAsync = completeAsync;
         requestUpdate(customer, token);
     }
+
+
 
     /**
      *
@@ -129,4 +132,12 @@ public class FetchCustomer implements Observer<Customer> {
         void onComplete(Customer customerInfo);
         void onError(Throwable e);
     }
+
+
+    /**
+     *
+     * @return
+     */
+
+
 }

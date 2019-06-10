@@ -82,4 +82,7 @@ public class ConstantValue {
     public static final double DEFAULT_LAT = 11.576142;
     public static final double DEFAULT_LNT = 104.923050;
 
+    //filter product
+    public static final String PRODUCT_ALL = "all";
+    public static final String PRODUCT_OPEN = "open";
 }

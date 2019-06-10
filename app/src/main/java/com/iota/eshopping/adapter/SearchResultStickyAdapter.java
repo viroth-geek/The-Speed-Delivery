@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.iota.eshopping.R;
 import com.iota.eshopping.model.magento.search.searchResult.SearchProductResult;
@@ -211,7 +210,13 @@ public class SearchResultStickyAdapter extends RecyclerView.Adapter {
                 for (SearchProductResult productResult : result.getProducts()) {
                     ItemListAdaptor listAdaptor = new ItemListAdaptor(ItemListAdaptor.SECTION_TYPE_PRO,
                             HEADER_PRODUCT, productResult);
-                    list.add(listAdaptor);
+
+                    //filter product has no store
+                    if (productResult.getStores() != null) {
+                        if (productResult.getStores().size() > 0) {
+                            list.add(listAdaptor);
+                        }
+                    }
                 }
             }
         }

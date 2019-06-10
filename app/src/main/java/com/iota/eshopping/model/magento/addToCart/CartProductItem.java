@@ -12,27 +12,35 @@ public class CartProductItem extends Entity {
     @SerializedName("productId")
     @Expose
     private Long productId;//Request
+
     @SerializedName("item_id")
     @Expose
     private Long itemId;// Response
+
     @SerializedName("sku")
     @Expose
     private String sku;
+
     @SerializedName("qty")
     @Expose
     private Long qty;
+
     @SerializedName("name")
     @Expose
     private String name;
+
     @SerializedName("price")
     @Expose
     private Double price;
+
     @SerializedName("product_type")
     @Expose
     private String productType;
+
     @SerializedName("quote_id")
     @Expose
     private String quoteId;
+
     private final static long serialVersionUID = -743293266737422109L;
 
     /**

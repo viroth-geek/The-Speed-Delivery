@@ -1,5 +1,7 @@
 package com.iota.eshopping.constant;
 
+import android.util.Log;
+
 /**
  * Created by channarith.bong on 12/21/17.
  * @author channarith.bong
@@ -27,11 +29,13 @@ public class ApplicationConfiguration {
 //    public static final String ADMIN_TOKEN = "tuy3kac6tr4o33eorfs9xtkyqufrhvpo";
 //    public static final String CERT_NAME = "fullchain.pem";
 
+    //        planb domain 1
     public static final String BASE_URL = "http://thespeed.planbtesting.club/index.php/rest/";
     public static final String PRODUCT_IMAGE_URL = "http://thespeed.planbtesting.club/pub/media/catalog/product/";
     public static final String STORE_IMAGE_URL = "http://thespeed.planbtesting.club/pub/media/catalog/category/";
     public static final String ADMIN_TOKEN = "hpsewqv17mc06e9uns3e5lrn8rsmbbow";
     public static final String CERT_NAME = "planbchain.pem";
+
 
     // Enable all 'Log.d()' when DEVELOPER_MODE = true
     public static final Boolean DEVELOPER_MODE = true; // PRODUCTION_MODE or DEVELOPER_MODE = false
@@ -45,4 +49,11 @@ public class ApplicationConfiguration {
     public static final String PAGE_SPECIAL_PROMOTION= "special-promotion";
 
     public static final int LIMIT = 20;
+    public static final String TAG = "data";
+    public static final String VERIFICATION_ID = "verification_id";
+    public static final String PHONE_NUMBER = "phone_number";
+
+    public void log(String title) {
+        Log.d(ApplicationConfiguration.TAG, "Message is " + title);
+    }
 }

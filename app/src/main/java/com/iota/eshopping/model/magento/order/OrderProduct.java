@@ -15,18 +15,23 @@ import java.util.List;
  */
 
 public class OrderProduct extends Entity {
+
     @SerializedName("id")
     @Expose
     private Long id;
+
     @SerializedName("email")
     @Expose
     private String email;
+
     @SerializedName("address")
     @Expose
     private Address address;
+
     @SerializedName("items")
     @Expose
     private List<CartProductItem> cartProductItems;
+
     @SerializedName("shipping_code")
     @Expose
     private String shippingCode;

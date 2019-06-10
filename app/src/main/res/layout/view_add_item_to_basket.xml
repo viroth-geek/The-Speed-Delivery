@@ -41,5 +41,7 @@
             android:layout_width="@dimen/button_width_length_100"
             android:layout_height="wrap_content"
             style="@style/ButtonPrimary"/>
+
     </LinearLayout>
+
 </LinearLayout>

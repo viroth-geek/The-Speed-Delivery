@@ -7,9 +7,7 @@ import com.iota.eshopping.service.api.user.CustomerService;
 import com.iota.eshopping.service.base.BaseService;
 import com.iota.eshopping.service.base.InvokeOnCompleteAsync;
 
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**

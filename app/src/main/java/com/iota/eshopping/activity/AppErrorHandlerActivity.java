@@ -2,7 +2,6 @@ package com.iota.eshopping.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.iota.eshopping.R;
@@ -11,7 +10,7 @@ import com.iota.eshopping.constant.ConstantValue;
 /**
  * @author yeakleang.ay
  */
-public class AppErrorHandlerActivity extends AppCompatActivity {
+public class AppErrorHandlerActivity extends NetworkBaseActivity {
 
     private TextView txt_message;
 
