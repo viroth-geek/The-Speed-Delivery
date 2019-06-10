@@ -3,10 +3,9 @@ package com.iota.eshopping.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -15,13 +14,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.iota.eshopping.R;
+import com.iota.eshopping.constant.ApplicationConfiguration;
 import com.iota.eshopping.constant.ConstantValue;
 import com.iota.eshopping.model.Customer;
 import com.iota.eshopping.model.Login;
+import com.iota.eshopping.model.PhoneNumber;
 import com.iota.eshopping.model.UserSecure;
+import com.iota.eshopping.model.phone.PhoneResponse;
 import com.iota.eshopping.security.UserAccount;
 import com.iota.eshopping.service.datahelper.datasource.online.FetchCustomer;
-import com.iota.eshopping.service.datahelper.datasource.sample.SampleData;
+import com.iota.eshopping.service.datahelper.datasource.online.FetchTokenByPhone;
 import com.iota.eshopping.util.DateUtil;
 import com.iota.eshopping.util.ExceptionUtils;
 import com.iota.eshopping.util.InputHelper;
@@ -30,14 +32,17 @@ import com.iota.eshopping.util.LoggerHelper;
 /**
  * @author channarith.bong
  */
-public class SigninActivity extends AppCompatActivity implements View.OnClickListener {
+public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button btn_log_in;
     private Button btn_create_account;
+    private EditText etPhoneNumber, edt_first_name, edt_last_name, edt_email_address, edt_password;
     private View container_float_loading;
     private View parentPanel;
 
     private UserAccount userAccount;
+
+    private String mRegisterType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +63,23 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         btn_create_account.setOnClickListener(this);
 
         container_float_loading = findViewById(R.id.container_float_loading);
+        etPhoneNumber = findViewById(R.id.edt_phone_number);
+        edt_first_name = findViewById(R.id.edt_first_name);
+        edt_last_name = findViewById(R.id.edt_last_name);
+        edt_email_address = findViewById(R.id.edt_email_address);
+        edt_password = findViewById(R.id.edt_password);
+
+
+        if (getIntent().getExtras() != null) {
+            mRegisterType = getIntent().getStringExtra(ApplicationConfiguration.REGISTER_BY_PHONE_NUMBER);
+            etPhoneNumber.setText(getIntent().getStringExtra(ApplicationConfiguration.PHONE_NUMBER));
+        }
+        //if register by phone
+        if (mRegisterType != null) {
+            etPhoneNumber.setVisibility(View.VISIBLE);
+            edt_password.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
@@ -71,12 +93,25 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         if (btn_create_account.equals(v)) {
-            if (getValueFromView() != null) {
-                UserSecure user = getValueFromView();
-                checkUserAccount(user);
+            if (mRegisterType != null) {
+                PhoneNumber.CustomerPhone customerPhone = new PhoneNumber.CustomerPhone();
+                PhoneNumber phoneNumber = new PhoneNumber();
+
+                phoneNumber.setPhoneNumber(etPhoneNumber.getText().toString());
+                phoneNumber.setFirstName(edt_first_name.getText().toString());
+                phoneNumber.setLastName(edt_last_name.getText().toString());
+                phoneNumber.setEmail(edt_email_address.getText().toString());
+                customerPhone.setPhoneNumber(phoneNumber);
+                requestTokenByPhone(customerPhone);
+            } else {
+                if (getValueFromView() != null) {
+                    UserSecure user = getValueFromView();
+                    checkUserAccount(user);
+                }
             }
+
         } else if (btn_log_in.equals(v)) {
-            Intent intent = new Intent(SigninActivity.this, LoginActivity.class);
+            Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
         }
@@ -87,10 +122,6 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
      * @return UserSecure
      */
     private UserSecure getValueFromView() {
-        EditText edt_first_name = findViewById(R.id.edt_first_name);
-        EditText edt_last_name = findViewById(R.id.edt_last_name);
-        EditText edt_email_address = findViewById(R.id.edt_email_address);
-        EditText edt_password = findViewById(R.id.edt_password);
 
         boolean hasError = false;
         if (edt_first_name.getText().toString().isEmpty()) {
@@ -119,13 +150,18 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
         UserSecure userSecure = new UserSecure();
         Customer customer = new Customer();
+        if (etPhoneNumber.getVisibility() == View.VISIBLE) {
+            customer.setPhonenumber(etPhoneNumber.getText().toString());
+        }
         customer.setEmail(edt_email_address.getText().toString());
         customer.setFirstname(edt_first_name.getText().toString());
         customer.setLastname(edt_last_name.getText().toString());
         customer.setCreatedAt(DateUtil.getCurrent());
         customer.setUpdateAt(DateUtil.getCurrent());
         userSecure.setCustomer(customer);
-        userSecure.setPassword(edt_password.getText().toString());
+        if (mRegisterType == null) {
+            userSecure.setPassword(edt_password.getText().toString());
+        }
         return userSecure;
     }
 
@@ -149,7 +185,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
                 if (customer != null) {
                     userAccount.insertCustomer(customer);
                     settingProcessBar(true, "Your registration success!");
-                    Intent intent = new Intent(SigninActivity.this, LoginActivity.class);
+                    Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
                     Login login = new Login(user.getCustomer().getEmail(), user.getPassword());
                     intent.putExtra(ConstantValue.USER_SEC, login);
                     startActivity(intent);
@@ -164,6 +200,35 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
     }
+
+
+    /**
+     * @param user UserSecure
+     */
+    private void requestTokenByPhone(final PhoneNumber.CustomerPhone user) {
+        new FetchTokenByPhone(user, new FetchTokenByPhone.ILoginOnCompleteAsync() {
+            @Override
+            public void onComplete(PhoneResponse phoneResponse) {
+                Log.d(ApplicationConfiguration.TAG, "register success" + phoneResponse);
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d(ApplicationConfiguration.TAG, "register error" + e.getMessage());
+            }
+        });
+    }
+
+
+    /**
+     * @param user UserSecure
+     */
+    private void requestAddNewCustomerByPhone(final UserSecure user) {
+
+    }
+
+
 
     /**
      * @param isShow Boolean

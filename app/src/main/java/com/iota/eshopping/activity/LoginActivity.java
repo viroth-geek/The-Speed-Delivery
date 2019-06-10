@@ -161,7 +161,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     builder.setTitle("Message");
                                     builder.setMessage("Problem while retrieve facebook data. Please sign up with your email.");
                                     builder.setPositiveButton("OK", (dialog, which) -> {
-                                        Intent intent = new Intent(LoginActivity.this, SigninActivity.class);
+                                        Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
                                         startActivity(intent);
                                         finish();
                                     });
@@ -276,7 +276,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         if (btn_sign_up.equals(v)) {
-            Intent intent = new Intent(this, SigninActivity.class);
+            Intent intent = new Intent(this, SignupActivity.class);
             startActivity(intent);
             finish();
         } else if (btn_log_in.equals(v)) {

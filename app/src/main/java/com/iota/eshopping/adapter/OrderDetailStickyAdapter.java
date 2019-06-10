@@ -2,6 +2,7 @@ package com.iota.eshopping.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.iota.eshopping.R;
 import com.iota.eshopping.activity.MyOrderDetailActivity;
+import com.iota.eshopping.constant.ApplicationConfiguration;
 import com.iota.eshopping.constant.ConstantValue;
 import com.iota.eshopping.model.ImageResponse;
 import com.iota.eshopping.model.OrderDetail;
@@ -30,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import static com.iota.eshopping.util.Utils.FormatDateTimeLocal;
 
@@ -178,17 +181,31 @@ public class OrderDetailStickyAdapter extends SectioningAdapter {
         new FetchDeliveryDate(orderId, new FetchDeliveryDate.InvokeOnCompleteAsync() {
             @Override
             public void onComplete(String orderDate) {
-                if (orderDate != null && !orderDate.isEmpty()) {
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss", Locale.ENGLISH);
-                    try {
-                        Date date = simpleDateFormat.parse(orderDate);
-                        txtDeliveryDate.setText(String.format(" %s", new SimpleDateFormat("MMM dd, yyyy hh:mm:ss", Locale.ENGLISH).format(date)));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    txtDeliveryDate.setText("N/A");
+                Log.d(ApplicationConfiguration.TAG, orderDate);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Phnom_Penh"));
+
+                try {
+                    Date date = simpleDateFormat.parse(orderDate);
+                    txtDeliveryDate.setText(String.format(" %s", new SimpleDateFormat("MMM dd, yyyy HH:mm:ss").format(date)));
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
+
+//                if (orderDate != null && !orderDate.isEmpty()) {
+//
+//                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss", Locale.ENGLISH);
+//
+//                    try {
+//                        Date date = simpleDateFormat.parse(orderDate);
+//                        txtDeliveryDate.setText(String.format(" %s", new SimpleDateFormat("MMM dd, yyyy hh:mm:ss", Locale.ENGLISH).format(date)));
+//                    } catch (ParseException e) {
+//                        e.printStackTrace();
+//                    }
+//                } else {
+//                    txtDeliveryDate.setText("N/A");
+//                }
             }
 
             @Override

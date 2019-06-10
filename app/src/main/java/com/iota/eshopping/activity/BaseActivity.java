@@ -573,7 +573,7 @@ public class BaseActivity extends AppCompatActivity
      */
     private void checkToSignup() {
         toolbar.setTitle(R.string.about);
-        Intent intent = new Intent(this, SigninActivity.class);
+        Intent intent = new Intent(this, SignupActivity.class);
         startActivityForResult(intent, ConstantValue.SIGN_UP_CODE);
     }
 
@@ -739,7 +739,7 @@ public class BaseActivity extends AppCompatActivity
                                     builder.setTitle("Message");
                                     builder.setMessage("Error while retrieve facebook data. Please sign up with your email.");
                                     builder.setPositiveButton("OK", (dialog, which) -> {
-                                        Intent intent = new Intent(BaseActivity.this, SigninActivity.class);
+                                        Intent intent = new Intent(BaseActivity.this, SignupActivity.class);
                                         startActivity(intent);
                                         finish();
                                     });

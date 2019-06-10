@@ -10,7 +10,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class FetchCustomerByPhone implements Observer<PhoneResponse> {
+public class FetchTokenByPhone implements Observer<PhoneResponse> {
 
     private ILoginOnCompleteAsync iLoginOnCompleteAsync;
     private PhoneResponse phoneResponse;
@@ -21,7 +21,7 @@ public class FetchCustomerByPhone implements Observer<PhoneResponse> {
      * @param phone
      * @param iLoginOnCompleteAsync
      */
-    public FetchCustomerByPhone(PhoneNumber.CustomerPhone phone, ILoginOnCompleteAsync iLoginOnCompleteAsync) {
+    public FetchTokenByPhone(PhoneNumber.CustomerPhone phone, ILoginOnCompleteAsync iLoginOnCompleteAsync) {
         this.iLoginOnCompleteAsync = iLoginOnCompleteAsync;
         requestCustomerByPhone(phone);
     }

@@ -34,7 +34,7 @@ import com.iota.eshopping.service.base.InvokeOnCompleteAsync;
 import com.iota.eshopping.service.datahelper.datasource.offine.address.FetchAddressDAO;
 import com.iota.eshopping.service.datahelper.datasource.online.FetchAddressList;
 import com.iota.eshopping.service.datahelper.datasource.online.FetchCustomer;
-import com.iota.eshopping.service.datahelper.datasource.online.FetchCustomerByPhone;
+import com.iota.eshopping.service.datahelper.datasource.online.FetchTokenByPhone;
 import com.iota.eshopping.util.ExceptionUtils;
 import com.iota.eshopping.util.LoggerHelper;
 import com.iota.eshopping.util.Utils;
@@ -129,7 +129,9 @@ public class VericationCodeActivity extends AppCompatActivity {
                         Toast.makeText(VericationCodeActivity.this, "Success", Toast.LENGTH_SHORT).show();
                         PhoneNumber phoneNumber = new PhoneNumber();
                         phoneNumber.setPhoneNumber(mPhoneNumber);
-                        requestToken(phoneNumber);
+                        PhoneNumber.CustomerPhone customerPhone = new PhoneNumber.CustomerPhone();
+                        customerPhone.setPhoneNumber(phoneNumber);
+                        requestToken(customerPhone);
                     } else {
                         Toast.makeText(VericationCodeActivity.this, "Error ", Toast.LENGTH_SHORT).show();
 
@@ -137,24 +139,32 @@ public class VericationCodeActivity extends AppCompatActivity {
                 });
     }
 
-    private void requestToken(PhoneNumber phoneNumber) {
+    private void requestToken(PhoneNumber.CustomerPhone customerPhone) {
         container_float_loading.setVisibility(View.VISIBLE);
-        new FetchCustomerByPhone(phoneNumber, new FetchCustomerByPhone.ILoginOnCompleteAsync() {
+        new FetchTokenByPhone(customerPhone, new FetchTokenByPhone.ILoginOnCompleteAsync() {
             @Override
             public void onComplete(PhoneResponse phoneResponse) {
-                String token = phoneResponse.getPhone().getRpToken();
+                String status = phoneResponse.getStatus();
 
-                Log.d(ApplicationConfiguration.TAG, token);
-                try {
-                    if (userAccount.assignToken(token)) {
-                        requestCustomerInfo(token);
+                if (status.equals(ApplicationConfiguration.SUCCESS)) {
+                    try {
+                        if (userAccount.assignToken(phoneResponse.getPhone().getRpToken())) {
+                            requestCustomerInfo(phoneResponse.getPhone().getRpToken());
+                        }
+
+                    } catch (Exception e) {
+                        container_float_loading.setVisibility(View.GONE);
+                        Log.d(ApplicationConfiguration.TAG, e.getMessage());
+                        //Snackbar.make(parentPanel, "Logged fail: " + ExceptionUtils.translateExceptionMessage(e), Snackbar.LENGTH_LONG).show();
                     }
 
-                } catch (Exception e) {
-                    container_float_loading.setVisibility(View.GONE);
-                    Log.d(ApplicationConfiguration.TAG, e.getMessage());
-                    //Snackbar.make(parentPanel, "Logged fail: " + ExceptionUtils.translateExceptionMessage(e), Snackbar.LENGTH_LONG).show();
+                } else if (status.equals(ApplicationConfiguration.REGISTER)) {
+                    Intent intent = new Intent(VericationCodeActivity.this, SignupActivity.class);
+                    intent.putExtra(ApplicationConfiguration.REGISTER_BY_PHONE_NUMBER, ApplicationConfiguration.REGISTER_BY_PHONE_NUMBER);
+                    intent.putExtra(ApplicationConfiguration.PHONE_NUMBER, mPhoneNumber);
+                    startActivity(intent);
                 }
+
             }
 
             @Override

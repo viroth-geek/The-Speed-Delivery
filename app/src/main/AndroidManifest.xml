@@ -106,7 +106,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.SigninActivity"
+            android:name=".activity.SignupActivity"
             android:label="@string/signing"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />

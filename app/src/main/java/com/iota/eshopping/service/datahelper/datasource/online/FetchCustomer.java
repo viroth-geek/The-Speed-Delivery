@@ -1,9 +1,7 @@
 package com.iota.eshopping.service.datahelper.datasource.online;
 
 import com.iota.eshopping.model.Customer;
-import com.iota.eshopping.model.PhoneNumber;
 import com.iota.eshopping.model.UserSecure;
-import com.iota.eshopping.model.phone.PhoneResponse;
 import com.iota.eshopping.server.ServiceGenerator;
 import com.iota.eshopping.service.api.user.CustomerService;
 
