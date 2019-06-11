@@ -20,14 +20,17 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -86,6 +89,7 @@ import com.iota.eshopping.service.location.LocationService;
 import com.iota.eshopping.util.AlertUtils;
 import com.iota.eshopping.util.ExceptionUtils;
 import com.iota.eshopping.util.LoggerHelper;
+import com.iota.eshopping.util.NetworkConnectHelper;
 import com.iota.eshopping.util.Utils;
 import com.onesignal.OSPermissionSubscriptionState;
 import com.onesignal.OneSignal;
@@ -878,17 +882,39 @@ public class BaseActivity extends AppCompatActivity
 
     @Override
     public void onClick(View view) {
+
         if (btn_facebook_login.equals(view)) {
             facebookLoginButton.performClick();
         } else if (btn_google_login.equals(view)) {
             signInWithGoogle();
         } else if (view.equals(btPhoneOk)) {
-            String _mPhoneNumber = etPhoneNumber.getText().toString();
-            if (validatePhoneNumber(_mPhoneNumber)) {
-                FireBasePhoneAuthentication("+855" + _mPhoneNumber);
+            boolean isConnect = NetworkConnectHelper.getInstance().isConnectionOnline(getApplicationContext());
+            if (isConnect) {
+                String _mPhoneNumber = etPhoneNumber.getText().toString();
+                if (validatePhoneNumber(_mPhoneNumber)) {
+                    btPhoneOk.setEnabled(false);
+                    FireBasePhoneAuthentication("+855" + _mPhoneNumber);
+                } else {
+                    etPhoneNumber.setError("Please check phone number again.");
+                }
             } else {
-                etPhoneNumber.setError("Please check phone number again.");
+
+                View inflater = getLayoutInflater().inflate(R.layout.customer_toast, findViewById(R.id.toastLayout));
+
+                CardView cardView = inflater.findViewById(R.id.card_view);
+                TextView title = inflater.findViewById(R.id.toast_title);
+                ImageView icon = inflater.findViewById(R.id.toast_image);
+
+                cardView.setCardBackgroundColor(R.color.red);
+                title.setText("Internet disconnected!. Try again");
+
+                Toast toast = new Toast(this);
+                toast.setGravity(Gravity.BOTTOM, 0, 30);
+                toast.setDuration(Toast.LENGTH_SHORT);
+                toast.setView(inflater);
+                toast.show();
             }
+
         } else if (view.equals(allStore)) {
             llProductFilter.setVisibility(View.GONE);
             listener.onAddressSave(ConstantValue.PRODUCT_ALL);
@@ -992,9 +1018,10 @@ public class BaseActivity extends AppCompatActivity
             @Override
             public void onCodeSent(String verificationId,
                                    PhoneAuthProvider.ForceResendingToken token) {
+                btPhoneOk.setEnabled(true);
                 mVerificationId = verificationId;
                 mResendToken = token;
-                Intent intent = new Intent(BaseActivity.this, VericationCodeActivity.class);
+                Intent intent = new Intent(BaseActivity.this, VerificationCodeActivity.class);
                 intent.putExtra(ApplicationConfiguration.VERIFICATION_ID, mVerificationId);
                 intent.putExtra(ApplicationConfiguration.PHONE_NUMBER, etPhoneNumber.getText().toString());
                 etPhoneNumber.setText("");

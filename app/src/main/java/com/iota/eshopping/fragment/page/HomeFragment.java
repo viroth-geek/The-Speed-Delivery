@@ -173,8 +173,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
 
         btn_deliver_time.setText(TimeDeliveryPreference.getTimeDeliveryText(getContext()));
 
-
-        Log.d("data", "Lat Long " + mAddress);
         return view;
     }
 
@@ -650,6 +648,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
              mAddress.setCity(address.getAdminArea());
              mAddress.setPostcode(address.getPostalCode());
              mAddress.setCountryName(address.getCountryName());
+
              LocationPreference.saveLocation(getContext(), mAddress);
         } catch (IOException | IndexOutOfBoundsException e) {
             LoggerHelper.showErrorLog("Error: ", e);
