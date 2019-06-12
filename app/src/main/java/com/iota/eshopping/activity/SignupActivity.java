@@ -38,6 +38,7 @@ import com.iota.eshopping.util.DateUtil;
 import com.iota.eshopping.util.ExceptionUtils;
 import com.iota.eshopping.util.InputHelper;
 import com.iota.eshopping.util.LoggerHelper;
+import com.iota.eshopping.util.NetworkConnectHelper;
 
 /**
  * @author channarith.bong
@@ -67,7 +68,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
-
 
         parentPanel = findViewById(R.id.parentPanel);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -115,21 +115,26 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         if (btn_create_account.equals(v)) {
-            if (mRegisterType != null) {
-                PhoneNumber.CustomerPhone customerPhone = new PhoneNumber.CustomerPhone();
-                PhoneNumber phoneNumber = new PhoneNumber();
+            boolean isConnect = NetworkConnectHelper.getInstance().isConnectionOnline(getApplicationContext());
+            if (isConnect) {
+                if (mRegisterType != null) {
+                    PhoneNumber.CustomerPhone customerPhone = new PhoneNumber.CustomerPhone();
+                    PhoneNumber phoneNumber = new PhoneNumber();
 
-                phoneNumber.setPhoneNumber(etPhoneNumber.getText().toString());
-                phoneNumber.setFirstName(edt_first_name.getText().toString());
-                phoneNumber.setLastName(edt_last_name.getText().toString());
-                phoneNumber.setEmail(edt_email_address.getText().toString());
-                customerPhone.setPhoneNumber(phoneNumber);
-                requestTokenByPhone(customerPhone);
-            } else {
-                if (getValueFromView() != null) {
-                    UserSecure user = getValueFromView();
-                    checkUserAccount(user);
+                    phoneNumber.setPhoneNumber(etPhoneNumber.getText().toString());
+                    phoneNumber.setFirstName(edt_first_name.getText().toString());
+                    phoneNumber.setLastName(edt_last_name.getText().toString());
+                    phoneNumber.setEmail(edt_email_address.getText().toString());
+                    customerPhone.setPhoneNumber(phoneNumber);
+                    requestTokenByPhone(customerPhone);
+                } else {
+                    if (getValueFromView() != null) {
+                        UserSecure user = getValueFromView();
+                        checkUserAccount(user);
+                    }
                 }
+            } else {
+                Toast.makeText(this, "Internet disconnected!. Try again", Toast.LENGTH_SHORT).show();
             }
 
         } else if (btn_log_in.equals(v)) {
@@ -324,9 +329,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
     }
-
-
-
 
     /**
      * @param isShow Boolean

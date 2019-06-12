@@ -50,6 +50,7 @@ import com.iota.eshopping.service.datahelper.datasource.online.SocialLoginServic
 import com.iota.eshopping.util.ExceptionUtils;
 import com.iota.eshopping.util.InputHelper;
 import com.iota.eshopping.util.LoggerHelper;
+import com.iota.eshopping.util.NetworkConnectHelper;
 import com.iota.eshopping.widget.ForgetPasswordAlertDialog;
 
 import org.json.JSONException;
@@ -281,7 +282,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             startActivity(intent);
             finish();
         } else if (btn_log_in.equals(v)) {
-            prepareBeforeLogin();
+            boolean isConnect = NetworkConnectHelper.getInstance().isConnectionOnline(getApplicationContext());
+            if (isConnect) {
+                prepareBeforeLogin();
+            } else {
+                Toast.makeText(this, "Internet disconnected!. Try again", Toast.LENGTH_SHORT).show();
+            }
         } else if (btn_facebook_login.equals(v)) {
             facebookLoginButton.performClick();
         } else if (btn_google_login.equals(v)) {

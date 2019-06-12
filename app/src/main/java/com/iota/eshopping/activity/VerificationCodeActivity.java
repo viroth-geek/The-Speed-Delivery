@@ -43,6 +43,7 @@ import com.iota.eshopping.service.datahelper.datasource.online.FetchTokenByPhone
 import com.iota.eshopping.service.datahelper.datasource.online.FetchUserByPhone;
 import com.iota.eshopping.util.ExceptionUtils;
 import com.iota.eshopping.util.LoggerHelper;
+import com.iota.eshopping.util.NetworkConnectHelper;
 import com.iota.eshopping.util.Utils;
 
 import java.util.concurrent.TimeUnit;
@@ -111,9 +112,15 @@ public class VerificationCodeActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.length() == 6) {
-                    Utils.hideKeyboard(VerificationCodeActivity.this);
-                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, charSequence.toString());
-                    signInWithPhoneAuthCredential(credential);
+                    boolean isConnect = NetworkConnectHelper.getInstance().isConnectionOnline(getApplicationContext());
+                    if (isConnect) {
+                        Utils.hideKeyboard(VerificationCodeActivity.this);
+                        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, charSequence.toString());
+                        signInWithPhoneAuthCredential(credential);
+                    } else {
+                        Toast.makeText(VerificationCodeActivity.this, "Internet disconnected!. Try again", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             }
 
