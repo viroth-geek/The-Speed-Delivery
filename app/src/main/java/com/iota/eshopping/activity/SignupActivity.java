@@ -5,11 +5,14 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.method.PasswordTransformationMethod;
+import android.text.method.TransformationMethod;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -39,6 +42,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private EditText etPhoneNumber, edt_first_name, edt_last_name, edt_email_address, edt_password;
     private View container_float_loading;
     private View parentPanel;
+    private ImageButton btnShowHidePassword;
 
     private UserAccount userAccount;
 
@@ -57,6 +61,18 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         btn_log_in = findViewById(R.id.btn_log_in);
+        btnShowHidePassword = findViewById(R.id.btn_show_hide_password);
+        btnShowHidePassword.setAlpha(0.25f);
+        btnShowHidePassword.setOnClickListener(view -> {
+            TransformationMethod transformationMethod = edt_password.getTransformationMethod();
+            if (transformationMethod == null) {
+                btnShowHidePassword.setImageResource(R.drawable.ic_visibility_off_black_24dp);
+                edt_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            } else {
+                btnShowHidePassword.setImageResource(R.drawable.ic_visibility_black_24dp);
+                edt_password.setTransformationMethod(null);
+            }
+        });
         btn_log_in.setOnClickListener(this);
 
         btn_create_account = findViewById(R.id.btn_create_account);
@@ -68,7 +84,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         edt_last_name = findViewById(R.id.edt_last_name);
         edt_email_address = findViewById(R.id.edt_email_address);
         edt_password = findViewById(R.id.edt_password);
-
 
         if (getIntent().getExtras() != null) {
             mRegisterType = getIntent().getStringExtra(ApplicationConfiguration.REGISTER_BY_PHONE_NUMBER);
@@ -229,9 +244,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     }
 
 
-
     /**
-     * @param isShow Boolean
+     * @param isShow  Boolean
      * @param message String
      */
     private void settingProcessBar(Boolean isShow, String message) {

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -79,6 +80,8 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
 
     private TextView txtSubTotal;
     private TextView txtTotalItem;
+    private TextView txt_amount;
+    private TextView txt_delivery_fee;
 
     private TextView txt_bk_change;
     private TextView txt_bk_change_time;
@@ -98,6 +101,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
     private Float deliveryFee = 0f;
     private static int ATTEMPT_COUNT = 0;
     private static int MAX_ATTEMPT = 2;
+    private float amount = 0f;
 
     private Map<Product, List<OptionValue>> productListHashMap = new HashMap<>();
     private ProductAttributeOption productAttributeOption;
@@ -128,6 +132,8 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
 
         txtSubTotal = findViewById(R.id.txt_sub_total);
         txtTotalItem = findViewById(R.id.txt_total_item_count);
+        txt_amount = findViewById(R.id.txt_amount);
+        txt_delivery_fee = findViewById(R.id.txt_delivery_fee);
         
         txt_estore_name.setOnClickListener(this);
         txt_bk_change.setOnClickListener(this);
@@ -353,7 +359,9 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
 
         calculateServiceFee(store.getId(), itemAmount);
 
-        txtSubTotal.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(itemAmount)));
+        amount = Float.parseFloat(NumberUtils.strMoney(itemAmount));
+//        txtSubTotal.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(itemAmount)));
+        txt_amount.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(itemAmount)));
         txtTotalItem.setText(String.valueOf(itemCount));
 
 //        txt_item_service_fee.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(serviceFee)));
@@ -867,6 +875,9 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
                 if (storeDeliveryFees.size() > 0) {
                     StoreDeliveryFee storeDeliveryFee = storeDeliveryFees.get(0);
                     deliveryFee = storeDeliveryFee.getDeliveryFee().floatValue();
+                    Log.d("ooooo", amount + "");
+                    txtSubTotal.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), amount + deliveryFee));
+                    txt_delivery_fee.setText("$" + deliveryFee);
                     store.setFee(storeDeliveryFee.getDeliveryFee().floatValue());
                     store.setShippingMethod(storeDeliveryFee.getShippingMethod());
                 }
@@ -875,7 +886,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void onError(Throwable e) {
                 LoggerHelper.showErrorLog("Error: ", e);
-//                Toast.makeText(ManageBasketActivity.this, "Cannot not get delivery fee.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ManageBasketActivity.this, "Cannot not get delivery fee.", Toast.LENGTH_SHORT).show();
                 AlertUtils.showConfirmDialog(ManageBasketActivity.this, "Message", "Cannot not get delivery fee.", "OK", (DialogInterface.OnClickListener) (dialogInterface, i) -> {
                     openGoogleMap();
                 });
