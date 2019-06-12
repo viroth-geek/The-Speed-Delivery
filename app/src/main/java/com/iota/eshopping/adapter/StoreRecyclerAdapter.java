@@ -90,7 +90,7 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
         if (holder instanceof AdsStoreRowViewHolder) {
             AdsStoreRowViewHolder adsStoreRowViewHolder = (AdsStoreRowViewHolder) holder;
             fetchStoreByType(SearchGroupType.SPONSOR, adsStoreRowViewHolder.txt_ads1x2left, adsStoreRowViewHolder.slideLabelSponsor);
-            fetchStoreByType(SearchGroupType.MOST_ORDER, adsStoreRowViewHolder.txt_ads1x2right, adsStoreRowViewHolder.slideLabelRecommend);
+            fetchStoreByType(SearchGroupType.NEW_ARRIVAL, adsStoreRowViewHolder.txt_ads1x2right, adsStoreRowViewHolder.slideLabelRecommend);
         }
 
         if (holder instanceof NormalStoreRowViewHolder) {

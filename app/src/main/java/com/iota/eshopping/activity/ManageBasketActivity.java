@@ -79,7 +79,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
     private LinearLayout list_basket_items;
 
     private TextView txtSubTotal;
-    private TextView txtTotalItem;
+    private TextView txtServiceFee;
     private TextView txt_amount;
     private TextView txt_delivery_fee;
 
@@ -99,6 +99,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
     private Store store;
     private float itemAmount = 0f;
     private Float deliveryFee = 0f;
+    private float serviceFee = 0f;
     private static int ATTEMPT_COUNT = 0;
     private static int MAX_ATTEMPT = 2;
     private float amount = 0f;
@@ -131,7 +132,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
         txt_estore_name = findViewById(R.id.txt_estore_name);
 
         txtSubTotal = findViewById(R.id.txt_sub_total);
-        txtTotalItem = findViewById(R.id.txt_total_item_count);
+        txtServiceFee = findViewById(R.id.txt_total_item_count);
         txt_amount = findViewById(R.id.txt_amount);
         txt_delivery_fee = findViewById(R.id.txt_delivery_fee);
 
@@ -147,6 +148,8 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
         if (timeDelivery != null && !timeDelivery.isEmpty()) {
             txt_bk_change_time.setText(timeDelivery);
         }
+
+        serviceFee = StorePreference.getServiceFee(this);
 
         productLocalService = new ProductLocalService(this);
         productOptionDAO = new ProductOptionDAO(this);
@@ -356,7 +359,8 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
         amount = Float.parseFloat(NumberUtils.strMoney(itemAmount));
 //        txtSubTotal.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(itemAmount)));
         txt_amount.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(itemAmount)));
-        txtTotalItem.setText(String.valueOf(itemCount));
+//        txtTotalItem.setText(String.valueOf(itemCount));
+        txtServiceFee.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(serviceFee)));
 
 //        txt_item_service_fee.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(serviceFee)));
 //        txt_item_total.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(itemTotal)));

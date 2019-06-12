@@ -142,7 +142,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/simple_font_size"
-                            android:text="Total Item(s)"/>
+                            android:text="Service Fee"/>
 
                         <TextView
                             android:id="@+id/txt_total_item_count"
