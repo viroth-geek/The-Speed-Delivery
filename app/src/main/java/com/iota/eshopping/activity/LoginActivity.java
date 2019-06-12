@@ -77,7 +77,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button btn_facebook_login;
 
     private GoogleSignInClient mGoogleSignInClient;
-//    private SignInButton googleSignInButton;
+    //    private SignInButton googleSignInButton;
     private Button btn_google_login;
 
     private Button btn_forget_password;
@@ -87,7 +87,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         parentPanel = findViewById(R.id.parentPanel);
-        
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -228,6 +228,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     /**
      * handle after sign click
+     *
      * @param completedTask Task<GoogleSignInAccount>
      */
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
@@ -281,14 +282,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             finish();
         } else if (btn_log_in.equals(v)) {
             prepareBeforeLogin();
-        }
-        else if (btn_facebook_login.equals(v)) {
+        } else if (btn_facebook_login.equals(v)) {
             facebookLoginButton.performClick();
-        }
-        else if (btn_google_login.equals(v)) {
+        } else if (btn_google_login.equals(v)) {
             signInWithGoogle();
-        }
-        else if (btn_forget_password.equals(v)) {
+        } else if (btn_forget_password.equals(v)) {
             showForgetPasswordDialog();
         }
     }
@@ -303,6 +301,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     /**
      * login with social account
+     *
      * @param socialLoginForm SocialLoginForm
      */
     private void loginWithSocialAccount(SocialLoginForm socialLoginForm) {
@@ -331,7 +330,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     /**
-     *
      * @param formSocialUser FormSocialUser
      * @return SocialLoginForm
      */
@@ -484,7 +482,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     /**
-     *
      * @param userId Long
      */
     private void syncAddressList(Long userId) {

@@ -24,6 +24,7 @@
             android:layout_marginBottom="5dp"
             android:background="@drawable/backgroud_text_field_border"
             android:enabled="false"
+            android:text="12345678"
             android:hint="PhoneNumber"
             android:inputType="textPersonName"
             android:paddingLeft="@dimen/margin_length_10"
@@ -37,6 +38,7 @@
             android:layout_marginBottom="5dp"
             android:background="@drawable/backgroud_text_field_border"
             android:hint="First name"
+            android:text="john"
             android:inputType="textPersonName"
             android:paddingLeft="@dimen/margin_length_10" />
 
@@ -48,6 +50,7 @@
             android:layout_marginBottom="5dp"
             android:background="@drawable/backgroud_text_field_border"
             android:hint="Last Name"
+            android:text="deo"
             android:inputType="textPersonName"
             android:paddingLeft="@dimen/margin_length_10" />
 
@@ -60,7 +63,8 @@
             android:background="@drawable/backgroud_text_field_border"
             android:hint="@string/email_address"
             android:inputType="textEmailAddress"
-            android:paddingLeft="@dimen/margin_length_10" />
+            android:paddingLeft="@dimen/margin_length_10"
+            android:text="johndeo@gmail.com"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -108,6 +112,7 @@
             android:gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <Button
                 android:id="@+id/btn_create_account"
                 android:layout_width="@dimen/button_width_length_200"

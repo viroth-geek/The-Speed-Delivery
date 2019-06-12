@@ -70,6 +70,13 @@
 
             </LinearLayout>
 
+            <include
+                layout="@layout/loading_progress_bar"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:visibility="gone"/>
+
             <Button
                 android:id="@+id/btn_ok"
                 android:layout_width="match_parent"
