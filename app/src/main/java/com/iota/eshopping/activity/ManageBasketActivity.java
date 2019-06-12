@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 import com.iota.eshopping.R;
 import com.iota.eshopping.adapter.BasketItemViewAdapter;
+import com.iota.eshopping.constant.ApplicationConfiguration;
 import com.iota.eshopping.constant.ConstantValue;
 import com.iota.eshopping.event.OnSelectItemFromBasket;
 import com.iota.eshopping.fragment.time.NkrTimePicker;
@@ -34,7 +36,6 @@ import com.iota.eshopping.model.form.FormForGetDeliveryFee;
 import com.iota.eshopping.model.magento.addToCart.CartAttribute;
 import com.iota.eshopping.model.magento.addToCart.CartItemsRequest;
 import com.iota.eshopping.model.magento.addToCart.CartOption;
-import com.iota.eshopping.model.magento.addToCart.CartProductItem;
 import com.iota.eshopping.model.magento.addToCart.CartProductItems;
 import com.iota.eshopping.model.magento.addToCart.ResponseAddToCart;
 import com.iota.eshopping.model.magento.store.StoreFee;
@@ -746,7 +747,12 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
     private synchronized void processAddToCart(final CartItemsRequest cartItemsRequest) {
         // Customer token
         String token = userAccount.getCustomerToken();
+
+
         AuthUtils.isTokenValid(token, isValid -> {
+
+            Log.d(ApplicationConfiguration.TAG, "local token " + userAccount.getCustomerToken());
+
             if (isValid) {
                 // Add items to server
                 new AddMultiItemsToCart(cartItemsRequest, token, new InvokeOnCompleteAsync<List<ResponseAddToCart>>() {
@@ -786,8 +792,11 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
                 });
             } else {
                 container_float_loading.setVisibility(View.GONE);
+
+
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
+
             }
         });
     }

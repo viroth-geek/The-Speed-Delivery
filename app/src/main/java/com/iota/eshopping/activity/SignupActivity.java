@@ -231,7 +231,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         new FetchTokenByPhone(user, new FetchTokenByPhone.ILoginOnCompleteAsync() {
             @Override
             public void onComplete(PhoneResponse phoneResponse) {
-                Log.d(ApplicationConfiguration.TAG, "register success " + phoneResponse.getPhone().getRpToken());
                 String status = phoneResponse.getStatus();
 
                 if (status.equals(ApplicationConfiguration.SUCCESS)) {
@@ -262,28 +261,32 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onComplete(CustomerPhoneNumber customerPhoneNumber) {
 
-                Log.d(ApplicationConfiguration.TAG, "user is " + customerPhoneNumber.getCustomer().getFirstname());
-                customerPhoneNumber.getCustomer().setRpToken(token.getToken().getToken());
+                if (customerPhoneNumber.getCustomer() != null) {
+                    customerPhoneNumber.getCustomer().setRpToken(token.getToken().getToken());
 
-                if (userAccount.insertCustomer(customerPhoneNumber.getCustomer())) {
-                    //Snackbar.make(parentPanel, "Logged success!", Snackbar.LENGTH_LONG).show();
-                    Toast.makeText(SignupActivity.this, "Logged success!", Toast.LENGTH_SHORT).show();
-                    syncAddressList(customerPhoneNumber.getCustomer().getId());
-                    Intent returnIntent = new Intent(SignupActivity.this, BaseActivity.class);
-                    startActivity(returnIntent);
-                    finish();
+                    if (userAccount.insertCustomer(customerPhoneNumber.getCustomer())) {
+                        //Snackbar.make(parentPanel, "Logged success!", Snackbar.LENGTH_LONG).show();
+                        syncAddressList(customerPhoneNumber.getCustomer().getId());
+                        Intent returnIntent = new Intent(SignupActivity.this, BaseActivity.class);
+                        startActivity(returnIntent);
+                        finish();
+
+                    } else {
+                        Snackbar.make(parentPanel, "Sorry, please try again.", Snackbar.LENGTH_LONG).show();
+
+                    }
                 } else {
-                    Snackbar.make(parentPanel, "Sorry, please try again.", Snackbar.LENGTH_LONG).show();
-
+                    Toast.makeText(SignupActivity.this, "This email already existed!. Please try other number.", Toast.LENGTH_SHORT).show();
                 }
+
                 container_float_loading.setVisibility(View.GONE);
             }
 
             @Override
             public void onError(Throwable e) {
                 Log.d(ApplicationConfiguration.TAG, "Error fetching customer infor " + e.getMessage());
-                Snackbar.make(parentPanel, "You logged fail: " + ExceptionUtils.translateExceptionMessage(e), Snackbar.LENGTH_LONG).show();
-                LoggerHelper.showErrorLog("409, Login Page: ", e);
+//                Snackbar.make(parentPanel, "You logged fail: " + ExceptionUtils.translateExceptionMessage(e), Snackbar.LENGTH_LONG).show();
+//                LoggerHelper.showErrorLog("409, Login Page: ", e);
                 container_float_loading.setVisibility(View.GONE);
             }
         });
