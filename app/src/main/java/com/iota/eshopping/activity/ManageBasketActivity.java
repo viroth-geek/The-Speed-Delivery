@@ -20,7 +20,6 @@ import android.widget.Toast;
 
 import com.iota.eshopping.R;
 import com.iota.eshopping.adapter.BasketItemViewAdapter;
-import com.iota.eshopping.constant.ApplicationConfiguration;
 import com.iota.eshopping.constant.ConstantValue;
 import com.iota.eshopping.event.OnSelectItemFromBasket;
 import com.iota.eshopping.fragment.time.NkrTimePicker;
@@ -792,8 +791,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
                 });
             } else {
                 container_float_loading.setVisibility(View.GONE);
-
-
+                Toast.makeText(this, "token is not authorized!", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
 

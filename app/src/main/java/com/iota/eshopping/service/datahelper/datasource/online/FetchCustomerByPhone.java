@@ -2,13 +2,9 @@ package com.iota.eshopping.service.datahelper.datasource.online;
 
 import com.iota.eshopping.model.PhoneNumber;
 import com.iota.eshopping.model.phone.PhoneResponse;
-import com.iota.eshopping.server.ServiceGenerator;
-import com.iota.eshopping.service.api.user.CustomerService;
 
 import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class FetchCustomerByPhone implements Observer<PhoneResponse> {
 
@@ -27,12 +23,12 @@ public class FetchCustomerByPhone implements Observer<PhoneResponse> {
     }
 
     private void requestCustomerByPhone(PhoneNumber.CustomerPhone phone) {
-        ServiceGenerator
-                .createService(CustomerService.class)
-                .getCustomerByPhone(phone)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(this);
+//        ServiceGenerator
+//                .createService(CustomerService.class)
+//                .getCustomerByPhone(phone)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeWith(this);
 
     }
 

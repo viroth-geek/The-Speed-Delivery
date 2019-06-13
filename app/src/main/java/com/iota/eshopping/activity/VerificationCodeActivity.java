@@ -2,21 +2,17 @@ package com.iota.eshopping.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,17 +26,15 @@ import com.iota.eshopping.constant.ConstantValue;
 import com.iota.eshopping.model.Address;
 import com.iota.eshopping.model.CustomAttribute;
 import com.iota.eshopping.model.Customer;
-import com.iota.eshopping.model.CustomerPhoneNumber;
 import com.iota.eshopping.model.PhoneNumber;
 import com.iota.eshopping.model.TokenPhoneNumber;
-import com.iota.eshopping.model.phone.PhoneResponse;
 import com.iota.eshopping.security.UserAccount;
 import com.iota.eshopping.server.DatabaseHelper;
 import com.iota.eshopping.service.base.InvokeOnCompleteAsync;
 import com.iota.eshopping.service.datahelper.datasource.offine.address.FetchAddressDAO;
 import com.iota.eshopping.service.datahelper.datasource.online.FetchAddressList;
+import com.iota.eshopping.service.datahelper.datasource.online.FetchCustomer;
 import com.iota.eshopping.service.datahelper.datasource.online.FetchTokenByPhone;
-import com.iota.eshopping.service.datahelper.datasource.online.FetchUserByPhone;
 import com.iota.eshopping.util.ExceptionUtils;
 import com.iota.eshopping.util.LoggerHelper;
 import com.iota.eshopping.util.NetworkConnectHelper;
@@ -122,6 +116,7 @@ public class VerificationCodeActivity extends AppCompatActivity implements View.
                     boolean isConnect = NetworkConnectHelper.getInstance().isConnectionOnline(getApplicationContext());
                     if (isConnect) {
                         Utils.hideKeyboard(VerificationCodeActivity.this);
+                        etCode.setEnabled(false);
                         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, charSequence.toString());
                         signInWithPhoneAuthCredential(credential);
                     } else {
@@ -160,53 +155,36 @@ public class VerificationCodeActivity extends AppCompatActivity implements View.
                 })
                 .addOnFailureListener(this, e -> {
 
-
-                    View inflater = getLayoutInflater().inflate(R.layout.customer_toast, findViewById(R.id.toastLayout));
-
-                    CardView cardView = inflater.findViewById(R.id.card_view);
-                    TextView title = inflater.findViewById(R.id.toast_title);
-                    ImageView icon = inflater.findViewById(R.id.toast_image);
-
-                    cardView.setCardBackgroundColor(Color.RED);
-                    title.setText("Invalid verification code entered.");
-
-                    Toast toast = new Toast(this);
-                    toast.setGravity(Gravity.BOTTOM, 0, 30);
-                    toast.setDuration(Toast.LENGTH_SHORT);
-                    toast.setView(inflater);
-                    toast.show();
+                    etCode.setEnabled(true);
+                    etCode.setText("");
+                    Toast.makeText(this, "Invalid verification code entered.", Toast.LENGTH_SHORT).show();
 
                 });
     }
 
     private void requestToken(PhoneNumber.CustomerPhone customerPhone) {
+
         container_float_loading.setVisibility(View.VISIBLE);
         new FetchTokenByPhone(customerPhone, new FetchTokenByPhone.ILoginOnCompleteAsync() {
             @Override
-            public void onComplete(PhoneResponse phoneResponse) {
-                String status = phoneResponse.getStatus();
-
-                if (status.equals(ConstantValue.SUCCESS)) {
-                    try {
-                        if (userAccount.assignToken(phoneResponse.getPhone().getRpToken())) {
-                            token.setToken(phoneResponse.getPhone().getRpToken());
-                            tokenPhoneNumber.setToken(token);
-                            requestCustomerInfo(tokenPhoneNumber);
-                        }
-
-                    } catch (Exception e) {
-                        container_float_loading.setVisibility(View.GONE);
-                        Log.d(ConstantValue.TAG_LOG, e.getMessage());
-                        //Snackbar.make(parentPanel, "Logged fail: " + ExceptionUtils.translateExceptionMessage(e), Snackbar.LENGTH_LONG).show();
-                    }
-
-                } else if (status.equals(ConstantValue.REGISTER)) {
+            public void onComplete(String token) {
+                if (token.equals(ConstantValue.REGISTER)) {
                     Intent intent = new Intent(VerificationCodeActivity.this, SignupActivity.class);
                     intent.putExtra(ConstantValue.REGISTER_BY_PHONE_NUMBER, ConstantValue.REGISTER_BY_PHONE_NUMBER);
                     intent.putExtra(ConstantValue.PHONE_NUMBER, mPhoneNumber);
                     startActivity(intent);
                 }
-
+                else  {
+                    try {
+                        if (userAccount.assignToken(token)) {
+                            requestCustomerInfo(token);
+                        }
+                    } catch (Exception e) {
+                        container_float_loading.setVisibility(View.GONE);
+                        Log.d(ConstantValue.TAG_LOG, e.getMessage());
+                        //Snackbar.make(parentPanel, "Logged fail: " + ExceptionUtils.translateExceptionMessage(e), Snackbar.LENGTH_LONG).show();
+                    }
+                }
             }
 
             @Override
@@ -223,116 +201,35 @@ public class VerificationCodeActivity extends AppCompatActivity implements View.
      *
      * @param token String
      */
-    private void requestCustomerInfo(final TokenPhoneNumber token) {
-
-        new FetchUserByPhone(token, new FetchUserByPhone.ILoginOnCompleteAsync() {
+    private void requestCustomerInfo(final String token) {
+        new FetchCustomer(token, new FetchCustomer.InvokeOnCompleteAsync() {
             @Override
-            public void onComplete(CustomerPhoneNumber customerPhoneNumber) {
-
-//                if (customerPhoneNumber.getStatus().equals(ApplicationConfiguration.EMAIL_EXISTED)) {
-//                View inflater = getLayoutInflater().inflate(R.layout.customer_toast, findViewById(R.id.toastLayout));
-//                CardView cardView = inflater.findViewById(R.id.card_view);
-//                TextView title = inflater.findViewById(R.id.toast_title);
-//                ImageView icon = inflater.findViewById(R.id.toast_image);
-//
-//                cardView.setCardBackgroundColor(R.color.red);
-//                title.setText("Email already existed. Please try again");
-//
-//                Toast toast = new Toast(VerificationCodeActivity.this);
-//                toast.setGravity(Gravity.BOTTOM, 0, 30);
-//                toast.setDuration(Toast.LENGTH_SHORT);
-//                toast.setView(inflater);
-//                toast.show();
-
-//                } else {
-
-                customer.setId(customerPhoneNumber.getCustomer().getId());
-                customer.setEntityId(customerPhoneNumber.getCustomer().getEntityId());
-                customer.setWebsiteId(customerPhoneNumber.getCustomer().getWebsiteId());
-                customer.setRpToken(token.getToken().getToken());
-                customer.setPhonenumber(customerPhoneNumber.getCustomer().getPhonenumber());
-                customer.setAddresses(customerPhoneNumber.getCustomer().getAddresses());
-                customer.setCreatedAt(customerPhoneNumber.getCustomer().getCreatedAt());
-                customer.setCreatedIn(customerPhoneNumber.getCustomer().getCreatedIn());
-                customer.setFirstname(customerPhoneNumber.getCustomer().getFirstname());
-                customer.setLastname(customerPhoneNumber.getCustomer().getLastname());
-                customer.setGroupId(customerPhoneNumber.getCustomer().getGroupId());
-                customer.setDisableAutoGroupChange(customerPhoneNumber.getCustomer().getDisableAutoGroupChange());
-                customer.setPhonenumber(customerPhoneNumber.getCustomer().getPhonenumber());
-                customer.setEmail(customerPhoneNumber.getCustomer().getEmail());
-                customer.setUpdateAt(customerPhoneNumber.getCustomer().getUpdateAt());
-                customer.setCreatedIn(customerPhoneNumber.getCustomer().getCreatedIn());
-                customer.setPrefix(customerPhoneNumber.getCustomer().getPrefix());
-                customer.setSuffix(customerPhoneNumber.getCustomer().getSuffix());
-                customer.setTaxvat(customerPhoneNumber.getCustomer().getTaxvat());
-                customer.setDob(customerPhoneNumber.getCustomer().getDob());
-                customer.setRewardUpdateNotification(customerPhoneNumber.getCustomer().getRewardUpdateNotification());
-                customer.setRewardWarningNotification(customerPhoneNumber.getCustomer().getRewardWarningNotification());
-                customer.setRpTokenCreatedAt(customerPhoneNumber.getCustomer().getRpTokenCreatedAt());
-                customer.setStoreId(customerPhoneNumber.getCustomer().getStoreId());
-                customer.setDefaultShipping(customerPhoneNumber.getCustomer().getDefaultShipping());
-                customer.setDefaultBilling(customerPhoneNumber.getCustomer().getDefaultBilling());
-
-                customerPhoneNumber.setCustomer(customer);
-                if (customerPhoneNumber.getCustomer() != null) {
-                    if (userAccount.insertCustomer(customerPhoneNumber.getCustomer())) {
-                        Log.d(ConstantValue.TAG_LOG, "user account saved " + userAccount.getCustomerToken()
-                                + "-" + userAccount.getCustomer().getFirstname() + "- " + userAccount.getCustomer().getPhonenumber());
-
+            public void onComplete(Customer customer) {
+                if (customer != null) {
+                    customer.setRpToken(token);
+                    if (userAccount.insertCustomer(customer)) {
                         //Snackbar.make(parentPanel, "Logged success!", Snackbar.LENGTH_LONG).show();
-
-                        syncAddressList(customerPhoneNumber.getCustomer().getId());
+                        syncAddressList(customer.getId());
                         Intent returnIntent = new Intent();
                         setResult(Activity.RESULT_OK, returnIntent);
                         finish();
                     } else {
                         Snackbar.make(parentPanel, "Sorry, please try again.", Snackbar.LENGTH_LONG).show();
-
                     }
-                    container_float_loading.setVisibility(View.GONE);
+                } else {
+                    Snackbar.make(parentPanel, "Sorry, please try again.", Snackbar.LENGTH_LONG).show();
                 }
-//                }
+                container_float_loading.setVisibility(View.GONE);
             }
 
             @Override
             public void onError(Throwable e) {
-                Log.d(ConstantValue.TAG_LOG, "Error fetching customer infor " + e.getMessage());
-                Snackbar.make(parentPanel, "You logged fail: " + ExceptionUtils.translateExceptionMessage(e), Snackbar.LENGTH_LONG).show();
+                //Snackbar.make(parentPanel, "You logged fail: " + ExceptionUtils.translateExceptionMessage(e), Snackbar.LENGTH_LONG).show();
+                Toast.makeText(VerificationCodeActivity.this, "You logged fail: " + ExceptionUtils.translateExceptionMessage(e), Toast.LENGTH_SHORT).show();
                 LoggerHelper.showErrorLog("409, Login Page: ", e);
                 container_float_loading.setVisibility(View.GONE);
             }
         });
-
-//        new FetchCustomer(token, new FetchCustomer.InvokeOnCompleteAsync() {
-//            @Override
-//            public void onComplete(Customer customer) {
-//                if (customer != null) {
-//                    customer.setRpToken(token);
-//                    if (userAccount.insertCustomer(customer)) {
-//                        Snackbar.make(parentPanel, "Logged success!", Snackbar.LENGTH_LONG).show();
-//                        syncAddressList(customer.getId());
-//                        Intent returnIntent = new Intent();
-//                        setResult(Activity.RESULT_OK, returnIntent);
-//                        finish();
-//
-//                    } else {
-//                        Snackbar.make(parentPanel, "Sorry, please try again.", Snackbar.LENGTH_LONG).show();
-//                    }
-//                } else {
-//                    Snackbar.make(parentPanel, "Sorry, please try again.", Snackbar.LENGTH_LONG).show();
-//                }
-//                container_float_loading.setVisibility(View.GONE);
-//            }
-//
-//            @Override
-//            public void onError(Throwable e) {
-//                Log.d(ApplicationConfiguration.TAG, "Error fetching customer infor " + e.getMessage());
-//                Snackbar.make(parentPanel, "You logged fail: " + ExceptionUtils.translateExceptionMessage(e), Snackbar.LENGTH_LONG).show();
-//                LoggerHelper.showErrorLog("409, Login Page: ", e);
-//                container_float_loading.setVisibility(View.GONE);
-//            }
-//        });
-
     }
 
     /**

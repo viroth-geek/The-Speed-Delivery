@@ -1,7 +1,6 @@
 package com.iota.eshopping.service.datahelper.datasource.online;
 
 import com.iota.eshopping.model.PhoneNumber;
-import com.iota.eshopping.model.phone.PhoneResponse;
 import com.iota.eshopping.server.ServiceGenerator;
 import com.iota.eshopping.service.api.user.CustomerService;
 
@@ -10,10 +9,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class FetchTokenByPhone implements Observer<PhoneResponse> {
+public class FetchTokenByPhone implements Observer<String> {
 
     private ILoginOnCompleteAsync iLoginOnCompleteAsync;
-    private PhoneResponse phoneResponse;
+    private String token;
     private Disposable disposable;
 
 
@@ -41,8 +40,8 @@ public class FetchTokenByPhone implements Observer<PhoneResponse> {
     }
 
     @Override
-    public void onNext(PhoneResponse phoneResponse) {
-        this.phoneResponse = phoneResponse;
+    public void onNext(String token) {
+        this.token = token;
     }
 
     @Override
@@ -54,12 +53,12 @@ public class FetchTokenByPhone implements Observer<PhoneResponse> {
     @Override
     public void onComplete() {
         disposable.dispose();
-        iLoginOnCompleteAsync.onComplete(phoneResponse);
+        iLoginOnCompleteAsync.onComplete(token);
     }
 
 
     public interface ILoginOnCompleteAsync {
-        void onComplete(PhoneResponse phoneResponse);
+        void onComplete(String token);
 
         void onError(Throwable e);
     }

@@ -93,7 +93,7 @@ public class ConstantValue {
     public static final String REGISTER = "register";
     public static final String SUCCESS = "success";
     public static final String REGISTER_BY_PHONE_NUMBER = "sign_in_by_phone_number";
-    public static final String EMAIL_EXISTED = "email existed";
+    public static final String EMAIL_EXISTED = "Email already exist";
 
     public static final String VERIFICATION_METHOD = "verification up method";
 }
