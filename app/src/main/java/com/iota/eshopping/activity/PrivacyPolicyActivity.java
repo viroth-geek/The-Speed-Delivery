@@ -17,13 +17,17 @@ import com.iota.eshopping.util.ExceptionUtils;
  */
 public class PrivacyPolicyActivity extends AppCompatActivity {
 
-    private WebView webview;
+    private WebView webView;
+    private String method;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_privacy_policy);
-        webview = findViewById(R.id.webview);
+
+        webView = findViewById(R.id.webview);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -31,6 +35,10 @@ public class PrivacyPolicyActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         initInfo();
+
+        if (getIntent().getStringExtra(ConstantValue.VERIFICATION_METHOD) != null) {
+            method = getIntent().getStringExtra(ConstantValue.VERIFICATION_METHOD);
+        }
 
     }
 
@@ -54,7 +62,7 @@ public class PrivacyPolicyActivity extends AppCompatActivity {
 //            txt_title.setText(title);
 //        }
 //        if (body != null) {
-//            //webview.loadUrl(body);
+//            //webView.loadUrl(body);
 //        }
         if (key != null) {
             loadWebContent(key);
@@ -69,7 +77,7 @@ public class PrivacyPolicyActivity extends AppCompatActivity {
             @Override
             public void onComplete(String content) {
                 if (content != null) {
-                    webview.loadData(content, "text/html", "UTF-8");
+                    webView.loadData(content, "text/html", "UTF-8");
                 }
             }
 
@@ -79,5 +87,5 @@ public class PrivacyPolicyActivity extends AppCompatActivity {
             }
         });
     }
-
+    
 }

@@ -91,8 +91,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         edt_password = findViewById(R.id.edt_password);
 
         if (getIntent().getExtras() != null) {
-            mRegisterType = getIntent().getStringExtra(ApplicationConfiguration.REGISTER_BY_PHONE_NUMBER);
-            etPhoneNumber.setText(getIntent().getStringExtra(ApplicationConfiguration.PHONE_NUMBER));
+            mRegisterType = getIntent().getStringExtra(ConstantValue.REGISTER_BY_PHONE_NUMBER);
+            etPhoneNumber.setText(getIntent().getStringExtra(ConstantValue.PHONE_NUMBER));
         }
         //if register by phone
         if (mRegisterType != null) {
@@ -241,7 +241,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             public void onComplete(PhoneResponse phoneResponse) {
                 String status = phoneResponse.getStatus();
 
-                if (status.equals(ApplicationConfiguration.SUCCESS)) {
+                if (status.equals(ConstantValue.SUCCESS)) {
                     userAccount = new UserAccount(SignupActivity.this);
                     if (userAccount.assignToken(phoneResponse.getPhone().getRpToken())) {
                         token.setToken(phoneResponse.getPhone().getRpToken());
@@ -253,7 +253,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
             @Override
             public void onError(Throwable e) {
-                Log.d(ApplicationConfiguration.TAG, "register error" + e.getMessage());
+                Log.d(ConstantValue.TAG_LOG, "register error" + e.getMessage());
             }
         });
     }
@@ -292,7 +292,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
             @Override
             public void onError(Throwable e) {
-                Log.d(ApplicationConfiguration.TAG, "Error fetching customer infor " + e.getMessage());
+                Log.d(ConstantValue.TAG, "Error fetching customer infor " + e.getMessage());
 //                Snackbar.make(parentPanel, "You logged fail: " + ExceptionUtils.translateExceptionMessage(e), Snackbar.LENGTH_LONG).show();
 //                LoggerHelper.showErrorLog("409, Login Page: ", e);
                 container_float_loading.setVisibility(View.GONE);

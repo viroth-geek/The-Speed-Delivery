@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.iota.eshopping.R;
 import com.iota.eshopping.activity.MyOrderDetailActivity;
-import com.iota.eshopping.constant.ApplicationConfiguration;
 import com.iota.eshopping.constant.ConstantValue;
 import com.iota.eshopping.model.ImageResponse;
 import com.iota.eshopping.model.OrderDetail;
@@ -181,7 +180,7 @@ public class OrderDetailStickyAdapter extends SectioningAdapter {
         new FetchDeliveryDate(orderId, new FetchDeliveryDate.InvokeOnCompleteAsync() {
             @Override
             public void onComplete(String orderDate) {
-                Log.d(ApplicationConfiguration.TAG, orderDate);
+                Log.d(ConstantValue.TAG_LOG, orderDate);
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                 simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Phnom_Penh"));
 

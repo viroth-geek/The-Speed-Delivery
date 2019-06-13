@@ -55,7 +55,6 @@ import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.iota.eshopping.R;
-import com.iota.eshopping.constant.ApplicationConfiguration;
 import com.iota.eshopping.constant.ConstantValue;
 import com.iota.eshopping.constant.entity.FacebookAccessScope;
 import com.iota.eshopping.event.ISaveAddress;
@@ -995,7 +994,7 @@ public class BaseActivity extends AppCompatActivity
 
             @Override
             public void onVerificationFailed(FirebaseException e) {
-                Log.d(ApplicationConfiguration.TAG, "onVerificationFailed " + e.getMessage());
+                Log.d(ConstantValue.TAG_LOG, "onVerificationFailed " + e.getMessage());
             }
 
             @Override
@@ -1005,8 +1004,8 @@ public class BaseActivity extends AppCompatActivity
                 mVerificationId = verificationId;
                 mResendToken = token;
                 Intent intent = new Intent(BaseActivity.this, VerificationCodeActivity.class);
-                intent.putExtra(ApplicationConfiguration.VERIFICATION_ID, mVerificationId);
-                intent.putExtra(ApplicationConfiguration.PHONE_NUMBER, etPhoneNumber.getText().toString());
+                intent.putExtra(ConstantValue.VERIFICATION_ID, mVerificationId);
+                intent.putExtra(ConstantValue.PHONE_NUMBER, etPhoneNumber.getText().toString());
                 etPhoneNumber.setText("");
                 startActivity(intent);
             }
@@ -1023,13 +1022,13 @@ public class BaseActivity extends AppCompatActivity
                         if (task.isSuccessful()) {
 
                             final FirebaseUser user = task.getResult().getUser();
-                            Log.d(ApplicationConfiguration.TAG, "Firebase user " + user.getDisplayName() + " " + user.getEmail());
+                            Log.d(ConstantValue.TAG, "Firebase user " + user.getDisplayName() + " " + user.getEmail());
 
                             user.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<GetTokenResult> task) {
                                     if (task.isSuccessful()) {
-                                        Log.d(ApplicationConfiguration.TAG, "tokenId " + task.toString());
+                                        Log.d(ConstantValue.TAG_LOG, "tokenId " + task.toString());
                                     }
                                 }
                             });
@@ -1056,13 +1055,11 @@ public class BaseActivity extends AppCompatActivity
     @Override
     public void onDrawerClosed(View drawerView) {
         Utils.hideKeyboard(this);
-
+        etPhoneNumber.setText("");
     }
 
     @Override
     public void onDrawerStateChanged(int newState) {
 
     }
-
-
 }
