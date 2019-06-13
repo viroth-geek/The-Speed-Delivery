@@ -41,6 +41,7 @@ import com.iota.eshopping.util.DateUtil;
 import com.iota.eshopping.util.ExceptionUtils;
 import com.iota.eshopping.util.InputHelper;
 import com.iota.eshopping.util.LoggerHelper;
+import com.iota.eshopping.util.NetworkConnectHelper;
 
 /**
  * @author channarith.bong
@@ -71,7 +72,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
-
 
         parentPanel = findViewById(R.id.parentPanel);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -132,21 +132,26 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         if (btn_create_account.equals(v)) {
-            if (mRegisterType != null) {
-                PhoneNumber.CustomerPhone customerPhone = new PhoneNumber.CustomerPhone();
-                PhoneNumber phoneNumber = new PhoneNumber();
+            boolean isConnect = NetworkConnectHelper.getInstance().isConnectionOnline(getApplicationContext());
+            if (isConnect) {
+                if (mRegisterType != null) {
+                    PhoneNumber.CustomerPhone customerPhone = new PhoneNumber.CustomerPhone();
+                    PhoneNumber phoneNumber = new PhoneNumber();
 
-                phoneNumber.setPhoneNumber(etPhoneNumber.getText().toString());
-                phoneNumber.setFirstName(edt_first_name.getText().toString());
-                phoneNumber.setLastName(edt_last_name.getText().toString());
-                phoneNumber.setEmail(edt_email_address.getText().toString());
-                customerPhone.setPhoneNumber(phoneNumber);
-                requestTokenByPhone(customerPhone);
-            } else {
-                if (getValueFromView() != null) {
-                    UserSecure user = getValueFromView();
-                    checkUserAccount(user);
+                    phoneNumber.setPhoneNumber(etPhoneNumber.getText().toString());
+                    phoneNumber.setFirstName(edt_first_name.getText().toString());
+                    phoneNumber.setLastName(edt_last_name.getText().toString());
+                    phoneNumber.setEmail(edt_email_address.getText().toString());
+                    customerPhone.setPhoneNumber(phoneNumber);
+                    requestTokenByPhone(customerPhone);
+                } else {
+                    if (getValueFromView() != null) {
+                        UserSecure user = getValueFromView();
+                        checkUserAccount(user);
+                    }
                 }
+            } else {
+                Toast.makeText(this, "Internet disconnected!. Try again", Toast.LENGTH_SHORT).show();
             }
 
         } else if (btn_log_in.equals(v)) {
@@ -248,7 +253,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         new FetchTokenByPhone(user, new FetchTokenByPhone.ILoginOnCompleteAsync() {
             @Override
             public void onComplete(PhoneResponse phoneResponse) {
-                Log.d(ApplicationConfiguration.TAG, "register success " + phoneResponse.getPhone().getRpToken());
                 String status = phoneResponse.getStatus();
 
                 if (status.equals(ApplicationConfiguration.SUCCESS)) {
@@ -279,28 +283,32 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onComplete(CustomerPhoneNumber customerPhoneNumber) {
 
-                Log.d(ApplicationConfiguration.TAG, "user is " + customerPhoneNumber.getCustomer().getFirstname());
-                customerPhoneNumber.getCustomer().setRpToken(token.getToken().getToken());
+                if (customerPhoneNumber.getCustomer() != null) {
+                    customerPhoneNumber.getCustomer().setRpToken(token.getToken().getToken());
 
-                if (userAccount.insertCustomer(customerPhoneNumber.getCustomer())) {
-                    //Snackbar.make(parentPanel, "Logged success!", Snackbar.LENGTH_LONG).show();
-                    Toast.makeText(SignupActivity.this, "Logged success!", Toast.LENGTH_SHORT).show();
-                    syncAddressList(customerPhoneNumber.getCustomer().getId());
-                    Intent returnIntent = new Intent(SignupActivity.this, BaseActivity.class);
-                    startActivity(returnIntent);
-                    finish();
+                    if (userAccount.insertCustomer(customerPhoneNumber.getCustomer())) {
+                        //Snackbar.make(parentPanel, "Logged success!", Snackbar.LENGTH_LONG).show();
+                        syncAddressList(customerPhoneNumber.getCustomer().getId());
+                        Intent returnIntent = new Intent(SignupActivity.this, BaseActivity.class);
+                        startActivity(returnIntent);
+                        finish();
+
+                    } else {
+                        Snackbar.make(parentPanel, "Sorry, please try again.", Snackbar.LENGTH_LONG).show();
+
+                    }
                 } else {
-                    Snackbar.make(parentPanel, "Sorry, please try again.", Snackbar.LENGTH_LONG).show();
-
+                    Toast.makeText(SignupActivity.this, "This email already existed!. Please try other number.", Toast.LENGTH_SHORT).show();
                 }
+
                 container_float_loading.setVisibility(View.GONE);
             }
 
             @Override
             public void onError(Throwable e) {
                 Log.d(ApplicationConfiguration.TAG, "Error fetching customer infor " + e.getMessage());
-                Snackbar.make(parentPanel, "You logged fail: " + ExceptionUtils.translateExceptionMessage(e), Snackbar.LENGTH_LONG).show();
-                LoggerHelper.showErrorLog("409, Login Page: ", e);
+//                Snackbar.make(parentPanel, "You logged fail: " + ExceptionUtils.translateExceptionMessage(e), Snackbar.LENGTH_LONG).show();
+//                LoggerHelper.showErrorLog("409, Login Page: ", e);
                 container_float_loading.setVisibility(View.GONE);
             }
         });
@@ -338,8 +346,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
     }
-
-
 
     /**
      * @param isShow  Boolean

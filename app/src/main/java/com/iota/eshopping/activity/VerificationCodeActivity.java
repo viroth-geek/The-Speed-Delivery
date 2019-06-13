@@ -2,19 +2,23 @@ package com.iota.eshopping.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +45,7 @@ import com.iota.eshopping.service.datahelper.datasource.online.FetchTokenByPhone
 import com.iota.eshopping.service.datahelper.datasource.online.FetchUserByPhone;
 import com.iota.eshopping.util.ExceptionUtils;
 import com.iota.eshopping.util.LoggerHelper;
+import com.iota.eshopping.util.NetworkConnectHelper;
 import com.iota.eshopping.util.Utils;
 
 import java.util.concurrent.TimeUnit;
@@ -57,6 +62,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
     private View parentPanel;
 
     private UserAccount userAccount;
+    private Customer customer = new Customer();
     private FetchAddressDAO db;
 
     private Handler handler;
@@ -111,9 +117,15 @@ public class VerificationCodeActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.length() == 6) {
                     progressBar.setVisibility(View.VISIBLE);
-                    Utils.hideKeyboard(VerificationCodeActivity.this);
-                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, charSequence.toString());
-                    signInWithPhoneAuthCredential(credential);
+                    boolean isConnect = NetworkConnectHelper.getInstance().isConnectionOnline(getApplicationContext());
+                    if (isConnect) {
+                        Utils.hideKeyboard(VerificationCodeActivity.this);
+                        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, charSequence.toString());
+                        signInWithPhoneAuthCredential(credential);
+                    } else {
+                        Toast.makeText(VerificationCodeActivity.this, "Internet disconnected!. Try again", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             }
 
@@ -124,6 +136,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
         });
 
         tvResendCode.setOnClickListener(view -> {
+            etCode.setText("");
             FireBasePhoneAuthentication("+855" + mPhoneNumber);
             tvResendCode.setVisibility(View.GONE);
         });
@@ -145,6 +158,23 @@ public class VerificationCodeActivity extends AppCompatActivity {
                     }
                 })
                 .addOnFailureListener(this, e -> {
+
+
+                    View inflater = getLayoutInflater().inflate(R.layout.customer_toast, findViewById(R.id.toastLayout));
+
+                    CardView cardView = inflater.findViewById(R.id.card_view);
+                    TextView title = inflater.findViewById(R.id.toast_title);
+                    ImageView icon = inflater.findViewById(R.id.toast_image);
+
+                    cardView.setCardBackgroundColor(Color.RED);
+                    title.setText("Invalid verification code entered.");
+
+                    Toast toast = new Toast(this);
+                    toast.setGravity(Gravity.BOTTOM, 0, 30);
+                    toast.setDuration(Toast.LENGTH_SHORT);
+                    toast.setView(inflater);
+                    toast.show();
+
                     etCode.setText("");
                     etCode.requestFocus();
                     progressBar.setVisibility(View.GONE);
@@ -204,15 +234,58 @@ public class VerificationCodeActivity extends AppCompatActivity {
             @Override
             public void onComplete(CustomerPhoneNumber customerPhoneNumber) {
 
-                //customer.setRpToken(customerPhoneNumber.getCustomer().getRpToken());
+//                if (customerPhoneNumber.getStatus().equals(ApplicationConfiguration.EMAIL_EXISTED)) {
+//                View inflater = getLayoutInflater().inflate(R.layout.customer_toast, findViewById(R.id.toastLayout));
+//                CardView cardView = inflater.findViewById(R.id.card_view);
+//                TextView title = inflater.findViewById(R.id.toast_title);
+//                ImageView icon = inflater.findViewById(R.id.toast_image);
+//
+//                cardView.setCardBackgroundColor(R.color.red);
+//                title.setText("Email already existed. Please try again");
+//
+//                Toast toast = new Toast(VerificationCodeActivity.this);
+//                toast.setGravity(Gravity.BOTTOM, 0, 30);
+//                toast.setDuration(Toast.LENGTH_SHORT);
+//                toast.setView(inflater);
+//                toast.show();
 
-                customerPhoneNumber.getCustomer().setRpToken(token.getToken().getToken());
+//                } else {
+
+                customer.setId(customerPhoneNumber.getCustomer().getId());
+                customer.setEntityId(customerPhoneNumber.getCustomer().getEntityId());
+                customer.setWebsiteId(customerPhoneNumber.getCustomer().getWebsiteId());
+                customer.setRpToken(token.getToken().getToken());
+                customer.setPhonenumber(customerPhoneNumber.getCustomer().getPhonenumber());
+                customer.setAddresses(customerPhoneNumber.getCustomer().getAddresses());
+                customer.setCreatedAt(customerPhoneNumber.getCustomer().getCreatedAt());
+                customer.setCreatedIn(customerPhoneNumber.getCustomer().getCreatedIn());
+                customer.setFirstname(customerPhoneNumber.getCustomer().getFirstname());
+                customer.setLastname(customerPhoneNumber.getCustomer().getLastname());
+                customer.setGroupId(customerPhoneNumber.getCustomer().getGroupId());
+                customer.setDisableAutoGroupChange(customerPhoneNumber.getCustomer().getDisableAutoGroupChange());
+                customer.setPhonenumber(customerPhoneNumber.getCustomer().getPhonenumber());
+                customer.setEmail(customerPhoneNumber.getCustomer().getEmail());
+                customer.setUpdateAt(customerPhoneNumber.getCustomer().getUpdateAt());
+                customer.setCreatedIn(customerPhoneNumber.getCustomer().getCreatedIn());
+                customer.setPrefix(customerPhoneNumber.getCustomer().getPrefix());
+                customer.setSuffix(customerPhoneNumber.getCustomer().getSuffix());
+                customer.setTaxvat(customerPhoneNumber.getCustomer().getTaxvat());
+                customer.setDob(customerPhoneNumber.getCustomer().getDob());
+                customer.setRewardUpdateNotification(customerPhoneNumber.getCustomer().getRewardUpdateNotification());
+                customer.setRewardWarningNotification(customerPhoneNumber.getCustomer().getRewardWarningNotification());
+                customer.setRpTokenCreatedAt(customerPhoneNumber.getCustomer().getRpTokenCreatedAt());
+                customer.setStoreId(customerPhoneNumber.getCustomer().getStoreId());
+                customer.setDefaultShipping(customerPhoneNumber.getCustomer().getDefaultShipping());
+                customer.setDefaultBilling(customerPhoneNumber.getCustomer().getDefaultBilling());
+
+                customerPhoneNumber.setCustomer(customer);
                 if (customerPhoneNumber.getCustomer() != null) {
-
-
                     if (userAccount.insertCustomer(customerPhoneNumber.getCustomer())) {
-                        Log.d(ApplicationConfiguration.TAG, "user account saved " + userAccount.getCustomer());
+                        Log.d(ApplicationConfiguration.TAG, "user account saved " + userAccount.getCustomerToken()
+                                + "-" + userAccount.getCustomer().getFirstname() + "- " + userAccount.getCustomer().getPhonenumber());
+
                         //Snackbar.make(parentPanel, "Logged success!", Snackbar.LENGTH_LONG).show();
+
                         syncAddressList(customerPhoneNumber.getCustomer().getId());
                         Intent returnIntent = new Intent();
                         setResult(Activity.RESULT_OK, returnIntent);
@@ -222,6 +295,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
                     }
                     container_float_loading.setVisibility(View.GONE);
                 }
+//                }
             }
 
             @Override
@@ -321,6 +395,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
 
                     @Override
                     public void onVerificationFailed(FirebaseException e) {
+                        Toast.makeText(VerificationCodeActivity.this, "code failed", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -357,5 +432,15 @@ public class VerificationCodeActivity extends AppCompatActivity {
                 handler.removeCallbacksAndMessages(null);
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        tokenPhoneNumber = null;
+        token = null;
+        customer = null;
+        userAccount = null;
+        db = null;
     }
 }

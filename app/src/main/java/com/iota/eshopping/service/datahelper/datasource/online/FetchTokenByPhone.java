@@ -33,7 +33,6 @@ public class FetchTokenByPhone implements Observer<PhoneResponse> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(this);
-
     }
 
     @Override

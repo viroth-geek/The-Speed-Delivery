@@ -9,8 +9,13 @@ public class CustomerPhoneNumber {
     @Expose
     private Customer customer;
 
-    public CustomerPhoneNumber(Customer customer) {
+    @SerializedName("status")
+    @Expose
+    private String status;
+
+    public CustomerPhoneNumber(Customer customer, String status) {
         this.customer = customer;
+        this.status = status;
     }
 
     public Customer getCustomer() {
@@ -19,5 +24,13 @@ public class CustomerPhoneNumber {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.iota.eshopping.R;
 import com.iota.eshopping.adapter.BasketItemViewAdapter;
+import com.iota.eshopping.constant.ApplicationConfiguration;
 import com.iota.eshopping.constant.ConstantValue;
 import com.iota.eshopping.event.OnSelectItemFromBasket;
 import com.iota.eshopping.fragment.time.NkrTimePicker;
@@ -35,7 +36,6 @@ import com.iota.eshopping.model.form.FormForGetDeliveryFee;
 import com.iota.eshopping.model.magento.addToCart.CartAttribute;
 import com.iota.eshopping.model.magento.addToCart.CartItemsRequest;
 import com.iota.eshopping.model.magento.addToCart.CartOption;
-import com.iota.eshopping.model.magento.addToCart.CartProductItem;
 import com.iota.eshopping.model.magento.addToCart.CartProductItems;
 import com.iota.eshopping.model.magento.addToCart.ResponseAddToCart;
 import com.iota.eshopping.model.magento.store.StoreFee;
@@ -740,7 +740,12 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
     private synchronized void processAddToCart(final CartItemsRequest cartItemsRequest) {
         // Customer token
         String token = userAccount.getCustomerToken();
+
+
         AuthUtils.isTokenValid(token, isValid -> {
+
+            Log.d(ApplicationConfiguration.TAG, "local token " + userAccount.getCustomerToken());
+
             if (isValid) {
                 // Add items to server
                 new AddMultiItemsToCart(cartItemsRequest, token, new InvokeOnCompleteAsync<List<ResponseAddToCart>>() {
@@ -779,8 +784,11 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
                 });
             } else {
                 container_float_loading.setVisibility(View.GONE);
+
+
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
+
             }
         });
     }
@@ -861,7 +869,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
                     deliveryFee = storeDeliveryFee.getDeliveryFee().floatValue();
                     Log.d("ooooo", amount + "");
                     txtSubTotal.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(amount + deliveryFee)));
-                    txt_delivery_fee.setText("$" + deliveryFee);
+                    txt_delivery_fee.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(deliveryFee)));
                     store.setFee(storeDeliveryFee.getDeliveryFee().floatValue());
                     store.setShippingMethod(storeDeliveryFee.getShippingMethod());
                 }

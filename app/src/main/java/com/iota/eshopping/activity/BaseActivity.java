@@ -20,19 +20,16 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -912,21 +909,7 @@ public class BaseActivity extends AppCompatActivity
                     etPhoneNumber.setError(spannableStringBuilder);
                 }
             } else {
-
-                View inflater = getLayoutInflater().inflate(R.layout.customer_toast, findViewById(R.id.toastLayout));
-
-                CardView cardView = inflater.findViewById(R.id.card_view);
-                TextView title = inflater.findViewById(R.id.toast_title);
-                ImageView icon = inflater.findViewById(R.id.toast_image);
-
-                cardView.setCardBackgroundColor(R.color.red);
-                title.setText("Internet disconnected!. Try again");
-
-                Toast toast = new Toast(this);
-                toast.setGravity(Gravity.BOTTOM, 0, 30);
-                toast.setDuration(Toast.LENGTH_SHORT);
-                toast.setView(inflater);
-                toast.show();
+                Toast.makeText(this, "Internet disconnected!. Try again", Toast.LENGTH_SHORT).show();
             }
 
         } else if (view.equals(allStore)) {
