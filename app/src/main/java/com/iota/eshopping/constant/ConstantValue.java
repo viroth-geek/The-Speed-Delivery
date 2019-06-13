@@ -85,4 +85,15 @@ public class ConstantValue {
     //filter product
     public static final String PRODUCT_ALL = "all";
     public static final String PRODUCT_OPEN = "open";
+
+    public static final String TAG_LOG = "data";
+    public static final String VERIFICATION_ID = "verification_id";
+    public static final String PHONE_NUMBER = "phone_number";
+
+    public static final String REGISTER = "register";
+    public static final String SUCCESS = "success";
+    public static final String REGISTER_BY_PHONE_NUMBER = "sign_in_by_phone_number";
+    public static final String EMAIL_EXISTED = "email existed";
+
+    public static final String VERIFICATION_METHOD = "verification up method";
 }

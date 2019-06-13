@@ -744,7 +744,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
 
         AuthUtils.isTokenValid(token, isValid -> {
 
-            Log.d(ApplicationConfiguration.TAG, "local token " + userAccount.getCustomerToken());
+            Log.d(ConstantValue.TAG_LOG, "local token " + userAccount.getCustomerToken());
 
             if (isValid) {
                 // Add items to server

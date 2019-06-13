@@ -50,7 +50,7 @@ import com.iota.eshopping.util.Utils;
 
 import java.util.concurrent.TimeUnit;
 
-public class VerificationCodeActivity extends AppCompatActivity {
+public class VerificationCodeActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText etCode;
     private String mPhoneNumber;
@@ -60,6 +60,8 @@ public class VerificationCodeActivity extends AppCompatActivity {
     private RelativeLayout progressBar;
     private View container_float_loading;
     private View parentPanel;
+    private TextView tvTerm;
+    private TextView tvPolicy;
 
     private UserAccount userAccount;
     private Customer customer = new Customer();
@@ -96,10 +98,17 @@ public class VerificationCodeActivity extends AppCompatActivity {
         tvResendCode = findViewById(R.id.txt_resend_code);
         parentPanel = findViewById(R.id.parentPanel);
         container_float_loading = findViewById(R.id.container_float_loading);
+        tvTerm = findViewById(R.id.txt_term);
+        tvPolicy = findViewById(R.id.txt_policy);
 
         progressBar = findViewById(R.id.loading_progress_bar);
-        mVerificationId = getIntent().getStringExtra(ApplicationConfiguration.VERIFICATION_ID);
-        mPhoneNumber = getIntent().getStringExtra(ApplicationConfiguration.PHONE_NUMBER);
+        mVerificationId = getIntent().getStringExtra(ConstantValue.VERIFICATION_ID);
+        mPhoneNumber = getIntent().getStringExtra(ConstantValue.PHONE_NUMBER);
+        tvTerm.setOnClickListener(this);
+        tvPolicy.setOnClickListener(this);
+
+        mVerificationId = getIntent().getStringExtra(ConstantValue.VERIFICATION_ID);
+        mPhoneNumber = getIntent().getStringExtra(ConstantValue.PHONE_NUMBER);
 
         db = new FetchAddressDAO(DatabaseHelper.getInstance(this).getDatabase());
         tvInformation.setText("We have sent you an SMS with the code to +855 " + mPhoneNumber);
@@ -125,7 +134,6 @@ public class VerificationCodeActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(VerificationCodeActivity.this, "Internet disconnected!. Try again", Toast.LENGTH_SHORT).show();
                     }
-
                 }
             }
 
@@ -149,7 +157,6 @@ public class VerificationCodeActivity extends AppCompatActivity {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-//                        progressBar.setVisibility(View.GONE);
                         PhoneNumber phoneNumber = new PhoneNumber();
                         phoneNumber.setPhoneNumber(mPhoneNumber);
                         PhoneNumber.CustomerPhone customerPhone = new PhoneNumber.CustomerPhone();
@@ -189,7 +196,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
             public void onComplete(PhoneResponse phoneResponse) {
                 String status = phoneResponse.getStatus();
 
-                if (status.equals(ApplicationConfiguration.SUCCESS)) {
+                if (status.equals(ConstantValue.SUCCESS)) {
                     try {
                         if (userAccount.assignToken(phoneResponse.getPhone().getRpToken())) {
                             token.setToken(phoneResponse.getPhone().getRpToken());
@@ -199,15 +206,14 @@ public class VerificationCodeActivity extends AppCompatActivity {
 
                     } catch (Exception e) {
                         container_float_loading.setVisibility(View.GONE);
-                        Log.d(ApplicationConfiguration.TAG, e.getMessage());
+                        Log.d(ConstantValue.TAG_LOG, e.getMessage());
                         //Snackbar.make(parentPanel, "Logged fail: " + ExceptionUtils.translateExceptionMessage(e), Snackbar.LENGTH_LONG).show();
                     }
 
-                } else if (status.equals(ApplicationConfiguration.REGISTER)) {
-                    progressBar.setVisibility(View.GONE);
+                } else if (status.equals(ConstantValue.REGISTER)) {
                     Intent intent = new Intent(VerificationCodeActivity.this, SignupActivity.class);
-                    intent.putExtra(ApplicationConfiguration.REGISTER_BY_PHONE_NUMBER, ApplicationConfiguration.REGISTER_BY_PHONE_NUMBER);
-                    intent.putExtra(ApplicationConfiguration.PHONE_NUMBER, mPhoneNumber);
+                    intent.putExtra(ConstantValue.REGISTER_BY_PHONE_NUMBER, ConstantValue.REGISTER_BY_PHONE_NUMBER);
+                    intent.putExtra(ConstantValue.PHONE_NUMBER, mPhoneNumber);
                     startActivity(intent);
                     finish();
                 }
@@ -217,7 +223,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
             @Override
             public void onError(Throwable e) {
                 container_float_loading.setVisibility(View.GONE);
-                Log.d(ApplicationConfiguration.TAG, "Getting token is error " + e.getMessage());
+                Log.d(ConstantValue.TAG_LOG, "Getting token is error " + e.getMessage());
                 //Snackbar.make(parentPanel, "Logged fail: " + ExceptionUtils.translateExceptionMessage(e), Snackbar.LENGTH_LONG).show();
             }
         });
@@ -281,7 +287,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
                 customerPhoneNumber.setCustomer(customer);
                 if (customerPhoneNumber.getCustomer() != null) {
                     if (userAccount.insertCustomer(customerPhoneNumber.getCustomer())) {
-                        Log.d(ApplicationConfiguration.TAG, "user account saved " + userAccount.getCustomerToken()
+                        Log.d(ConstantValue.TAG_LOG, "user account saved " + userAccount.getCustomerToken()
                                 + "-" + userAccount.getCustomer().getFirstname() + "- " + userAccount.getCustomer().getPhonenumber());
 
                         //Snackbar.make(parentPanel, "Logged success!", Snackbar.LENGTH_LONG).show();
@@ -300,7 +306,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
 
             @Override
             public void onError(Throwable e) {
-                Log.d(ApplicationConfiguration.TAG, "Error fetching customer infor " + e.getMessage());
+                Log.d(ConstantValue.TAG_LOG, "Error fetching customer infor " + e.getMessage());
                 Snackbar.make(parentPanel, "You logged fail: " + ExceptionUtils.translateExceptionMessage(e), Snackbar.LENGTH_LONG).show();
                 LoggerHelper.showErrorLog("409, Login Page: ", e);
                 container_float_loading.setVisibility(View.GONE);
@@ -407,6 +413,23 @@ public class VerificationCodeActivity extends AppCompatActivity {
 
                     }
                 });
+    }
+
+    @Override
+    public void onClick(View view) {
+        Intent intent = new Intent(this, PrivacyPolicyActivity.class);
+        if (view == tvTerm) {
+            intent.putExtra(ConstantValue.URL_KEY, ApplicationConfiguration.PAGE_TERMS_CONDITIONS);
+            intent.putExtra(ConstantValue.TITLE, "Term and Condition");
+            intent.putExtra(ConstantValue.VERIFICATION_METHOD, "verification");
+            startActivity(intent);
+        }
+        if (view == tvPolicy) {
+            intent.putExtra(ConstantValue.URL_KEY, ApplicationConfiguration.PAGE_PRIVACY_POLICY);
+            intent.putExtra(ConstantValue.TITLE, "Privacy Policy");
+            intent.putExtra(ConstantValue.VERIFICATION_METHOD, "verification");
+            startActivity(intent);
+        }
     }
 
     private class CountdownTask implements Runnable {
