@@ -125,14 +125,10 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                     phoneNumber.setFirstName(edt_first_name.getText().toString());
                     phoneNumber.setLastName(edt_last_name.getText().toString());
                     phoneNumber.setEmail(edt_email_address.getText().toString());
-
-                    if(isEmail(edt_email_address.getText().toString())) {
-
-                    }
+                    phoneNumber.setEmail(edt_email_address.getText().toString());
 
                     customerPhone.setPhoneNumber(phoneNumber);
                     requestTokenByPhone(customerPhone);
-
 
                 } else {
                     if (getValueFromView() != null) {
@@ -151,30 +147,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         }
 
     }
-
-    /**
-     * @param email
-     * @return boolean
-     */
-
-    private boolean isEmail(String email) {
-        if (!edt_email_address.getText().toString().equals("")) {
-            if (email.contains("@gmail.com")) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * @param email
-     * @return email
-     */
-    private String emailGenerator(String email) {
-
-        return email;
-    }
-
 
     /**
      * @return UserSecure
