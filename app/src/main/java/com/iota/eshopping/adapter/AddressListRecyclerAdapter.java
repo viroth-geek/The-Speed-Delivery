@@ -191,6 +191,7 @@ public class AddressListRecyclerAdapter extends RecyclerView.Adapter<AddressList
         builder.setTitle(R.string.app_name);
         builder.setMessage("Do you want to delete this address?");
         builder.setPositiveButton("Yes", (dialog, id) -> {
+//            Toast.makeText(context, addressList.get(position).getId().toString(), Toast.LENGTH_SHORT).show();
             deleteAddressFromServer(addressList.get(position).getId());
             removeAt(position);
             dialog.dismiss();

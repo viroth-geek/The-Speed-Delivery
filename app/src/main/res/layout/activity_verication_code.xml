@@ -16,7 +16,6 @@
         android:layout_below="@id/toolbar"
         android:background="@color/white">
 
-
         <LinearLayout
             android:id="@+id/layout_input_code"
             android:layout_width="match_parent"
@@ -127,6 +126,12 @@
                 android:textSize="@dimen/simple_font_size" />
         </LinearLayout>
 
+        <include
+            layout="@layout/loading_progress_bar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 
@@ -145,17 +150,17 @@
             android:layout_gravity="center"
             android:orientation="horizontal">
 
-            <include layout="@layout/view_progress_bar_ii" />
+            <!--<include layout="@layout/view_progress_bar_ii" />-->
 
-            <TextView
-                android:id="@+id/txt_container_loading_label"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/margin_length_5"
-                android:gravity="center"
-                android:text="@string/log_in"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
+            <!--<TextView-->
+                <!--android:id="@+id/txt_container_loading_label"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_marginStart="@dimen/margin_length_5"-->
+                <!--android:gravity="center"-->
+                <!--android:text="@string/log_in"-->
+                <!--android:textColor="@color/black"-->
+                <!--android:textStyle="bold" />-->
         </LinearLayout>
     </FrameLayout>
 

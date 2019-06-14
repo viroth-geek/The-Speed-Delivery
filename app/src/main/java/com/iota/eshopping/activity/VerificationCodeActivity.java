@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ import com.iota.eshopping.model.Address;
 import com.iota.eshopping.model.CustomAttribute;
 import com.iota.eshopping.model.Customer;
 import com.iota.eshopping.model.PhoneNumber;
+import com.iota.eshopping.model.TokenPhoneNumber;
 import com.iota.eshopping.security.UserAccount;
 import com.iota.eshopping.server.DatabaseHelper;
 import com.iota.eshopping.service.base.InvokeOnCompleteAsync;
@@ -46,6 +48,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
     private TextView tvInformation;
     private TextView tvCodeCountdown;
     private TextView tvResendCode;
+    private RelativeLayout progressBar;
     private View container_float_loading;
     private View parentPanel;
 
@@ -59,6 +62,9 @@ public class VerificationCodeActivity extends AppCompatActivity {
 
     private String mVerificationId;
     private PhoneAuthProvider.ForceResendingToken mResendToken;
+
+    private TokenPhoneNumber tokenPhoneNumber = new TokenPhoneNumber();
+    private TokenPhoneNumber.Token token = new TokenPhoneNumber.Token();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +86,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
         tvResendCode = findViewById(R.id.txt_resend_code);
         parentPanel = findViewById(R.id.parentPanel);
         container_float_loading = findViewById(R.id.container_float_loading);
+        progressBar = findViewById(R.id.loading_progress_bar);
 
         mVerificationId = getIntent().getStringExtra(ConstantValue.VERIFICATION_ID);
         mPhoneNumber = getIntent().getStringExtra(ConstantValue.PHONE_NUMBER);
@@ -99,6 +106,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.length() == 6) {
+                    progressBar.setVisibility(View.VISIBLE);
                     Utils.hideKeyboard(VerificationCodeActivity.this);
                     PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, charSequence.toString());
                     signInWithPhoneAuthCredential(credential);

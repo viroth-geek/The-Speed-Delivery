@@ -20,15 +20,21 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -118,6 +124,8 @@ public class BaseActivity extends AppCompatActivity
     private EditText etPhoneNumber;
     private Button btPhoneOk;
     private Snackbar snackbar;
+    private RelativeLayout progressBar;
+
     private UserAccount userAccount;
     private CallbackManager callbackManager;
     private LoginButton facebookLoginButton;
@@ -158,6 +166,7 @@ public class BaseActivity extends AppCompatActivity
 
         toolbar = findViewById(R.id.toolbar);
         drawer = findViewById(R.id.drawer_layout);
+//        progressBar = findViewById(R.id.loading_progress_bar);
         drawer.addDrawerListener(this);
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -188,8 +197,6 @@ public class BaseActivity extends AppCompatActivity
         configureFacebookLogin();
         configureGoogleSignIn();
         configurePhoneAuthentication();
-
-
     }
 
     private void initFilterProductComponent() {
@@ -358,6 +365,7 @@ public class BaseActivity extends AppCompatActivity
         txt_user_name = navigationView.getHeaderView(0).findViewById(R.id.txt_user_name);
         btn_sign_up = navigationView.getHeaderView(1).findViewById(R.id.btn_sign_up);
         btn_log_in = navigationView.getHeaderView(1).findViewById(R.id.btn_log_in);
+        progressBar = navigationView.getHeaderView(1).findViewById(R.id.loading_progress_bar);
         btPhoneOk = navigationView.getHeaderView(1).findViewById(R.id.btn_ok);
         drawViewSideMenu();
     }
@@ -886,12 +894,21 @@ public class BaseActivity extends AppCompatActivity
         } else if (view.equals(btPhoneOk)) {
             boolean isConnect = NetworkConnectHelper.getInstance().isConnectionOnline(getApplicationContext());
             if (isConnect) {
+                progressBar.setVisibility(View.VISIBLE);
+                btPhoneOk.setVisibility(View.GONE);
                 String _mPhoneNumber = etPhoneNumber.getText().toString();
                 if (validatePhoneNumber(_mPhoneNumber)) {
                     btPhoneOk.setEnabled(false);
                     FireBasePhoneAuthentication("+855" + _mPhoneNumber);
                 } else {
-                    etPhoneNumber.setError("Please check phone number again.");
+                    progressBar.setVisibility(View.GONE);
+                    btPhoneOk.setVisibility(View.VISIBLE);
+                    int errorColor = getResources().getColor(R.color.white);
+                    String errorString = "Please check phone number again.";  // Your custom error message.
+                    ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(errorColor);
+                    SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(errorString);
+                    spannableStringBuilder.setSpan(foregroundColorSpan, 0, errorString.length(), 0);
+                    etPhoneNumber.setError(spannableStringBuilder);
                 }
             } else {
                 Toast.makeText(this, "Internet disconnected!. Try again", Toast.LENGTH_SHORT).show();
@@ -989,17 +1006,26 @@ public class BaseActivity extends AppCompatActivity
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(PhoneAuthCredential credential) {
+                progressBar.setVisibility(View.GONE);
+                btPhoneOk.setVisibility(View.VISIBLE);
+                btPhoneOk.setEnabled(true);
                 signInWithPhoneAuthCredential(credential);
             }
 
             @Override
             public void onVerificationFailed(FirebaseException e) {
                 Log.d(ConstantValue.TAG_LOG, "onVerificationFailed " + e.getMessage());
+                progressBar.setVisibility(View.GONE);
+                btPhoneOk.setVisibility(View.VISIBLE);
+                btPhoneOk.setEnabled(true);
+                Toast.makeText(BaseActivity.this, "Sign In Failed", Toast.LENGTH_SHORT).show();
+                Log.d(ConstantValue.TAG_LOG, "onVerificationFailed " + e.getMessage());
             }
 
             @Override
-            public void onCodeSent(String verificationId,
-                                   PhoneAuthProvider.ForceResendingToken token) {
+            public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
+                progressBar.setVisibility(View.GONE);
+                btPhoneOk.setVisibility(View.VISIBLE);
                 btPhoneOk.setEnabled(true);
                 mVerificationId = verificationId;
                 mResendToken = token;

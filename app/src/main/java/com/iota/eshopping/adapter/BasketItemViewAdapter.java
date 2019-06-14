@@ -35,6 +35,7 @@ public class BasketItemViewAdapter implements ItemAdjustment.OnChangeValue {
     private ProductAttributeOption productAttributeOption;
     private Store store;
 
+
     /**
      * @param context Context
      * @param layoutParent LinearLayout
@@ -144,7 +145,8 @@ public class BasketItemViewAdapter implements ItemAdjustment.OnChangeValue {
         ItemAdjustment adjustment = new ItemAdjustment();
         adjustment.setProduct(proItem, this);
         adjustment.setStore(store);
-        productAttributeOption.setOptionProducts(Observable.fromIterable(productAttributeOption.getOptionProducts()).filter(optionProduct -> ((Product) proItem.getItem()).getProductUid().equals(optionProduct.getProductUid())).toList().blockingGet());
+        productAttributeOption.setOptionProducts(Observable.fromIterable(productAttributeOption.getOptionProducts()).filter(optionProduct ->
+                ((Product) proItem.getItem()).getProductUid().equals(optionProduct.getProductUid())).toList().blockingGet());
         adjustment.setProductAttributeOption(productAttributeOption);
 
         if (fragmentManager != null) {

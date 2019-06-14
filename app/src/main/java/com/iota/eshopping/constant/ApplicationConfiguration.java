@@ -49,7 +49,13 @@ public class ApplicationConfiguration {
     public static final String PAGE_SPECIAL_PROMOTION= "special-promotion";
 
     public static final int LIMIT = 20;
+    public static final String TAG = "data";
+    public static final String VERIFICATION_ID = "verification_id";
+    public static final String PHONE_NUMBER = "phone_number";
 
+    public static final String REGISTER = "register";
+    public static final String SUCCESS = "success";
+    public static final String REGISTER_BY_PHONE_NUMBER = "sign_in_by_phone_number";
 
     public void log(String title) {
         Log.d(ConstantValue.TAG_LOG, "Message is " + title);
