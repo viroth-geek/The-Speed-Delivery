@@ -17,7 +17,7 @@ public class PhoneNumber {
     @Expose
     private String lastName;
 
-    @SerializedName("username")
+    @SerializedName("email")
     @Expose
     private String email;
 

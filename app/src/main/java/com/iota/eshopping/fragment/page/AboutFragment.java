@@ -11,10 +11,10 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.TextView;
 
-import com.iota.eshopping.R;
 import com.iota.eshopping.activity.PrivacyPolicyActivity;
 import com.iota.eshopping.constant.ApplicationConfiguration;
 import com.iota.eshopping.constant.ConstantValue;
+import com.iota.eshopping.R;
 import com.iota.eshopping.service.datahelper.datasource.online.FetchWebPage;
 
 /**

@@ -24,13 +24,6 @@ android {
             }
         }
 
-//        // TODO: Please update the OneSignal ID below to yours!
-//        manifestPlaceholders = [onesignal_app_id               : "15533f79-e2fa-4c4c-914b-9115e8fa05cb",
-//                                // Project number pulled from dashboard, local value is ignored.
-//                                onesignal_google_project_number: 'REMOTE']
-//
-
-//        planb one signal
         // TODO: Please update the OneSignal ID below to yours!
         manifestPlaceholders = [onesignal_app_id               : "65ac04a0-c2bf-43e2-a444-d811977bbd51",
                                 // Project number pulled from dashboard, local value is ignored.
@@ -130,8 +123,6 @@ dependencies {
     // into a simple and easy to use interface.
     implementation 'com.github.bumptech.glide:glide:4.3.1'
     implementation 'com.google.firebase:firebase-config:12.0.1'
-    implementation 'com.google.firebase:firebase-core:12.0.1'
-    implementation 'com.google.firebase:firebase-auth:12.0.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.3.1'
     implementation('com.github.bumptech.glide:okhttp3-integration:4.0.0') {
         exclude group: 'glide-parent'
@@ -168,12 +159,12 @@ dependencies {
     implementation 'com.facebook.android:facebook-login:[4,5)'
 
     // Google SignIn
-    implementation 'com.google.android.gms:play-services-auth:12.0.1'
+    compile 'com.google.android.gms:play-services-auth:12.0.1'
 
     // JSOUP
-    implementation 'org.jsoup:jsoup:1.11.3'
+    compile 'org.jsoup:jsoup:1.11.3'
 
-    implementation 'me.gujun.android.taggroup:library:1.4@aar'
-
+    compile 'me.gujun.android.taggroup:library:1.4@aar'
+    implementation 'com.google.firebase:firebase-auth:12.0.1'
 }
 apply plugin: 'com.google.gms.google-services'

@@ -1,14 +1,24 @@
 package com.iota.eshopping.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.iota.eshopping.R;
 import com.iota.eshopping.constant.ConstantValue;
+import com.iota.eshopping.security.ForceUpdateChecker;
+import com.iota.eshopping.util.LoggerHelper;
 import com.iota.eshopping.util.NetworkConnectHelper;
 import com.iota.eshopping.util.preference.LocationPreference;
+
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author channarith.bong

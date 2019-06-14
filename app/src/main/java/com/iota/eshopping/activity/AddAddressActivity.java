@@ -76,7 +76,7 @@ public class AddAddressActivity extends AppCompatActivity {
     @Override
     public void onAttachFragment(Fragment fragment) {
         super.onAttachFragment(fragment);
-        if (fragment instanceof DeliveryAddressFragment) {
+        if(fragment instanceof DeliveryAddressFragment) {
             iSaveAddress = (ISaveAddress) fragment;
         }
     }

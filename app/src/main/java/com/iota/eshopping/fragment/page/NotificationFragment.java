@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.iota.eshopping.R;
 import com.iota.eshopping.adapter.NotificationRecyclerAdapter;
 import com.iota.eshopping.constant.ApplicationConfiguration;
-import com.iota.eshopping.constant.ConstantValue;
 import com.iota.eshopping.model.Notification;
 import com.iota.eshopping.server.DatabaseHelper;
 import com.iota.eshopping.service.datahelper.datasource.offine.localnotification.FetchNotificationDAO;
@@ -72,7 +71,7 @@ public class NotificationFragment extends Fragment {
         List<Notification> notificationList = new ArrayList<>();
         FetchNotificationDAO db = new FetchNotificationDAO(DatabaseHelper.getInstance(getActivity()).getDatabase());
 
-        Log.d(ConstantValue.TAG_LOG, "data is " + db.getListNotification().size());
+        Log.d(ApplicationConfiguration.TAG, "data is " + db.getListNotification().size());
 
         if (db.getListNotification().size() > 0) {
             flLoadingContainer.setVisibility(View.GONE);

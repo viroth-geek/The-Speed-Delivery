@@ -71,8 +71,9 @@
 
     <style name="ButtonWithoutCorner" parent="Widget.AppCompat.Button">
         <item name="android:gravity">center_vertical|center_horizontal</item>
+        <item name="android:textColor">@color/textColorDeliverWhite</item>
         <item name="android:textSize">@dimen/text_size_T3</item>
-        <item name="android:background">@drawable/button_corner</item>
+        <item name="android:background">@color/buttonColorDeliverBackground</item>
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
         <item name="android:layout_height">27dp</item>

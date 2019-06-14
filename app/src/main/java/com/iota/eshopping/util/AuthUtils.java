@@ -15,7 +15,9 @@ public class AuthUtils {
      * @param authValid AuthValid
      */
     public static void isTokenValid(String token, AuthValid authValid) {
-        getUserDetails(token, customer -> authValid.isAuthValid(customer != null));
+        getUserDetails(token, customer -> {
+            authValid.isAuthValid(customer != null);
+        });
     }
 
     /**

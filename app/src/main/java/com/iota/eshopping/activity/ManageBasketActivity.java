@@ -35,6 +35,7 @@ import com.iota.eshopping.model.form.FormForGetDeliveryFee;
 import com.iota.eshopping.model.magento.addToCart.CartAttribute;
 import com.iota.eshopping.model.magento.addToCart.CartItemsRequest;
 import com.iota.eshopping.model.magento.addToCart.CartOption;
+import com.iota.eshopping.model.magento.addToCart.CartProductItem;
 import com.iota.eshopping.model.magento.addToCart.CartProductItems;
 import com.iota.eshopping.model.magento.addToCart.ResponseAddToCart;
 import com.iota.eshopping.model.magento.store.StoreFee;
@@ -356,11 +357,11 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
         calculateServiceFee(store.getId(), itemAmount);
 
         amount = Float.parseFloat(NumberUtils.strMoney(itemAmount));
-//        txtSubTotal.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(itemAmount)));
+//        txtSubTotal.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(itemAmount + deliveryFee)));
         txt_amount.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(itemAmount)));
 //        txtTotalItem.setText(String.valueOf(itemCount));
         txtServiceFee.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(serviceFee)));
-
+        fetchDeliveryFee(prepareForGetDeliveryFee(null));
 //        txt_item_service_fee.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(serviceFee)));
 //        txt_item_total.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(itemTotal)));
     }
@@ -739,12 +740,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
     private synchronized void processAddToCart(final CartItemsRequest cartItemsRequest) {
         // Customer token
         String token = userAccount.getCustomerToken();
-
-
         AuthUtils.isTokenValid(token, isValid -> {
-
-            Log.d(ConstantValue.TAG_LOG, "local token " + userAccount.getCustomerToken());
-
             if (isValid) {
                 // Add items to server
                 new AddMultiItemsToCart(cartItemsRequest, token, new InvokeOnCompleteAsync<List<ResponseAddToCart>>() {
@@ -783,10 +779,8 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
                 });
             } else {
                 container_float_loading.setVisibility(View.GONE);
-                Toast.makeText(this, "token is not authorized!", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
-
             }
         });
     }
@@ -794,6 +788,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d("ooooo", "OnResume");
         btn_go_to_checkout.setEnabled(true);
     }
 
@@ -865,9 +860,8 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
                 if (storeDeliveryFees.size() > 0) {
                     StoreDeliveryFee storeDeliveryFee = storeDeliveryFees.get(0);
                     deliveryFee = storeDeliveryFee.getDeliveryFee().floatValue();
-                    Log.d("ooooo", amount + "");
-                    txtSubTotal.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(amount + deliveryFee)));
-                    txt_delivery_fee.setText("$" + deliveryFee);
+                    txtSubTotal.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(itemAmount + deliveryFee + serviceFee)));
+                    txt_delivery_fee.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(deliveryFee)));
                     store.setFee(storeDeliveryFee.getDeliveryFee().floatValue());
                     store.setShippingMethod(storeDeliveryFee.getShippingMethod());
                 }

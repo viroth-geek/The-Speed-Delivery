@@ -58,6 +58,6 @@ public class ApplicationConfiguration {
     public static final String REGISTER_BY_PHONE_NUMBER = "sign_in_by_phone_number";
 
     public void log(String title) {
-        Log.d(ConstantValue.TAG_LOG, "Message is " + title);
+        Log.d(ApplicationConfiguration.TAG, "Message is " + title);
     }
 }

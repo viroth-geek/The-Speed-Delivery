@@ -100,7 +100,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
         if (address != null) {
             bindData();
-        } else {
+        }
+        else {
             progress_sponsor_stores.setVisibility(View.INVISIBLE);
             progress_recommended_stores.setVisibility(View.INVISIBLE);
             progress_new_stores.setVisibility(View.INVISIBLE);
@@ -161,12 +162,13 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     /**
+     *
      * @param tags List<Tag>
      */
     private void bindTags(List<Tag> tags) {
 
         List<String> tagsArr = new ArrayList<>();
-        for (int i = 0; i < tags.size(); i++) {
+        for (int i = 0; i< tags.size(); i++) {
             tagsArr.add(tags.get(i).getName());
         }
 
@@ -318,8 +320,9 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     /**
-     * @param storeRestriction  StoreRestriction
-     * @param type              SearchGroupType
+     *
+     * @param storeRestriction StoreRestriction
+     * @param type SearchGroupType
      * @param sliderLayoutImage SliderLayout
      */
     private void loadListStore(StoreRestriction storeRestriction, final SearchGroupType type, final SliderLayout sliderLayoutImage) {
@@ -373,8 +376,9 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     /**
+     *
      * @param storeRestriction StoreRestriction
-     * @param tag              Tag
+     * @param tag Tag
      */
     private void listStore(StoreRestriction storeRestriction, Tag tag) {
 
