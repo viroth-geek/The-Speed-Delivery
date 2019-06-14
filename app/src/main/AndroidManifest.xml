@@ -18,15 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-<<<<<<< HEAD
-        <activity android:name=".activity.NetworkBaseActivity"></activity>
-        <activity
-            android:name=".activity.VericationCodeActivity"
-=======
         <activity android:name=".activity.NetworkBaseActivity" />
         <activity
             android:name=".activity.VerificationCodeActivity"
->>>>>>> 8d7aa76930920691d378e6b0e1d57aa913601092
             android:label="@string/confirm_sms_code"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />

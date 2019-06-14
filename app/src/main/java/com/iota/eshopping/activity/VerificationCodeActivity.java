@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,36 +28,35 @@ import com.iota.eshopping.constant.ConstantValue;
 import com.iota.eshopping.model.Address;
 import com.iota.eshopping.model.CustomAttribute;
 import com.iota.eshopping.model.Customer;
+import com.iota.eshopping.model.CustomerPhoneNumber;
 import com.iota.eshopping.model.PhoneNumber;
 import com.iota.eshopping.model.TokenPhoneNumber;
+import com.iota.eshopping.model.phone.PhoneResponse;
 import com.iota.eshopping.security.UserAccount;
 import com.iota.eshopping.server.DatabaseHelper;
 import com.iota.eshopping.service.base.InvokeOnCompleteAsync;
 import com.iota.eshopping.service.datahelper.datasource.offine.address.FetchAddressDAO;
 import com.iota.eshopping.service.datahelper.datasource.online.FetchAddressList;
-import com.iota.eshopping.service.datahelper.datasource.online.FetchCustomer;
 import com.iota.eshopping.service.datahelper.datasource.online.FetchTokenByPhone;
+import com.iota.eshopping.service.datahelper.datasource.online.FetchUserByPhone;
 import com.iota.eshopping.util.ExceptionUtils;
 import com.iota.eshopping.util.LoggerHelper;
-import com.iota.eshopping.util.NetworkConnectHelper;
 import com.iota.eshopping.util.Utils;
 
 import java.util.concurrent.TimeUnit;
 
-public class VerificationCodeActivity extends AppCompatActivity implements View.OnClickListener {
+public class VerificationCodeActivity extends AppCompatActivity {
 
     private EditText etCode;
     private String mPhoneNumber;
     private TextView tvInformation;
     private TextView tvCodeCountdown;
     private TextView tvResendCode;
+    private RelativeLayout progressBar;
     private View container_float_loading;
     private View parentPanel;
-    private TextView tvTerm;
-    private TextView tvPolicy;
 
     private UserAccount userAccount;
-    private Customer customer = new Customer();
     private FetchAddressDAO db;
 
     private Handler handler;
@@ -89,14 +90,10 @@ public class VerificationCodeActivity extends AppCompatActivity implements View.
         tvResendCode = findViewById(R.id.txt_resend_code);
         parentPanel = findViewById(R.id.parentPanel);
         container_float_loading = findViewById(R.id.container_float_loading);
-        tvTerm = findViewById(R.id.txt_term);
-        tvPolicy = findViewById(R.id.txt_policy);
 
-        tvTerm.setOnClickListener(this);
-        tvPolicy.setOnClickListener(this);
-
-        mVerificationId = getIntent().getStringExtra(ConstantValue.VERIFICATION_ID);
-        mPhoneNumber = getIntent().getStringExtra(ConstantValue.PHONE_NUMBER);
+        progressBar = findViewById(R.id.loading_progress_bar);
+        mVerificationId = getIntent().getStringExtra(ApplicationConfiguration.VERIFICATION_ID);
+        mPhoneNumber = getIntent().getStringExtra(ApplicationConfiguration.PHONE_NUMBER);
 
         db = new FetchAddressDAO(DatabaseHelper.getInstance(this).getDatabase());
         tvInformation.setText("We have sent you an SMS with the code to +855 " + mPhoneNumber);
@@ -113,16 +110,10 @@ public class VerificationCodeActivity extends AppCompatActivity implements View.
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.length() == 6) {
-                    boolean isConnect = NetworkConnectHelper.getInstance().isConnectionOnline(getApplicationContext());
-                    if (isConnect) {
-                        Utils.hideKeyboard(VerificationCodeActivity.this);
-                        etCode.setEnabled(false);
-                        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, charSequence.toString());
-                        signInWithPhoneAuthCredential(credential);
-                    } else {
-                        Toast.makeText(VerificationCodeActivity.this, "Internet disconnected!. Try again", Toast.LENGTH_SHORT).show();
-                    }
-
+                    progressBar.setVisibility(View.VISIBLE);
+                    Utils.hideKeyboard(VerificationCodeActivity.this);
+                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, charSequence.toString());
+                    signInWithPhoneAuthCredential(credential);
                 }
             }
 
@@ -133,7 +124,6 @@ public class VerificationCodeActivity extends AppCompatActivity implements View.
         });
 
         tvResendCode.setOnClickListener(view -> {
-            etCode.setText("");
             FireBasePhoneAuthentication("+855" + mPhoneNumber);
             tvResendCode.setVisibility(View.GONE);
         });
@@ -146,6 +136,7 @@ public class VerificationCodeActivity extends AppCompatActivity implements View.
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
+//                        progressBar.setVisibility(View.GONE);
                         PhoneNumber phoneNumber = new PhoneNumber();
                         phoneNumber.setPhoneNumber(mPhoneNumber);
                         PhoneNumber.CustomerPhone customerPhone = new PhoneNumber.CustomerPhone();
@@ -154,43 +145,49 @@ public class VerificationCodeActivity extends AppCompatActivity implements View.
                     }
                 })
                 .addOnFailureListener(this, e -> {
-
-                    etCode.setEnabled(true);
                     etCode.setText("");
-                    Toast.makeText(this, "Invalid verification code entered.", Toast.LENGTH_SHORT).show();
-
+                    etCode.requestFocus();
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(this, "Verification Code is Invalid.", Toast.LENGTH_SHORT).show();
                 });
     }
 
     private void requestToken(PhoneNumber.CustomerPhone customerPhone) {
-
         container_float_loading.setVisibility(View.VISIBLE);
         new FetchTokenByPhone(customerPhone, new FetchTokenByPhone.ILoginOnCompleteAsync() {
             @Override
-            public void onComplete(String token) {
-                if (token.equals(ConstantValue.REGISTER)) {
-                    Intent intent = new Intent(VerificationCodeActivity.this, SignupActivity.class);
-                    intent.putExtra(ConstantValue.REGISTER_BY_PHONE_NUMBER, ConstantValue.REGISTER_BY_PHONE_NUMBER);
-                    intent.putExtra(ConstantValue.PHONE_NUMBER, mPhoneNumber);
-                    startActivity(intent);
-                }
-                else  {
+            public void onComplete(PhoneResponse phoneResponse) {
+                String status = phoneResponse.getStatus();
+
+                if (status.equals(ApplicationConfiguration.SUCCESS)) {
                     try {
-                        if (userAccount.assignToken(token)) {
-                            requestCustomerInfo(token);
+                        if (userAccount.assignToken(phoneResponse.getPhone().getRpToken())) {
+                            token.setToken(phoneResponse.getPhone().getRpToken());
+                            tokenPhoneNumber.setToken(token);
+                            requestCustomerInfo(tokenPhoneNumber);
                         }
+
                     } catch (Exception e) {
                         container_float_loading.setVisibility(View.GONE);
-                        Log.d(ConstantValue.TAG_LOG, e.getMessage());
+                        Log.d(ApplicationConfiguration.TAG, e.getMessage());
                         //Snackbar.make(parentPanel, "Logged fail: " + ExceptionUtils.translateExceptionMessage(e), Snackbar.LENGTH_LONG).show();
                     }
+
+                } else if (status.equals(ApplicationConfiguration.REGISTER)) {
+                    progressBar.setVisibility(View.GONE);
+                    Intent intent = new Intent(VerificationCodeActivity.this, SignupActivity.class);
+                    intent.putExtra(ApplicationConfiguration.REGISTER_BY_PHONE_NUMBER, ApplicationConfiguration.REGISTER_BY_PHONE_NUMBER);
+                    intent.putExtra(ApplicationConfiguration.PHONE_NUMBER, mPhoneNumber);
+                    startActivity(intent);
+                    finish();
                 }
+
             }
 
             @Override
             public void onError(Throwable e) {
                 container_float_loading.setVisibility(View.GONE);
-                Log.d(ConstantValue.TAG_LOG, "Getting token is error " + e.getMessage());
+                Log.d(ApplicationConfiguration.TAG, "Getting token is error " + e.getMessage());
                 //Snackbar.make(parentPanel, "Logged fail: " + ExceptionUtils.translateExceptionMessage(e), Snackbar.LENGTH_LONG).show();
             }
         });
@@ -201,35 +198,71 @@ public class VerificationCodeActivity extends AppCompatActivity implements View.
      *
      * @param token String
      */
-    private void requestCustomerInfo(final String token) {
-        new FetchCustomer(token, new FetchCustomer.InvokeOnCompleteAsync() {
+    private void requestCustomerInfo(final TokenPhoneNumber token) {
+
+        new FetchUserByPhone(token, new FetchUserByPhone.ILoginOnCompleteAsync() {
             @Override
-            public void onComplete(Customer customer) {
-                if (customer != null) {
-                    customer.setRpToken(token);
-                    if (userAccount.insertCustomer(customer)) {
+            public void onComplete(CustomerPhoneNumber customerPhoneNumber) {
+
+                //customer.setRpToken(customerPhoneNumber.getCustomer().getRpToken());
+
+                customerPhoneNumber.getCustomer().setRpToken(token.getToken().getToken());
+                if (customerPhoneNumber.getCustomer() != null) {
+
+
+                    if (userAccount.insertCustomer(customerPhoneNumber.getCustomer())) {
+                        Log.d(ApplicationConfiguration.TAG, "user account saved " + userAccount.getCustomer());
                         //Snackbar.make(parentPanel, "Logged success!", Snackbar.LENGTH_LONG).show();
-                        syncAddressList(customer.getId());
+                        syncAddressList(customerPhoneNumber.getCustomer().getId());
                         Intent returnIntent = new Intent();
                         setResult(Activity.RESULT_OK, returnIntent);
                         finish();
                     } else {
                         Snackbar.make(parentPanel, "Sorry, please try again.", Snackbar.LENGTH_LONG).show();
                     }
-                } else {
-                    Snackbar.make(parentPanel, "Sorry, please try again.", Snackbar.LENGTH_LONG).show();
+                    container_float_loading.setVisibility(View.GONE);
                 }
-                container_float_loading.setVisibility(View.GONE);
             }
 
             @Override
             public void onError(Throwable e) {
-                //Snackbar.make(parentPanel, "You logged fail: " + ExceptionUtils.translateExceptionMessage(e), Snackbar.LENGTH_LONG).show();
-                Toast.makeText(VerificationCodeActivity.this, "You logged fail: " + ExceptionUtils.translateExceptionMessage(e), Toast.LENGTH_SHORT).show();
+                Log.d(ApplicationConfiguration.TAG, "Error fetching customer infor " + e.getMessage());
+                Snackbar.make(parentPanel, "You logged fail: " + ExceptionUtils.translateExceptionMessage(e), Snackbar.LENGTH_LONG).show();
                 LoggerHelper.showErrorLog("409, Login Page: ", e);
                 container_float_loading.setVisibility(View.GONE);
             }
         });
+
+//        new FetchCustomer(token, new FetchCustomer.InvokeOnCompleteAsync() {
+//            @Override
+//            public void onComplete(Customer customer) {
+//                if (customer != null) {
+//                    customer.setRpToken(token);
+//                    if (userAccount.insertCustomer(customer)) {
+//                        Snackbar.make(parentPanel, "Logged success!", Snackbar.LENGTH_LONG).show();
+//                        syncAddressList(customer.getId());
+//                        Intent returnIntent = new Intent();
+//                        setResult(Activity.RESULT_OK, returnIntent);
+//                        finish();
+//
+//                    } else {
+//                        Snackbar.make(parentPanel, "Sorry, please try again.", Snackbar.LENGTH_LONG).show();
+//                    }
+//                } else {
+//                    Snackbar.make(parentPanel, "Sorry, please try again.", Snackbar.LENGTH_LONG).show();
+//                }
+//                container_float_loading.setVisibility(View.GONE);
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                Log.d(ApplicationConfiguration.TAG, "Error fetching customer infor " + e.getMessage());
+//                Snackbar.make(parentPanel, "You logged fail: " + ExceptionUtils.translateExceptionMessage(e), Snackbar.LENGTH_LONG).show();
+//                LoggerHelper.showErrorLog("409, Login Page: ", e);
+//                container_float_loading.setVisibility(View.GONE);
+//            }
+//        });
+
     }
 
     /**
@@ -288,7 +321,6 @@ public class VerificationCodeActivity extends AppCompatActivity implements View.
 
                     @Override
                     public void onVerificationFailed(FirebaseException e) {
-                        Toast.makeText(VerificationCodeActivity.this, "code failed", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -300,23 +332,6 @@ public class VerificationCodeActivity extends AppCompatActivity implements View.
 
                     }
                 });
-    }
-
-    @Override
-    public void onClick(View view) {
-        Intent intent = new Intent(this, PrivacyPolicyActivity.class);
-        if (view == tvTerm) {
-            intent.putExtra(ConstantValue.URL_KEY, ApplicationConfiguration.PAGE_TERMS_CONDITIONS);
-            intent.putExtra(ConstantValue.TITLE, "Term and Condition");
-            intent.putExtra(ConstantValue.VERIFICATION_METHOD, "verification");
-            startActivity(intent);
-        }
-        if (view == tvPolicy) {
-            intent.putExtra(ConstantValue.URL_KEY, ApplicationConfiguration.PAGE_PRIVACY_POLICY);
-            intent.putExtra(ConstantValue.TITLE, "Privacy Policy");
-            intent.putExtra(ConstantValue.VERIFICATION_METHOD, "verification");
-            startActivity(intent);
-        }
     }
 
     private class CountdownTask implements Runnable {
@@ -342,15 +357,5 @@ public class VerificationCodeActivity extends AppCompatActivity implements View.
                 handler.removeCallbacksAndMessages(null);
             }
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        tokenPhoneNumber = null;
-        token = null;
-        customer = null;
-        userAccount = null;
-        db = null;
     }
 }

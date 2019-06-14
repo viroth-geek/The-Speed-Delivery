@@ -21,12 +21,12 @@ public class FetchCustomerByPhone implements Observer<PhoneResponse> {
      * @param phone
      * @param iLoginOnCompleteAsync
      */
-    public FetchCustomerByPhone(PhoneNumber phone, ILoginOnCompleteAsync iLoginOnCompleteAsync) {
+    public FetchCustomerByPhone(PhoneNumber.CustomerPhone phone, ILoginOnCompleteAsync iLoginOnCompleteAsync) {
         this.iLoginOnCompleteAsync = iLoginOnCompleteAsync;
         requestCustomerByPhone(phone);
     }
 
-    private void requestCustomerByPhone(PhoneNumber phone) {
+    private void requestCustomerByPhone(PhoneNumber.CustomerPhone phone) {
         ServiceGenerator
                 .createService(CustomerService.class)
                 .getCustomerByPhone(phone)

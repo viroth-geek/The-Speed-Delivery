@@ -1,7 +1,9 @@
 package com.iota.eshopping.service.api.user;
 
 import com.iota.eshopping.model.Customer;
+import com.iota.eshopping.model.CustomerPhoneNumber;
 import com.iota.eshopping.model.PhoneNumber;
+import com.iota.eshopping.model.TokenPhoneNumber;
 import com.iota.eshopping.model.UserSecure;
 import com.iota.eshopping.model.form.ForgetPasswordForm;
 import com.iota.eshopping.model.modelForView.Address;
@@ -94,6 +96,9 @@ public interface CustomerService {
 
 
     @POST("V2/eshopping/customer/registerPhoneNumber")
-    Observable<PhoneResponse> getCustomerByPhone(@Body PhoneNumber phoneNumber);
+    Observable<PhoneResponse> getCustomerByPhone(@Body PhoneNumber.CustomerPhone phoneNumber);
+
+    @POST("V2/eshopping/customer/loginByPhoneNumber")
+    Observable<CustomerPhoneNumber> loginByPhoneNumber(@Body TokenPhoneNumber tokenPhoneNumber);
 
 }

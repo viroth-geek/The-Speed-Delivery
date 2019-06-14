@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/parentPanel"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.iota.eshopping.activity.SigninActivity">
+    tools:context="com.iota.eshopping.activity.SignupActivity">
     <include layout="@layout/view_toolbar"
         android:id="@+id/toolbar"/>
     <LinearLayout
@@ -14,7 +13,22 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/margin_length_20">
+        android:padding="@dimen/margin_length_20"
+        >
+
+        <EditText
+            android:id="@+id/edt_phone_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/backgroud_text_field_border"
+            android:enabled="false"
+            android:text="12345678"
+            android:hint="PhoneNumber"
+            android:inputType="textPersonName"
+            android:paddingLeft="@dimen/margin_length_10"
+            android:visibility="gone" />
 
         <EditText
             android:id="@+id/edt_first_name"
@@ -24,6 +38,7 @@
             android:layout_marginBottom="5dp"
             android:background="@drawable/backgroud_text_field_border"
             android:hint="First name"
+            android:text="john"
             android:inputType="textPersonName"
             android:paddingLeft="@dimen/margin_length_10" />
 
@@ -35,6 +50,7 @@
             android:layout_marginBottom="5dp"
             android:background="@drawable/backgroud_text_field_border"
             android:hint="Last Name"
+            android:text="deo"
             android:inputType="textPersonName"
             android:paddingLeft="@dimen/margin_length_10" />
 
@@ -47,18 +63,47 @@
             android:background="@drawable/backgroud_text_field_border"
             android:hint="@string/email_address"
             android:inputType="textEmailAddress"
-            android:paddingLeft="@dimen/margin_length_10" />
+            android:paddingLeft="@dimen/margin_length_10"
+            android:text="johndeo@gmail.com"/>
 
-        <EditText
-            android:id="@+id/edt_password"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:background="@drawable/backgroud_text_field_border"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:paddingLeft="@dimen/margin_length_10" />
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/edt_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/backgroud_text_field_border"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:padding="@dimen/margin_length_10" />
+
+            <ImageButton
+                android:id="@+id/btn_show_hide_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_visibility_off_black_24dp"
+                android:background="@color/transparent"
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
+                android:text="Button"/>
+
+        </RelativeLayout>
+
+        <!--<EditText-->
+            <!--android:id="@+id/edt_password"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="5dp"-->
+            <!--android:layout_marginBottom="5dp"-->
+            <!--android:background="@drawable/backgroud_text_field_border"-->
+            <!--android:hint="Password"-->
+            <!--android:inputType="textPassword"-->
+            <!--android:paddingLeft="@dimen/margin_length_10" />-->
 
         <LinearLayout
             android:layout_marginTop="@dimen/margin_length_10"
@@ -67,6 +112,7 @@
             android:gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <Button
                 android:id="@+id/btn_create_account"
                 android:layout_width="@dimen/button_width_length_200"

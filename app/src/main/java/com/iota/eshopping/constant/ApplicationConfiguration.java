@@ -53,6 +53,10 @@ public class ApplicationConfiguration {
     public static final String VERIFICATION_ID = "verification_id";
     public static final String PHONE_NUMBER = "phone_number";
 
+    public static final String REGISTER = "register";
+    public static final String SUCCESS = "success";
+    public static final String REGISTER_BY_PHONE_NUMBER = "sign_in_by_phone_number";
+
     public void log(String title) {
         Log.d(ApplicationConfiguration.TAG, "Message is " + title);
     }
