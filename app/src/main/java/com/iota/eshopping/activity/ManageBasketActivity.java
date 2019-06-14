@@ -861,7 +861,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
                     deliveryFee = storeDeliveryFee.getDeliveryFee().floatValue();
                     Log.d("ooooo", amount + "");
                     txtSubTotal.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(amount + deliveryFee)));
-                    txt_delivery_fee.setText("$" + deliveryFee);
+                    txt_delivery_fee.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(deliveryFee)));
                     store.setFee(storeDeliveryFee.getDeliveryFee().floatValue());
                     store.setShippingMethod(storeDeliveryFee.getShippingMethod());
                 }
