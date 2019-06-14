@@ -62,6 +62,7 @@ import java.util.Arrays;
  */
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
+
     private Button btn_log_in, btn_sign_up;
     private EditText edt_email_address, edt_password;
     private View container_float_loading;
