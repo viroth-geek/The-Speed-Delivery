@@ -66,6 +66,7 @@
                     android:inputType="phone"
                     android:paddingStart="@dimen/margin_length_10"
                     android:textColor="@color/black"
+                    android:textColorHint="#B9B2B2"
                     tools:ignore="Autofill,RtlSymmetry" />
 
             </LinearLayout>

@@ -185,7 +185,7 @@
     <string name="signup">Signup</string>
     <string name="continue_with_facebook">Continue with Facebook</string>
     <string name="continue_with_google">Continue with Google</string>
-    <string name="ex_012345678">Ex : 012345678</string>
+    <string name="ex_012345678">Phone Number</string>
     <string name="sign_in">SIGN IN</string>
     <string name="comfirm_sms_code">Confirm SMS Code</string>
     <string name="all">All</string>

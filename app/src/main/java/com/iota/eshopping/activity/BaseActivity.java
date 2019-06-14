@@ -22,6 +22,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
@@ -982,6 +983,7 @@ public class BaseActivity extends AppCompatActivity
 
     private void configurePhoneAuthentication() {
         etPhoneNumber = navigationView.getHeaderView(1).findViewById(R.id.edt_phone_nubmer);
+        etPhoneNumber.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
         btPhoneOk = navigationView.getHeaderView(1).findViewById(R.id.btn_ok);
         btPhoneOk.setOnClickListener(this);
     }

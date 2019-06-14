@@ -143,6 +143,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
 
                     etCode.setEnabled(true);
                     etCode.setText("");
+                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(this, "Invalid verification code entered.", Toast.LENGTH_SHORT).show();
 
                 });
@@ -159,6 +160,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
                     intent.putExtra(ConstantValue.REGISTER_BY_PHONE_NUMBER, ConstantValue.REGISTER_BY_PHONE_NUMBER);
                     intent.putExtra(ConstantValue.PHONE_NUMBER, mPhoneNumber);
                     startActivity(intent);
+                    finish();
                 }
                 else  {
                     try {
