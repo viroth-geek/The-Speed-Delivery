@@ -165,5 +165,6 @@ dependencies {
     compile 'org.jsoup:jsoup:1.11.3'
 
     compile 'me.gujun.android.taggroup:library:1.4@aar'
+    implementation 'com.google.firebase:firebase-auth:12.0.1'
 }
 apply plugin: 'com.google.gms.google-services'

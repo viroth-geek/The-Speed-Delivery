@@ -96,7 +96,7 @@ public interface CustomerService {
 
 
     @POST("V2/eshopping/customer/registerPhoneNumber")
-    Observable<PhoneResponse> getCustomerByPhone(@Body PhoneNumber.CustomerPhone phoneNumber);
+    Observable<String> getCustomerByPhone(@Body PhoneNumber.CustomerPhone phoneNumber);
 
     @POST("V2/eshopping/customer/loginByPhoneNumber")
     Observable<CustomerPhoneNumber> loginByPhoneNumber(@Body TokenPhoneNumber tokenPhoneNumber);

@@ -4,8 +4,6 @@ package com.iota.eshopping.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
 import java.util.List;
 
 /**
@@ -40,6 +38,11 @@ public class Customer extends Entity {
     @SerializedName("lastname")
     @Expose
     private String lastname;
+
+    @SerializedName("phone_number")
+    @Expose
+    private String phonenumber;
+
     @SerializedName("updated_at")
     @Expose
     private String updateAt;
@@ -224,6 +227,21 @@ public class Customer extends Entity {
      */
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+
+    /*
+     *@param phonenumber
+     * */
+    public void setPhonenumber(String phonenumber) {
+        this.phonenumber = phonenumber;
+    }
+
+    /**
+     * @return
+     */
+    public String getPhonenumber() {
+        return phonenumber;
     }
 
     /**
@@ -434,6 +452,7 @@ public class Customer extends Entity {
                 ", disableAutoGroupChange='" + disableAutoGroupChange + '\'' +
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
+                ",phone number" + phonenumber + '\'' +
                 ", updateAt='" + updateAt + '\'' +
                 ", createdIn='" + createdIn + '\'' +
                 ", prefix='" + prefix + '\'' +
