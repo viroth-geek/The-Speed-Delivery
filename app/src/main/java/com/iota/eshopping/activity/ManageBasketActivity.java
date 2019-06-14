@@ -357,11 +357,11 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
         calculateServiceFee(store.getId(), itemAmount);
 
         amount = Float.parseFloat(NumberUtils.strMoney(itemAmount));
-//        txtSubTotal.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(itemAmount)));
+//        txtSubTotal.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(itemAmount + deliveryFee)));
         txt_amount.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(itemAmount)));
 //        txtTotalItem.setText(String.valueOf(itemCount));
         txtServiceFee.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(serviceFee)));
-
+        fetchDeliveryFee(prepareForGetDeliveryFee(null));
 //        txt_item_service_fee.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(serviceFee)));
 //        txt_item_total.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(itemTotal)));
     }
@@ -788,6 +788,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d("ooooo", "OnResume");
         btn_go_to_checkout.setEnabled(true);
     }
 
@@ -859,8 +860,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
                 if (storeDeliveryFees.size() > 0) {
                     StoreDeliveryFee storeDeliveryFee = storeDeliveryFees.get(0);
                     deliveryFee = storeDeliveryFee.getDeliveryFee().floatValue();
-                    Log.d("ooooo", amount + "");
-                    txtSubTotal.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(amount + deliveryFee)));
+                    txtSubTotal.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(itemAmount + deliveryFee + serviceFee)));
                     txt_delivery_fee.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(deliveryFee)));
                     store.setFee(storeDeliveryFee.getDeliveryFee().floatValue());
                     store.setShippingMethod(storeDeliveryFee.getShippingMethod());
