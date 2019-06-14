@@ -38,7 +38,6 @@
             android:layout_marginBottom="5dp"
             android:background="@drawable/backgroud_text_field_border"
             android:hint="First name"
-            android:text="john"
             android:inputType="textPersonName"
             android:paddingLeft="@dimen/margin_length_10" />
 
@@ -50,7 +49,6 @@
             android:layout_marginBottom="5dp"
             android:background="@drawable/backgroud_text_field_border"
             android:hint="Last Name"
-            android:text="deo"
             android:inputType="textPersonName"
             android:paddingLeft="@dimen/margin_length_10" />
 
@@ -63,8 +61,7 @@
             android:background="@drawable/backgroud_text_field_border"
             android:hint="@string/email_address"
             android:inputType="textEmailAddress"
-            android:paddingLeft="@dimen/margin_length_10"
-            android:text="johndeo@gmail.com"/>
+            android:paddingLeft="@dimen/margin_length_10" />
 
         <RelativeLayout
             android:layout_width="match_parent"

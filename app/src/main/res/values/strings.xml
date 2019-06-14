@@ -186,7 +186,6 @@
     <string name="continue_with_facebook">Continue with Facebook</string>
     <string name="continue_with_google">Continue with Google</string>
     <string name="ex_012345678">Phone Number</string>
-    <string name="sign_in">SIGN IN</string>
     <string name="comfirm_sms_code">Confirm SMS Code</string>
     <string name="all">All</string>
     <string name="open">Open</string>
@@ -200,4 +199,7 @@
     <string name="empty_delivery_address">Empty delivery address</string>
     <string name="empty_notification">Notification is empty</string>
     <string name="sms_can_be_resend_in">Code resend in</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last Name</string>
+    <string name="already_have_an_account">Already have an account?</string>
 </resources>

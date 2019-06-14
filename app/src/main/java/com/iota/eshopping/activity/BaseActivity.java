@@ -961,7 +961,6 @@ public class BaseActivity extends AppCompatActivity
 
     private void configurePhoneAuthentication() {
         etPhoneNumber = navigationView.getHeaderView(1).findViewById(R.id.edt_phone_nubmer);
-        etPhoneNumber.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
         btPhoneOk = navigationView.getHeaderView(1).findViewById(R.id.btn_ok);
         btPhoneOk.setOnClickListener(this);
     }
