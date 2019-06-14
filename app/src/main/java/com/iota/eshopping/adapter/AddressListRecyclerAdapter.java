@@ -119,7 +119,7 @@ public class AddressListRecyclerAdapter extends RecyclerView.Adapter<AddressList
         new DeleteAddress(addressId, new DeleteAddress.InvokeOnCompleteAsync() {
             @Override
             public void onComplete(Integer result) {
-//                Toast.makeText(mContext, "Deleted successfully!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Deleted successfully!", Toast.LENGTH_SHORT).show();
             }
 
             @Override

@@ -98,7 +98,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
 
     private Store store;
     private float itemAmount = 0f;
-    private Float deliveryFee = 0f;
+    private float deliveryFee = 0f;
     private float serviceFee = 0f;
     private static int ATTEMPT_COUNT = 0;
     private static int MAX_ATTEMPT = 2;
