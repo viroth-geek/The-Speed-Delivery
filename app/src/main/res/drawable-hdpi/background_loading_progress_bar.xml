@@ -9,7 +9,7 @@
     <!-- solids that simulate shadow !-->
     <item>
         <shape>
-            <corners android:radius="@dimen/radius_corner_loading"></corners>
+            <corners android:radius="@dimen/radius_corner_loading" />
             <solid android:color="#10CCCCCC" />
             <padding
                 android:bottom="1dp"
@@ -21,7 +21,7 @@
 
     <item>
         <shape>
-            <corners android:radius="@dimen/radius_corner_loading"></corners>
+            <corners android:radius="@dimen/radius_corner_loading" />
             <solid android:color="#20CCCCCC" />
             <padding
                 android:bottom="1dp"
@@ -33,7 +33,7 @@
 
     <item>
         <shape>
-            <corners android:radius="@dimen/radius_corner_loading"></corners>
+            <corners android:radius="@dimen/radius_corner_loading" />
             <solid android:color="#40CCCCCC" />
             <padding
                 android:bottom="1dp"
@@ -45,7 +45,7 @@
 
     <item>
         <shape>
-            <corners android:radius="@dimen/radius_corner_loading"></corners>
+            <corners android:radius="@dimen/radius_corner_loading" />
             <solid android:color="#50CCCCCC" />
             <padding
                 android:bottom="1dp"
@@ -57,7 +57,7 @@
 
     <item>
         <shape>
-            <corners android:radius="@dimen/radius_corner_loading"></corners>
+            <corners android:radius="@dimen/radius_corner_loading" />
             <solid android:color="#60CCCCCC" />
             <padding
                 android:bottom="1dp"
@@ -70,7 +70,7 @@
     <!-- main background !-->
     <item>
         <shape>
-            <corners android:radius="@dimen/radius_corner_loading"></corners>
+            <corners android:radius="@dimen/radius_corner_loading" />
             <solid android:color="#ffffff" />
         </shape>
     </item>
