@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -20,19 +19,16 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -50,14 +46,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.iota.eshopping.R;
@@ -203,11 +195,10 @@ public class BaseActivity extends AppCompatActivity
         allStore = findViewById(R.id.txt_pro_filter_all);
         openStore = findViewById(R.id.txt_pro_filter_open);
 
-        allStore.setOnClickListener(this::onClick);
-        openStore.setOnClickListener(this::onClick);
+        allStore.setOnClickListener(this);
+        openStore.setOnClickListener(this);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -466,22 +457,19 @@ public class BaseActivity extends AppCompatActivity
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    LoggerHelper.showDebugLog("Granted");
-                    BaseActivity.this.requestGps();
+        if (requestCode == PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                LoggerHelper.showDebugLog("Granted");
+                BaseActivity.this.requestGps();
+            } else {
+                LoggerHelper.showDebugLog("Not Granted");
+                if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    Toast.makeText(this, "To enable the function of this application please enable location permission of the application from the setting screen of the terminal.", Toast.LENGTH_SHORT).show();
                 } else {
-                    LoggerHelper.showDebugLog("Not Granted");
-                    if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-                        Toast.makeText(this, "To enable the function of this application please enable location permission of the application from the setting screen of the terminal.", Toast.LENGTH_SHORT).show();
-                    } else {
-                        ActivityCompat.requestPermissions(this,
-                                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-                    }
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
                 }
-                break;
             }
         }
     }
@@ -619,16 +607,6 @@ public class BaseActivity extends AppCompatActivity
         toolbar.setTitle(R.string.notification);
         NotificationFragment notificationFragment = new NotificationFragment();
         displaySelectedFragment(notificationFragment);
-    }
-
-
-    /**
-     * Check for new notification
-     */
-
-    private void checkVerificationCode() {
-        toolbar.setTitle(R.string.comfirm_sms_code);
-
     }
 
     /**
@@ -964,16 +942,16 @@ public class BaseActivity extends AppCompatActivity
 //        dialog.show();
 //    }
 
-    /**
-     * redirect to play store
-     *
-     * @param updateUrl String
-     */
-    private void redirectStore(String updateUrl) {
-        final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(updateUrl));
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-    }
+//    /**
+//     * redirect to play store
+//     *
+//     * @param updateUrl String
+//     */
+//    private void redirectStore(String updateUrl) {
+//        final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(updateUrl));
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        startActivity(intent);
+//    }
 
 
     /**
@@ -987,10 +965,7 @@ public class BaseActivity extends AppCompatActivity
     }
 
     private boolean validatePhoneNumber(String phone_number) {
-        if (phone_number != null || phone_number != "") {
-            return phone_number.length() >= 8;
-        }
-        return false;
+        return phone_number.length() >= 8;
     }
 
     private void FireBasePhoneAuthentication(String phoneNumber) {
@@ -1042,27 +1017,19 @@ public class BaseActivity extends AppCompatActivity
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
 
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
 
-                            final FirebaseUser user = task.getResult().getUser();
-                            Log.d(ConstantValue.TAG, "Firebase user " + user.getDisplayName() + " " + user.getEmail());
+                        final FirebaseUser user = task.getResult().getUser();
+                        Log.d(ConstantValue.TAG, "Firebase user " + user.getDisplayName() + " " + user.getEmail());
 
-                            user.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<GetTokenResult> task) {
-                                    if (task.isSuccessful()) {
-                                        Log.d(ConstantValue.TAG_LOG, "tokenId " + task.toString());
-                                    }
-                                }
-                            });
-                        } else {
-                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                                // The verification code entered was invalid
+                        user.getIdToken(true).addOnCompleteListener(task1 -> {
+                            if (task1.isSuccessful()) {
+                                Log.d(ConstantValue.TAG_LOG, "tokenId " + task1.toString());
                             }
-                        }
+                        });
+                    } else {
+                        task.getException();// The verification code entered was invalid
                     }
                 });
     }

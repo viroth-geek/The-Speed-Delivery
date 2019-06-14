@@ -297,11 +297,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
             finish();
         } else if (ConstantValue.INTENT_ACTIVITY_TAG_CODE == requestCode) {
             if (Activity.RESULT_OK == resultCode) {
-                if (data.hasExtra(ConstantValue.ADDRESS)) {
-
-                }
                 android.location.Address addressMap = (android.location.Address) data.getExtras().get(ConstantValue.ADDRESS);
-
                 if (addressMap != null) {
                     Address address = new Address();
                     address.setCountryId(addressMap.getCountryCode());
