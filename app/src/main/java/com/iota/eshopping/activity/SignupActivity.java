@@ -255,8 +255,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
                 if (token.equals(ConstantValue.EMAIL_EXISTED)) {
                     Toast.makeText(SignupActivity.this, token, Toast.LENGTH_SHORT).show();
-                }
-                else{
+                } else {
                     userAccount = new UserAccount(SignupActivity.this);
                     if (userAccount.assignToken(token)) {
                         requestCustomerInfo(token);
