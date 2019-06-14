@@ -173,6 +173,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
 
         btn_deliver_time.setText(TimeDeliveryPreference.getTimeDeliveryText(getContext()));
 
+
+        Log.d("data", "Lat Long " + mAddress);
         return view;
     }
 
