@@ -29,7 +29,6 @@ import com.iota.eshopping.service.datahelper.datasource.online.AddNewAddress;
 import com.iota.eshopping.service.datahelper.datasource.online.UpdateAddress;
 import com.iota.eshopping.util.PhoneNumberField;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -73,8 +72,6 @@ public class AddAddressActivity extends AppCompatActivity {
     private Boolean isEdit = false;
 
     private ISaveAddress iSaveAddress;
-
-    private List<String> streetList = new ArrayList<String>();
 
     @Override
     public void onAttachFragment(Fragment fragment) {
@@ -193,9 +190,7 @@ public class AddAddressActivity extends AppCompatActivity {
             address.setStreet(Arrays.asList(addressStreet));
         }
 
-        if (!address.getStreet().isEmpty() && address.getStreet().size() >= 1) {
-            txt_street.setText(address.getStreet().get(0));
-        } else if (!address.getStreet().isEmpty() && address.getStreet().size() >= 2) {
+        if (!address.getStreet().isEmpty() && address.getStreet().size() >= 2) {
             txt_street.setText(address.getStreet().get(0));
             txtStreet1.setText(address.getStreet().get(1));
         } else {
@@ -216,6 +211,7 @@ public class AddAddressActivity extends AppCompatActivity {
             toolbar.setTitle("Update Address");
             btn_save.setText(R.string.btn_title_update);
         }
+
     }
 
     /**
@@ -232,6 +228,7 @@ public class AddAddressActivity extends AppCompatActivity {
         address.setDefaultShipping(chkDefaultBilling.isChecked());
 
         new AddNewAddress(prepareData(address), new AddNewAddress.InvokeOnCompleteAsync() {
+
             @Override
             public void onComplete(List<Address> addresses) {
 
@@ -261,12 +258,6 @@ public class AddAddressActivity extends AppCompatActivity {
      */
     private void updateAddress(com.iota.eshopping.model.Address address) {
 
-        streetList.add(txt_street.getText().toString());
-        if (!txtStreet1.getText().toString().equals("")) {
-            streetList.add(txtStreet1.getText().toString());
-        }
-
-        address.setStreet(streetList);
         address.setCustomerId(customer.getId());
         address.setFirstname(txt_first_name.getText().toString());
         address.setLastname(txt_last_name.getText().toString());

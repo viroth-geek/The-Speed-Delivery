@@ -21,7 +21,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -140,7 +139,7 @@ public class RegisterLocationActivity extends AppCompatActivity implements OnMap
     private OrderDetail orderDetail;
 
     private Timer refreshDriverLocationTimer;
-    
+
     private MarkerOptions driverMarker;
 
     @Override
@@ -183,6 +182,7 @@ public class RegisterLocationActivity extends AppCompatActivity implements OnMap
             } else if (orderDetail.getStatus().equalsIgnoreCase(OrderStatusType.COMPLETE.toString().toLowerCase())) {
                 fetchDriverLocationHistory(orderDetail.getId());
             }
+
         }
         initMap(savedInstanceState);
     }
@@ -539,7 +539,6 @@ public class RegisterLocationActivity extends AppCompatActivity implements OnMap
     private void initMap(Bundle savedInstanceState) {
         // Set Location
         location = getLocationFromIntent();
-        Log.d(ConstantValue.TAG_LOG, "location " + location);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
