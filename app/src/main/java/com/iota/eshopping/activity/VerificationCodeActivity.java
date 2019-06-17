@@ -129,9 +129,10 @@ public class VerificationCodeActivity extends AppCompatActivity {
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         userAccount = new UserAccount(this);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, task -> {
+        mAuth.signInWithCredential(credential).addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
+                        progressBar.setVisibility(View.GONE);
+                        Log.d("ooooo", "here1");
                         PhoneNumber phoneNumber = new PhoneNumber();
                         phoneNumber.setPhoneNumber(mPhoneNumber);
                         PhoneNumber.CustomerPhone customerPhone = new PhoneNumber.CustomerPhone();
@@ -140,17 +141,14 @@ public class VerificationCodeActivity extends AppCompatActivity {
                     }
                 })
                 .addOnFailureListener(this, e -> {
-
                     etCode.setEnabled(true);
                     etCode.setText("");
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(this, "Invalid verification code entered.", Toast.LENGTH_SHORT).show();
-
                 });
     }
 
     private void requestToken(PhoneNumber.CustomerPhone customerPhone) {
-
         container_float_loading.setVisibility(View.VISIBLE);
         new FetchTokenByPhone(customerPhone, new FetchTokenByPhone.ILoginOnCompleteAsync() {
             @Override
@@ -165,6 +163,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
                 else  {
                     try {
                         if (userAccount.assignToken(token)) {
+                            Log.d("ooooo", token);
                             requestCustomerInfo(token);
                         }
                     } catch (Exception e) {
@@ -177,9 +176,11 @@ public class VerificationCodeActivity extends AppCompatActivity {
 
             @Override
             public void onError(Throwable e) {
+                Log.d("ooooo", "here4");
                 container_float_loading.setVisibility(View.GONE);
-                Log.d(ConstantValue.TAG_LOG, "Getting token is error " + e.getMessage());
-                //Snackbar.make(parentPanel, "Logged fail: " + ExceptionUtils.translateExceptionMessage(e), Snackbar.LENGTH_LONG).show();
+                Log.d(ConstantValue.TAG_LOG, ExceptionUtils.translateExceptionMessage(e));
+                Toast.makeText(VerificationCodeActivity.this, ExceptionUtils.translateExceptionMessage(e), Toast.LENGTH_SHORT).show();
+//                Snackbar.make(parentPanel, "Logged fail: " + ExceptionUtils.translateExceptionMessage(e), Snackbar.LENGTH_LONG).show();
             }
         });
     }

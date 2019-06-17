@@ -1,5 +1,7 @@
 package com.iota.eshopping.util;
 
+import android.util.Log;
+
 import com.iota.eshopping.model.Customer;
 import com.iota.eshopping.service.datahelper.datasource.online.FetchCustomer;
 
@@ -16,6 +18,7 @@ public class AuthUtils {
      */
     public static void isTokenValid(String token, AuthValid authValid) {
         getUserDetails(token, customer -> {
+//            Log.d("ooooo", customer.toString());
             authValid.isAuthValid(customer != null);
         });
     }
@@ -34,6 +37,7 @@ public class AuthUtils {
 
             @Override
             public void onError(Throwable e) {
+                Log.d("ooooo", e.getMessage());
                 authCallBack.validate(null);
             }
         });

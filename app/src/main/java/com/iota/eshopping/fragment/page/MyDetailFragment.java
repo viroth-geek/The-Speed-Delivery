@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -151,6 +152,7 @@ public class MyDetailFragment extends Fragment implements View.OnClickListener {
                         edt_first_name.setText(customer.getFirstname());
                         edt_last_name.setText(customer.getLastname());
                         Snackbar.make(parentPanel, "Update success!", Snackbar.LENGTH_LONG).show();
+                        Log.d("ooooo", customer.toString());
                         Intent intent = new Intent(getActivity(), BaseActivity.class);
                         startActivity(intent);
                     } else {
