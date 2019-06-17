@@ -81,7 +81,6 @@ import com.iota.eshopping.util.preference.LocationPreference;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Timer;
@@ -140,7 +139,7 @@ public class RegisterLocationActivity extends AppCompatActivity implements OnMap
     private OrderDetail orderDetail;
 
     private Timer refreshDriverLocationTimer;
-    
+
     private MarkerOptions driverMarker;
 
     @Override
