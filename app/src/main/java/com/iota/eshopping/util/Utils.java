@@ -1,19 +1,8 @@
 package com.iota.eshopping.util;
 
 import android.app.Activity;
-import android.content.Context;
-import android.graphics.Color;
-import android.support.v7.widget.CardView;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.bumptech.glide.load.engine.Resource;
-import com.iota.eshopping.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
