@@ -54,7 +54,7 @@
                     android:layout_gravity="center_vertical"
                     android:src="@drawable/flag" />
 
-                <EditText
+                <com.iota.eshopping.util.PhoneNumberField
                     android:id="@+id/edt_phone_nubmer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
