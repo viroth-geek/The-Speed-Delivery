@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.iota.eshopping.R;
 import com.iota.eshopping.activity.AddAddressActivity;
 import com.iota.eshopping.constant.ConstantValue;
@@ -32,9 +34,8 @@ public class AddressListRecyclerAdapter extends RecyclerView.Adapter<AddressList
     private Context mContext;
 
     /**
-     *
-     * @param context Context
-     * @param addressList list of Address
+     * @param context         Context
+     * @param addressList     list of Address
      * @param onChangeAddress OnChangeAddress
      */
     public AddressListRecyclerAdapter(Context context, List<Address> addressList, OnChangeAddress onChangeAddress) {
@@ -76,7 +77,11 @@ public class AddressListRecyclerAdapter extends RecyclerView.Adapter<AddressList
         String addressLine = "";
         if (address.getStreet() != null && !address.getStreet().isEmpty()) {
             if (address.getStreet() != null && !address.getStreet().isEmpty()) {
+
                 addressLine = address.getStreet().get(0);
+                Gson gson = new Gson();
+                String json = gson.toJson(address.getStreet());
+                Log.d(ConstantValue.TAG_LOG, json);
             }
         } else if (address.getAddressLine() != null) {
             addressLine = address.getAddressLine();
@@ -93,7 +98,7 @@ public class AddressListRecyclerAdapter extends RecyclerView.Adapter<AddressList
         return addressList.size();
     }
 
-    public void clear(){
+    public void clear() {
         addressList.clear();
     }
 
@@ -112,7 +117,6 @@ public class AddressListRecyclerAdapter extends RecyclerView.Adapter<AddressList
     }
 
     /**
-     *
      * @param addressId Long
      */
     private void deleteAddressFromServer(Long addressId) {
@@ -127,6 +131,34 @@ public class AddressListRecyclerAdapter extends RecyclerView.Adapter<AddressList
                 Toast.makeText(mContext, "Failed to delete!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    /**
+     * Alert confirm box
+     *
+     * @param context  Context
+     * @param position int
+     */
+    private void showConfirm(Context context, int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogDanger);
+        builder.setTitle(R.string.app_name);
+        builder.setMessage("Do you want to delete this address?");
+        builder.setPositiveButton("Yes", (dialog, id) -> {
+//            Toast.makeText(context, addressList.get(position).getId().toString(), Toast.LENGTH_SHORT).show();
+            deleteAddressFromServer(addressList.get(position).getId());
+            removeAt(position);
+            dialog.dismiss();
+        });
+        builder.setNegativeButton("No", (dialog, id) -> dialog.dismiss());
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    /**
+     *
+     */
+    public interface OnChangeAddress {
+        void onAddressSelect(Address address);
     }
 
     /**
@@ -171,33 +203,5 @@ public class AddressListRecyclerAdapter extends RecyclerView.Adapter<AddressList
                 itemView.setOnClickListener(view -> onChangeAddress.onAddressSelect(addressList.get(getAdapterPosition())));
             }
         }
-    }
-
-    /**
-     *
-     */
-    public interface OnChangeAddress {
-        void onAddressSelect(Address address);
-    }
-
-    /**
-     * Alert confirm box
-     *
-     * @param context Context
-     * @param position int
-     */
-    private void showConfirm(Context context, int position) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogDanger);
-        builder.setTitle(R.string.app_name);
-        builder.setMessage("Do you want to delete this address?");
-        builder.setPositiveButton("Yes", (dialog, id) -> {
-//            Toast.makeText(context, addressList.get(position).getId().toString(), Toast.LENGTH_SHORT).show();
-            deleteAddressFromServer(addressList.get(position).getId());
-            removeAt(position);
-            dialog.dismiss();
-        });
-        builder.setNegativeButton("No", (dialog, id) -> dialog.dismiss());
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 }
