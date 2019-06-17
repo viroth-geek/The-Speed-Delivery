@@ -135,6 +135,8 @@ public class BaseActivity extends AppCompatActivity
 
     private TextView openStore;
     private TextView allStore;
+    private LinearLayout ltProductAll;
+    private LinearLayout ltProductOpen;
 
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     private FirebaseAuth mAuth;
@@ -194,6 +196,8 @@ public class BaseActivity extends AppCompatActivity
     private void initFilterProductComponent() {
         allStore = findViewById(R.id.txt_pro_filter_all);
         openStore = findViewById(R.id.txt_pro_filter_open);
+        ltProductAll = findViewById(R.id.lyt_filter_all);
+        ltProductOpen = findViewById(R.id.lyt_filter_open);
 
         allStore.setOnClickListener(this);
         openStore.setOnClickListener(this);
