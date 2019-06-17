@@ -286,7 +286,6 @@ public class MyOrderDetailActivity extends AppCompatActivity implements View.OnC
             txt_order_id.setText(orderDetail.getIncrementId());
             txt_order_address.setText(orderDetail.getBillingAddress().getStreet().get(0));
 
-            txt_order_date.setText(String.format(" %s", orderDetail.getUpdatedAt()));
             txt_order_date.setText(String.format(" %s", FormatDateTimeLocal(orderDetail.getUpdatedAt())));
 
             txt_number_product.setText(String.format("%s", orderDetail.getTotalItemCount()));
