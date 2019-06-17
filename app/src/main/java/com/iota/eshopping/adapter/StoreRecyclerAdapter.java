@@ -40,8 +40,6 @@ import com.iota.eshopping.util.preference.LocationPreference;
 
 import java.util.List;
 
-import io.reactivex.Observable;
-
 /**
  * @author channarith.bong
  */

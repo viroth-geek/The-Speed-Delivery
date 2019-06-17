@@ -621,6 +621,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
      */
     private void showAddressSelectedFragment() {
         AddressSelectFragment addressSelectFragment = new AddressSelectFragment();
+        UserAccount userAccount = new UserAccount(this);
         addressSelectFragment.setOnChangeAddress(new AddressSelectFragment.OnChangeAddress() {
             @Override
             public void onAddressSelect(com.iota.eshopping.model.Address address) {
