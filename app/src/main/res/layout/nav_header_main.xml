@@ -68,9 +68,7 @@
                     android:textColor="@color/black"
                     android:textColorHint="#B9B2B2"
                     tools:ignore="Autofill,RtlSymmetry" />
-
             </LinearLayout>
-
             <include
                 layout="@layout/loading_progress_bar"
                 android:layout_width="50dp"
