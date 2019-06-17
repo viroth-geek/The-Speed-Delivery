@@ -29,6 +29,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -133,17 +134,16 @@ public class BaseActivity extends AppCompatActivity
     private boolean isCanBroadCast = false;
     private ISaveAddress listener;
 
-    private TextView openStore;
-    private TextView allStore;
-    private LinearLayout ltProductAll;
-    private LinearLayout ltProductOpen;
+    private RelativeLayout openStore;
+    private RelativeLayout allStore;
+    private ImageView allProductImg;
+    private ImageView openProductImg;
 
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     private FirebaseAuth mAuth;
 
     private String mVerificationId;
     private PhoneAuthProvider.ForceResendingToken mResendToken;
-
 
     @Override
     public void onAttachFragment(Fragment fragment) {
@@ -194,13 +194,17 @@ public class BaseActivity extends AppCompatActivity
     }
 
     private void initFilterProductComponent() {
-        allStore = findViewById(R.id.txt_pro_filter_all);
-        openStore = findViewById(R.id.txt_pro_filter_open);
-        ltProductAll = findViewById(R.id.lyt_filter_all);
-        ltProductOpen = findViewById(R.id.lyt_filter_open);
+
+        allStore = findViewById(R.id.lyt_filter_all);
+        openStore = findViewById(R.id.lyt_filter_open);
+        allProductImg = findViewById(R.id.img_product_all);
+        openProductImg = findViewById(R.id.img_product_open);
 
         allStore.setOnClickListener(this);
         openStore.setOnClickListener(this);
+
+        allProductImg.setVisibility(View.VISIBLE);
+        openProductImg.setVisibility(View.GONE);
     }
 
     @Override
@@ -897,10 +901,14 @@ public class BaseActivity extends AppCompatActivity
             }
 
         } else if (view.equals(allStore)) {
+            allProductImg.setVisibility(View.VISIBLE);
+            openProductImg.setVisibility(View.GONE);
             llProductFilter.setVisibility(View.GONE);
             listener.onAddressSave(ConstantValue.PRODUCT_ALL);
 
         } else if (view.equals(openStore)) {
+            allProductImg.setVisibility(View.GONE);
+            openProductImg.setVisibility(View.VISIBLE);
             llProductFilter.setVisibility(View.GONE);
             listener.onAddressSave(ConstantValue.PRODUCT_OPEN);
         }
