@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ import com.iota.eshopping.util.ExceptionUtils;
 import com.iota.eshopping.util.InputHelper;
 import com.iota.eshopping.util.LoggerHelper;
 import com.iota.eshopping.util.NetworkConnectHelper;
+import com.iota.eshopping.util.Utils;
 
 /**
  * @author channarith.bong
@@ -51,6 +53,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private EditText edt_last_name;
     private EditText edt_email_address;
     private EditText edt_password;
+    private RelativeLayout progressBar;
 
     private View container_float_loading;
     private View parentPanel;
@@ -92,6 +95,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         });
         btn_log_in.setOnClickListener(this);
 
+        progressBar = findViewById(R.id.loading_progress_bar);
+
         btn_create_account = findViewById(R.id.btn_create_account);
         btn_create_account.setOnClickListener(this);
 
@@ -128,12 +133,13 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         if (btn_create_account.equals(v)) {
+            Utils.hideKeyboard(this);
+            progressBar.setVisibility(View.VISIBLE);
             boolean isConnect = NetworkConnectHelper.getInstance().isConnectionOnline(getApplicationContext());
             if (isConnect) {
                 if (mRegisterType != null) {
                     PhoneNumber.CustomerPhone customerPhone = new PhoneNumber.CustomerPhone();
                     PhoneNumber phoneNumber = new PhoneNumber();
-
                     phoneNumber.setPhoneNumber(etPhoneNumber.getText().toString());
                     phoneNumber.setFirstName(edt_first_name.getText().toString());
                     phoneNumber.setLastName(edt_last_name.getText().toString());
@@ -150,10 +156,13 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                     }
                 }
             } else {
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(this, "Internet disconnected!. Try again", Toast.LENGTH_SHORT).show();
             }
 
         } else if (btn_log_in.equals(v)) {
+            Utils.hideKeyboard(this);
+            progressBar.setVisibility(View.GONE);
             Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
@@ -225,6 +234,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         new FetchCustomer(user, new FetchCustomer.InvokeOnCompleteAsync() {
             @Override
             public void onComplete(Customer customer) {
+                progressBar.setVisibility(View.GONE);
                 if (customer != null) {
                     userAccount.insertCustomer(customer);
                     settingProcessBar(true, "Your registration success!");
@@ -238,7 +248,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
             @Override
             public void onError(Throwable e) {
-                Snackbar.make(parentPanel, "Your registration fail: " + ExceptionUtils.translateExceptionMessage(e), Snackbar.LENGTH_LONG).show();
+                progressBar.setVisibility(View.GONE);
+                Snackbar.make(parentPanel, "Check your password or some information again.", Snackbar.LENGTH_LONG).show();
                 LoggerHelper.showErrorLog(" Register " + e.getMessage());
             }
         });
@@ -253,8 +264,10 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onComplete(String token) {
                 if (token.equals(ConstantValue.EMAIL_EXISTED)) {
-                    Toast.makeText(SignupActivity.this, token, Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
+//                    Toast.makeText(SignupActivity.this, token, Toast.LENGTH_SHORT).show();
                 } else {
+                    progressBar.setVisibility(View.GONE);
                     userAccount = new UserAccount(SignupActivity.this);
                     if (userAccount.assignToken(token)) {
                         requestCustomerInfo(token);
@@ -264,6 +277,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
             @Override
             public void onError(Throwable e) {
+                progressBar.setVisibility(View.GONE);
                 Log.d(ConstantValue.TAG_LOG, "register error" + e.getMessage());
             }
         });

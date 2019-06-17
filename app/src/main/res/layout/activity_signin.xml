@@ -6,8 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.iota.eshopping.activity.SignupActivity">
+
     <include layout="@layout/view_toolbar"
         android:id="@+id/toolbar"/>
+
     <LinearLayout
         android:layout_below="@+id/toolbar"
         android:orientation="vertical"
@@ -131,6 +133,7 @@
                 android:background="@drawable/shape_button_bg_primary_reverse"
                 android:text="SIGN IN"/>
         </LinearLayout>
+
         <LinearLayout
             android:visibility="gone"
             android:orientation="horizontal"
@@ -145,7 +148,17 @@
                 android:layout_height="60dp"
                 android:text="Tick this box if you do not want to receive marketing offers or promotions form Speed Delivery"/>
         </LinearLayout>
+
+        <include
+            layout="@layout/loading_progress_bar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            />
+
     </LinearLayout>
+
     <FrameLayout
         android:layout_alignParentBottom="true"
         android:visibility="gone"
@@ -171,6 +184,5 @@
                 android:text="Registering .."/>
         </LinearLayout>
     </FrameLayout>
-
 
 </RelativeLayout>
