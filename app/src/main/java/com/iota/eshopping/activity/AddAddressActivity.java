@@ -137,8 +137,6 @@ public class AddAddressActivity extends AppCompatActivity {
         else if (item.getItemId() == R.id.action_show_map) {
             Intent intent = new Intent(this, RegisterLocationActivity.class);
             intent.putExtra(ConstantValue.ADDRESS, address);
-            intent.putExtra(ConstantValue.LATITUDE, address.getCustomAttributes().get(0).getValue().toString());
-            intent.putExtra(ConstantValue.LONGITUDE, address.getCustomAttributes().get(1).getValue().toString());
             intent.putExtra(ConstantValue.EDIT_ADDRESS, true);
             startActivityForResult(intent, ConstantValue.GET_EDITED_ADDRESS);
         }
@@ -221,12 +219,15 @@ public class AddAddressActivity extends AppCompatActivity {
                 Toast.makeText(AddAddressActivity.this, "Save Successfully!", Toast.LENGTH_SHORT).show();
                 loadingLayout.setVisibility(View.GONE);
                 btn_save.setVisibility(View.VISIBLE);
+                db.insert(address);
 
-                if (addresses.size() > 0) {
-                    db.insert(address);
-                }
-                setResult(ConstantValue.HOME_CALLING_CODE);
+//                String action;
+//                setResult(ConstantValue.HOME_CALLING_CODE);
                 finish();
+
+//                Intent intent = new Intent(AddAddressActivity.this, BaseActivity.class);
+//                intent.putExtra(ConstantValue.SAVE_NEW_ADDRESS, true);
+//                startActivity(intent);
             }
 
             @Override
@@ -293,4 +294,8 @@ public class AddAddressActivity extends AppCompatActivity {
         return createAddress;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }
