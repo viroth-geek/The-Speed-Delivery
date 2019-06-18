@@ -2,7 +2,6 @@ package com.iota.eshopping.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -17,8 +16,6 @@ import android.widget.Toast;
 
 import com.iota.eshopping.R;
 import com.iota.eshopping.constant.ConstantValue;
-import com.iota.eshopping.event.ISaveAddress;
-import com.iota.eshopping.fragment.page.DeliveryAddressFragment;
 import com.iota.eshopping.model.Customer;
 import com.iota.eshopping.model.modelForView.Address;
 import com.iota.eshopping.model.modelForView.CreateAddress;
@@ -27,8 +24,10 @@ import com.iota.eshopping.server.DatabaseHelper;
 import com.iota.eshopping.service.datahelper.datasource.offine.address.FetchAddressDAO;
 import com.iota.eshopping.service.datahelper.datasource.online.AddNewAddress;
 import com.iota.eshopping.service.datahelper.datasource.online.UpdateAddress;
+import com.iota.eshopping.util.LoggerHelper;
 import com.iota.eshopping.util.PhoneNumberField;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -70,17 +69,6 @@ public class AddAddressActivity extends AppCompatActivity {
     private FetchAddressDAO db;
 
     private Boolean isEdit = false;
-
-    private ISaveAddress iSaveAddress;
-
-    @Override
-    public void onAttachFragment(Fragment fragment) {
-        super.onAttachFragment(fragment);
-        if(fragment instanceof DeliveryAddressFragment) {
-            iSaveAddress = (ISaveAddress) fragment;
-        }
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,17 +112,13 @@ public class AddAddressActivity extends AppCompatActivity {
 
             btn_save.setVisibility(View.GONE);
             loadingLayout.setVisibility(View.VISIBLE);
+
             if (isEdit) {
                 updateAddress(address);
                 db.updateAddress(address);
-            } else {
-                if (!txt_first_name.getText().toString().equals("") && !txt_last_name.getText().toString().equals("") && !txt_phone_number.getText().toString().equals("")) {
-                    saveAddress(address);
-                } else {
-                    btn_save.setVisibility(View.VISIBLE);
-                    loadingLayout.setVisibility(View.GONE);
-                    Toast.makeText(this, "Please input all requirement.", Toast.LENGTH_LONG).show();
-                }
+            }
+            else {
+                saveAddress(address);
             }
         });
     }
@@ -151,7 +135,8 @@ public class AddAddressActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             super.onBackPressed();
-        } else if (item.getItemId() == R.id.action_show_map) {
+        }
+        else if (item.getItemId() == R.id.action_show_map) {
             Intent intent = new Intent(this, RegisterLocationActivity.class);
             intent.putExtra(ConstantValue.ADDRESS, address);
             intent.putExtra(ConstantValue.EDIT_ADDRESS, true);
@@ -215,6 +200,7 @@ public class AddAddressActivity extends AppCompatActivity {
     }
 
     /**
+     *
      * @param address com.iota.eshopping.model.Address
      */
     private void saveAddress(com.iota.eshopping.model.Address address) {
@@ -240,7 +226,6 @@ public class AddAddressActivity extends AppCompatActivity {
                     db.insert(address);
                 }
                 setResult(ConstantValue.HOME_CALLING_CODE);
-
                 finish();
             }
 
@@ -254,6 +239,7 @@ public class AddAddressActivity extends AppCompatActivity {
     }
 
     /**
+     *
      * @param address com.iota.eshopping.model.Address
      */
     private void updateAddress(com.iota.eshopping.model.Address address) {
@@ -283,6 +269,7 @@ public class AddAddressActivity extends AppCompatActivity {
     }
 
     /**
+     *
      * @param address com.iota.eshopping.model.Address
      * @return CreateAddress
      */
