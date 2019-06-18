@@ -1,6 +1,7 @@
 package com.iota.eshopping.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -197,8 +198,8 @@ public class BaseActivity extends AppCompatActivity
     private void initFilterProductComponent() {
         allStore = findViewById(R.id.txt_pro_filter_all);
         openStore = findViewById(R.id.txt_pro_filter_open);
-        ltProductAll = findViewById(R.id.lyt_filter_all);
-        ltProductOpen = findViewById(R.id.lyt_filter_open);
+//        ltProductAll = findViewById(R.id.lyt_filter_all);
+//        ltProductOpen = findViewById(R.id.lyt_filter_open);
 
         allStore.setOnClickListener(this);
         openStore.setOnClickListener(this);

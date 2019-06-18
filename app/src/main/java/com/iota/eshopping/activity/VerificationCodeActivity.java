@@ -131,8 +131,6 @@ public class VerificationCodeActivity extends AppCompatActivity {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mAuth.signInWithCredential(credential).addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        progressBar.setVisibility(View.GONE);
-                        Log.d("ooooo", "here1");
                         PhoneNumber phoneNumber = new PhoneNumber();
                         phoneNumber.setPhoneNumber(mPhoneNumber);
                         PhoneNumber.CustomerPhone customerPhone = new PhoneNumber.CustomerPhone();
@@ -154,6 +152,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
             @Override
             public void onComplete(String token) {
                 if (token.equals(ConstantValue.REGISTER)) {
+                    progressBar.setVisibility(View.GONE);
                     Intent intent = new Intent(VerificationCodeActivity.this, SignupActivity.class);
                     intent.putExtra(ConstantValue.REGISTER_BY_PHONE_NUMBER, ConstantValue.REGISTER_BY_PHONE_NUMBER);
                     intent.putExtra(ConstantValue.PHONE_NUMBER, mPhoneNumber);
@@ -161,6 +160,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
                     finish();
                 }
                 else  {
+                    progressBar.setVisibility(View.GONE);
                     try {
                         if (userAccount.assignToken(token)) {
                             Log.d("ooooo", token);
@@ -176,7 +176,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
 
             @Override
             public void onError(Throwable e) {
-                Log.d("ooooo", "here4");
+                progressBar.setVisibility(View.GONE);
                 container_float_loading.setVisibility(View.GONE);
                 Log.d(ConstantValue.TAG_LOG, ExceptionUtils.translateExceptionMessage(e));
                 Toast.makeText(VerificationCodeActivity.this, ExceptionUtils.translateExceptionMessage(e), Toast.LENGTH_SHORT).show();

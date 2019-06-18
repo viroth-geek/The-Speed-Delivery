@@ -805,7 +805,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("ooooo", "OnResume");
+//        Log.d("ooooo", "OnResume");
         btn_go_to_checkout.setEnabled(true);
     }
 
