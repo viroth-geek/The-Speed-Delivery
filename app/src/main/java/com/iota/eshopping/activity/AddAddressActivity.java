@@ -24,10 +24,8 @@ import com.iota.eshopping.server.DatabaseHelper;
 import com.iota.eshopping.service.datahelper.datasource.offine.address.FetchAddressDAO;
 import com.iota.eshopping.service.datahelper.datasource.online.AddNewAddress;
 import com.iota.eshopping.service.datahelper.datasource.online.UpdateAddress;
-import com.iota.eshopping.util.LoggerHelper;
 import com.iota.eshopping.util.PhoneNumberField;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -139,6 +137,8 @@ public class AddAddressActivity extends AppCompatActivity {
         else if (item.getItemId() == R.id.action_show_map) {
             Intent intent = new Intent(this, RegisterLocationActivity.class);
             intent.putExtra(ConstantValue.ADDRESS, address);
+            intent.putExtra(ConstantValue.LATITUDE, address.getCustomAttributes().get(0).getValue().toString());
+            intent.putExtra(ConstantValue.LONGITUDE, address.getCustomAttributes().get(1).getValue().toString());
             intent.putExtra(ConstantValue.EDIT_ADDRESS, true);
             startActivityForResult(intent, ConstantValue.GET_EDITED_ADDRESS);
         }
