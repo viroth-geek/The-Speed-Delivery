@@ -35,7 +35,6 @@ import com.iota.eshopping.model.form.FormForGetDeliveryFee;
 import com.iota.eshopping.model.magento.addToCart.CartAttribute;
 import com.iota.eshopping.model.magento.addToCart.CartItemsRequest;
 import com.iota.eshopping.model.magento.addToCart.CartOption;
-import com.iota.eshopping.model.magento.addToCart.CartProductItem;
 import com.iota.eshopping.model.magento.addToCart.CartProductItems;
 import com.iota.eshopping.model.magento.addToCart.ResponseAddToCart;
 import com.iota.eshopping.model.magento.store.StoreFee;
