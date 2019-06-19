@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import static com.iota.eshopping.util.Utils.FormatDate;
 import static com.iota.eshopping.util.Utils.FormatDateTimeLocal;
 
 /**
@@ -182,31 +183,41 @@ public class OrderDetailStickyAdapter extends SectioningAdapter {
         new FetchDeliveryDate(orderId, new FetchDeliveryDate.InvokeOnCompleteAsync() {
             @Override
             public void onComplete(String orderDate) {
-                Log.d(ConstantValue.TAG_LOG, orderDate);
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Phnom_Penh"));
 
-                try {
-                    Date date = simpleDateFormat.parse(orderDate);
-                    txtDeliveryDate.setText(String.format(" %s", new SimpleDateFormat("MMM dd, yyyy HH:mm:ss").format(date)));
-
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                if (orderDate != null && !orderDate.isEmpty()) {
+//                    txtDeliveryDate.setText(orderDate);
+                    Log.d("ooooo", orderDate);
+                    txtDeliveryDate.setText(String.format(" %s", FormatDate(orderDate)));
+                }
+                else {
+                    txtDeliveryDate.setText("N/A");
                 }
 
-//                if (orderDate != null && !orderDate.isEmpty()) {
+//                Log.d(ConstantValue.TAG_LOG, orderDate);
+//                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+//                simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Phnom_Penh"));
 //
-//                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss", Locale.ENGLISH);
+//                try {
+//                    Date date = simpleDateFormat.parse(orderDate);
+//                    txtDeliveryDate.setText(String.format(" %s", new SimpleDateFormat("MMM dd, yyyy HH:mm:ss").format(date)));
 //
-//                    try {
-//                        Date date = simpleDateFormat.parse(orderDate);
-//                        txtDeliveryDate.setText(String.format(" %s", new SimpleDateFormat("MMM dd, yyyy hh:mm:ss", Locale.ENGLISH).format(date)));
-//                    } catch (ParseException e) {
-//                        e.printStackTrace();
-//                    }
-//                } else {
-//                    txtDeliveryDate.setText("N/A");
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
 //                }
+//
+////                if (orderDate != null && !orderDate.isEmpty()) {
+////
+////                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss", Locale.ENGLISH);
+////
+////                    try {
+////                        Date date = simpleDateFormat.parse(orderDate);
+////                        txtDeliveryDate.setText(String.format(" %s", new SimpleDateFormat("MMM dd, yyyy hh:mm:ss", Locale.ENGLISH).format(date)));
+////                    } catch (ParseException e) {
+////                        e.printStackTrace();
+////                    }
+////                } else {
+////                    txtDeliveryDate.setText("N/A");
+////                }
             }
 
             @Override

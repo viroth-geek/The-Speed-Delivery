@@ -1,5 +1,7 @@
 package com.iota.eshopping.service.datahelper.datasource.online;
 
+import android.util.Log;
+
 import com.iota.eshopping.model.Customer;
 import com.iota.eshopping.model.UserSecure;
 import com.iota.eshopping.server.ServiceGenerator;
@@ -85,6 +87,7 @@ public class FetchCustomer implements Observer<Customer> {
      * @param token
      */
     private void request(String token) {
+        Log.d("ooooo", token);
         ServiceGenerator
                 .createService(CustomerService.class, token)
                 .getCustomerInfo()
@@ -100,11 +103,13 @@ public class FetchCustomer implements Observer<Customer> {
 
     @Override
     public void onNext(Customer customerInfo) {
+        Log.d("ooooo", customerInfo.toString());
         this.customer = customerInfo;
     }
 
     @Override
     public void onError(Throwable e) {
+        Log.d("ooooo", e.getMessage());
         disposable.dispose();
         completeAsync.onError(e);
     }

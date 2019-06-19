@@ -129,8 +129,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         userAccount = new UserAccount(this);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, task -> {
+        mAuth.signInWithCredential(credential).addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         PhoneNumber phoneNumber = new PhoneNumber();
                         phoneNumber.setPhoneNumber(mPhoneNumber);
@@ -140,29 +139,31 @@ public class VerificationCodeActivity extends AppCompatActivity {
                     }
                 })
                 .addOnFailureListener(this, e -> {
-
                     etCode.setEnabled(true);
                     etCode.setText("");
+                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(this, "Invalid verification code entered.", Toast.LENGTH_SHORT).show();
-
                 });
     }
 
     private void requestToken(PhoneNumber.CustomerPhone customerPhone) {
-
         container_float_loading.setVisibility(View.VISIBLE);
         new FetchTokenByPhone(customerPhone, new FetchTokenByPhone.ILoginOnCompleteAsync() {
             @Override
             public void onComplete(String token) {
                 if (token.equals(ConstantValue.REGISTER)) {
+                    progressBar.setVisibility(View.GONE);
                     Intent intent = new Intent(VerificationCodeActivity.this, SignupActivity.class);
                     intent.putExtra(ConstantValue.REGISTER_BY_PHONE_NUMBER, ConstantValue.REGISTER_BY_PHONE_NUMBER);
                     intent.putExtra(ConstantValue.PHONE_NUMBER, mPhoneNumber);
                     startActivity(intent);
+                    finish();
                 }
                 else  {
+                    progressBar.setVisibility(View.GONE);
                     try {
                         if (userAccount.assignToken(token)) {
+                            Log.d("ooooo", token);
                             requestCustomerInfo(token);
                         }
                     } catch (Exception e) {
@@ -175,9 +176,11 @@ public class VerificationCodeActivity extends AppCompatActivity {
 
             @Override
             public void onError(Throwable e) {
+                progressBar.setVisibility(View.GONE);
                 container_float_loading.setVisibility(View.GONE);
-                Log.d(ConstantValue.TAG_LOG, "Getting token is error " + e.getMessage());
-                //Snackbar.make(parentPanel, "Logged fail: " + ExceptionUtils.translateExceptionMessage(e), Snackbar.LENGTH_LONG).show();
+                Log.d(ConstantValue.TAG_LOG, ExceptionUtils.translateExceptionMessage(e));
+                Toast.makeText(VerificationCodeActivity.this, ExceptionUtils.translateExceptionMessage(e), Toast.LENGTH_SHORT).show();
+//                Snackbar.make(parentPanel, "Logged fail: " + ExceptionUtils.translateExceptionMessage(e), Snackbar.LENGTH_LONG).show();
             }
         });
     }
