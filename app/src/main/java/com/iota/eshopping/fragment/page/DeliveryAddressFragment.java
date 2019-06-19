@@ -53,8 +53,6 @@ public class DeliveryAddressFragment extends Fragment{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_delivery_address, container, false);
 
-        Log.d("ooooo", "here onCreateView");
-
         FloatingActionButton floatingActionButton = view.findViewById(R.id.fab);
         list_address = view.findViewById(R.id.list_address);
         list_address.setLayoutManager(new LinearLayoutManager(getActivity()));

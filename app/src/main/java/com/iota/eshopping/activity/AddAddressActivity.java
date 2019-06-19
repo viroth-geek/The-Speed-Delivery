@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -224,14 +225,7 @@ public class AddAddressActivity extends AppCompatActivity {
                 loadingLayout.setVisibility(View.GONE);
                 btn_save.setVisibility(View.VISIBLE);
                 db.insert(address);
-
-//                String action;
-//                setResult(ConstantValue.HOME_CALLING_CODE);
                 finish();
-
-//                Intent intent = new Intent(AddAddressActivity.this, BaseActivity.class);
-//                intent.putExtra(ConstantValue.SAVE_NEW_ADDRESS, true);
-//                startActivity(intent);
             }
 
             @Override
@@ -266,6 +260,7 @@ public class AddAddressActivity extends AppCompatActivity {
 
             @Override
             public void onError(Throwable e) {
+                Log.d("oooooo", e.getLocalizedMessage());
                 Toast.makeText(AddAddressActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 loadingLayout.setVisibility(View.GONE);
                 btn_save.setVisibility(View.VISIBLE);
