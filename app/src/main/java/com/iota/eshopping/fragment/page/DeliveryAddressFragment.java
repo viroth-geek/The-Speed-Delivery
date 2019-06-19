@@ -30,6 +30,7 @@ import com.iota.eshopping.service.datahelper.datasource.offine.address.FetchAddr
 import com.iota.eshopping.service.datahelper.datasource.online.FetchAddressList;
 import com.iota.eshopping.util.LoggerHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,6 +45,8 @@ public class DeliveryAddressFragment extends Fragment{
     private FrameLayout flLoadingContainer;
     private ProgressBar pbLoading;
     private TextView tvLoadingLabel;
+
+    private List<Address> listAddress = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -62,18 +65,20 @@ public class DeliveryAddressFragment extends Fragment{
         tvLoadingLabel = view.findViewById(R.id.txt_container_loading_label);
 
         checkDB();
+        getListAddress();
         bindData();
 
         floatingActionButton.setOnClickListener(v -> showMap());
         return view;
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
 
-        checkAddressList();
+        checkDB();
+        getListAddress();
+        bindData();
     }
 
     @Override
@@ -168,21 +173,28 @@ public class DeliveryAddressFragment extends Fragment{
      * Get data from database and server
      */
     private void bindData() {
-        AddressListRecyclerAdapter recyclerAdapter = new AddressListRecyclerAdapter(getContext(), getListAddress(), db);
+        AddressListRecyclerAdapter recyclerAdapter = new AddressListRecyclerAdapter(getContext(), listAddress, db);
         list_address.setAdapter(recyclerAdapter);
     }
 
     /**
      * Get list address
      */
-    private List<Address> getListAddress() {
+    private void getListAddress() {
         List<Address> addressList = null;
         try {
             addressList = db.getListAddress();
+            if (addressList.size() > 0) {
+                flLoadingContainer.setVisibility(View.GONE);
+            } else {
+                flLoadingContainer.setVisibility(View.VISIBLE);
+                pbLoading.setVisibility(View.GONE);
+                tvLoadingLabel.setText("Empty address list");
+            }
         } catch (Exception e) {
             LoggerHelper.showErrorLog("Local Address List Error : " + e.getMessage());
         }
-        return addressList;
+        listAddress = addressList;
     }
 
     /**

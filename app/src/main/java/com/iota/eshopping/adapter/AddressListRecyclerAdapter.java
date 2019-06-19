@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.iota.eshopping.R;
 import com.iota.eshopping.activity.AddAddressActivity;
 import com.iota.eshopping.constant.ConstantValue;
@@ -79,9 +78,6 @@ public class AddressListRecyclerAdapter extends RecyclerView.Adapter<AddressList
             if (address.getStreet() != null && !address.getStreet().isEmpty()) {
 
                 addressLine = address.getStreet().get(0);
-                Gson gson = new Gson();
-                String json = gson.toJson(address.getStreet());
-                Log.d(ConstantValue.TAG_LOG, json);
             }
         } else if (address.getAddressLine() != null) {
             addressLine = address.getAddressLine();
@@ -193,6 +189,8 @@ public class AddressListRecyclerAdapter extends RecyclerView.Adapter<AddressList
             }
 
             itemView.setOnClickListener(view -> {
+                Log.d(ConstantValue.TAG_LOG, "latitude" + addressList.get(getAdapterPosition()).getLatitude());
+                Log.d(ConstantValue.TAG_LOG, "langitude" + addressList.get(getAdapterPosition()).getLatitude());
                 Intent intent = new Intent(itemView.getContext(), AddAddressActivity.class);
                 intent.putExtra(ConstantValue.ADDRESS, addressList.get(getAdapterPosition()));
                 intent.putExtra(ConstantValue.EDIT_ADDRESS, true);

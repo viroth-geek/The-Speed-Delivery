@@ -188,11 +188,16 @@ public class BaseActivity extends AppCompatActivity
             }
         } else {
             checkToHome();
+            if (getIntent().getStringExtra(ConstantValue.SAVE_NEW_ADDRESS) != null) {
+                addMoreAddress();
+            }
         }
 
         configureFacebookLogin();
         configureGoogleSignIn();
         configurePhoneAuthentication();
+
+
     }
 
     private void initFilterProductComponent() {

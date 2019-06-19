@@ -96,4 +96,5 @@ public class ConstantValue {
     public static final String EMAIL_EXISTED = "Email already exist";
 
     public static final String VERIFICATION_METHOD = "verification up method";
+    public static final String SAVE_NEW_ADDRESS = "pressback";
 }

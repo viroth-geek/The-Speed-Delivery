@@ -2,7 +2,6 @@ package com.iota.eshopping.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -17,8 +16,6 @@ import android.widget.Toast;
 
 import com.iota.eshopping.R;
 import com.iota.eshopping.constant.ConstantValue;
-import com.iota.eshopping.event.ISaveAddress;
-import com.iota.eshopping.fragment.page.DeliveryAddressFragment;
 import com.iota.eshopping.model.Customer;
 import com.iota.eshopping.model.modelForView.Address;
 import com.iota.eshopping.model.modelForView.CreateAddress;
@@ -71,17 +68,6 @@ public class AddAddressActivity extends AppCompatActivity {
 
     private Boolean isEdit = false;
 
-    private ISaveAddress iSaveAddress;
-
-    @Override
-    public void onAttachFragment(Fragment fragment) {
-        super.onAttachFragment(fragment);
-        if(fragment instanceof DeliveryAddressFragment) {
-            iSaveAddress = (ISaveAddress) fragment;
-        }
-    }
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,17 +110,13 @@ public class AddAddressActivity extends AppCompatActivity {
 
             btn_save.setVisibility(View.GONE);
             loadingLayout.setVisibility(View.VISIBLE);
+
             if (isEdit) {
                 updateAddress(address);
                 db.updateAddress(address);
-            } else {
-                if (!txt_first_name.getText().toString().equals("") && !txt_last_name.getText().toString().equals("") && !txt_phone_number.getText().toString().equals("")) {
-                    saveAddress(address);
-                } else {
-                    btn_save.setVisibility(View.VISIBLE);
-                    loadingLayout.setVisibility(View.GONE);
-                    Toast.makeText(this, "Please input all requirement.", Toast.LENGTH_LONG).show();
-                }
+            }
+            else {
+                saveAddress(address);
             }
         });
     }
@@ -151,7 +133,8 @@ public class AddAddressActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             super.onBackPressed();
-        } else if (item.getItemId() == R.id.action_show_map) {
+        }
+        else if (item.getItemId() == R.id.action_show_map) {
             Intent intent = new Intent(this, RegisterLocationActivity.class);
             intent.putExtra(ConstantValue.ADDRESS, address);
             intent.putExtra(ConstantValue.EDIT_ADDRESS, true);
@@ -215,6 +198,7 @@ public class AddAddressActivity extends AppCompatActivity {
     }
 
     /**
+     *
      * @param address com.iota.eshopping.model.Address
      */
     private void saveAddress(com.iota.eshopping.model.Address address) {
@@ -235,13 +219,15 @@ public class AddAddressActivity extends AppCompatActivity {
                 Toast.makeText(AddAddressActivity.this, "Save Successfully!", Toast.LENGTH_SHORT).show();
                 loadingLayout.setVisibility(View.GONE);
                 btn_save.setVisibility(View.VISIBLE);
+                db.insert(address);
 
-                if (addresses.size() > 0) {
-                    db.insert(address);
-                }
-                setResult(ConstantValue.HOME_CALLING_CODE);
-
+//                String action;
+//                setResult(ConstantValue.HOME_CALLING_CODE);
                 finish();
+
+//                Intent intent = new Intent(AddAddressActivity.this, BaseActivity.class);
+//                intent.putExtra(ConstantValue.SAVE_NEW_ADDRESS, true);
+//                startActivity(intent);
             }
 
             @Override
@@ -254,6 +240,7 @@ public class AddAddressActivity extends AppCompatActivity {
     }
 
     /**
+     *
      * @param address com.iota.eshopping.model.Address
      */
     private void updateAddress(com.iota.eshopping.model.Address address) {
@@ -283,6 +270,7 @@ public class AddAddressActivity extends AppCompatActivity {
     }
 
     /**
+     *
      * @param address com.iota.eshopping.model.Address
      * @return CreateAddress
      */
@@ -306,4 +294,8 @@ public class AddAddressActivity extends AppCompatActivity {
         return createAddress;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }
