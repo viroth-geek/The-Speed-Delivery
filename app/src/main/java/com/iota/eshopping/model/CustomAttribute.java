@@ -19,6 +19,7 @@ public class CustomAttribute extends Entity {
     @SerializedName("attribute_code")
     @Expose
     private String attributeCode;
+
     @SerializedName("value")
     @Expose
     private Object value;

@@ -37,7 +37,7 @@ import java.util.List;
  * @author channarith.bong
  * @author viroth.ty
  */
-public class DeliveryAddressFragment extends Fragment {
+public class DeliveryAddressFragment extends Fragment{
 
     private RecyclerView list_address;
     private FetchAddressDAO db;
@@ -76,9 +76,7 @@ public class DeliveryAddressFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        checkDB();
-        getListAddress();
-        bindData();
+        checkAddressList();
     }
 
     @Override
@@ -121,7 +119,7 @@ public class DeliveryAddressFragment extends Fragment {
     /**
      * fetch address list from server
      */
-    private void checkAddressList() {
+    private void checkAddressList(){
         new FetchAddressList(Singleton.userId, new InvokeOnCompleteAsync<Customer>() {
             @Override
             public void onComplete(Customer data) {

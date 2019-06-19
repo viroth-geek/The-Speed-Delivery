@@ -145,6 +145,8 @@ public class BaseActivity extends AppCompatActivity
     private String mVerificationId;
     private PhoneAuthProvider.ForceResendingToken mResendToken;
 
+    private FetchAddressDAO db;
+
     @Override
     public void onAttachFragment(Fragment fragment) {
         super.onAttachFragment(fragment);
@@ -325,7 +327,6 @@ public class BaseActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-
         //ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
 
         if (isCanBroadCast) {
@@ -416,7 +417,7 @@ public class BaseActivity extends AppCompatActivity
             public void onComplete(List<UserPlayerId> userPlayerIds) {
                 LoggerHelper.showDebugLog("===> Save user player id successfully" + userPlayerId.toString());
                 Singleton.userId = Long.parseLong(userPlayerId.getUserId());
-                Log.d("oooooId", Singleton.userId.toString());
+//                Log.d("oooooId", Singleton.userId.toString());
             }
 
             @Override

@@ -504,6 +504,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
                         }
                         loadingProgressBar.setVisibility(View.GONE);
                         LoggerHelper.showErrorLog(" Error Store ! ", e);
+                        Log.d("ooooo", e.getMessage());
                         Toast.makeText(getActivity(), "Error: " + e, Toast.LENGTH_SHORT).show();
                     }
                 } else {
