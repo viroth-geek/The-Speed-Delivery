@@ -6,10 +6,12 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +33,7 @@ import com.iota.eshopping.fragment.cart.ItemAdjustment;
 import com.iota.eshopping.fragment.category.CategoryPagerFragment;
 import com.iota.eshopping.fragment.productoption.ProductOptionDialog;
 import com.iota.eshopping.model.Product;
+import com.iota.eshopping.model.enumeration.DayType;
 import com.iota.eshopping.model.magento.store.storeList.Category;
 import com.iota.eshopping.model.modelForView.OrderItem;
 import com.iota.eshopping.model.modelForView.ProductAttributeOption;
@@ -48,6 +51,7 @@ import com.iota.eshopping.util.ImageViewUtil;
 import com.iota.eshopping.util.LoggerHelper;
 import com.iota.eshopping.util.NumberUtils;
 import com.iota.eshopping.util.preference.StorePreference;
+import com.iota.eshopping.util.preference.TimeDeliveryPreference;
 
 import java.io.Serializable;
 import java.net.SocketTimeoutException;
@@ -180,26 +184,28 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
             List<ProductItem> items = Observable.fromIterable(productItems).filter(productItem -> productItem.getCount() > 0).toList().blockingGet();
             if (!items.isEmpty()) {
 
-//                String tomorrowText = TimeDeliveryPreference.getTimeDeliveryText(this).split(" ")[0];
-//                if (tomorrowText.equalsIgnoreCase(DayType.TOMORROW.toString())) {
-//                    if (!store.isStatusOpenTomorrow()) {
-//                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//                        builder.setTitle("Store Message");
-//                        builder.setMessage(store.getNameKh().isEmpty() ? store.getName() : store.getNameKh() + " is not opened tomorrow.");
-//                        builder.setPositiveButton("OK", (dialogInterface, i) -> dialogInterface.dismiss());
-//                        builder.create().show();
-//                        return;
-//                    }
-//                }
-//
-//                if (!store.isOpenToday()) {
-//                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//                    builder.setTitle("Store Message");
-//                    builder.setMessage(store.getNameKh().isEmpty() ? store.getName() : store.getNameKh() + " is not open.");
-//                    builder.setPositiveButton("OK", (dialogInterface, i) -> dialogInterface.dismiss());
-//                    builder.create().show();
-//                    return;
-//                }
+                String tomorrowText = TimeDeliveryPreference.getTimeDeliveryText(this).split(" ")[0];
+                if (tomorrowText.equalsIgnoreCase(DayType.TOMORROW.toString())) {
+                    if (!store.isStatusOpenTomorrow()) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        builder.setTitle("Store Message");
+                        builder.setMessage(store.getNameKh().isEmpty() ? store.getName() : store.getNameKh() + " is not opened tomorrow.");
+                        builder.setPositiveButton("OK", (dialogInterface, i) -> dialogInterface.dismiss());
+                        builder.create().show();
+                        return;
+                    }
+                }
+
+                if (!store.isOpenToday()) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("Store Message");
+                    builder.setMessage(store.getNameKh().isEmpty() ? store.getName() : store.getNameKh() + " is not open.");
+                    builder.setPositiveButton("OK", (dialogInterface, i) -> dialogInterface.dismiss());
+                    builder.create().show();
+                    return;
+                }
+
+                Log.d(ConstantValue.TAG_LOG, "onClick: " + productItems);
 
                 Intent intent = new Intent(this, ManageBasketActivity.class);
                 intent.putExtra(ConstantValue.ITEMS, (Serializable) productItems);
@@ -558,6 +564,8 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onChange(ProductItem productItem) {
 
+        Toast.makeText(this, "UUID" + ((com.iota.eshopping.model.modelForView.Product)productItem.getItem()).getProductUid(), Toast.LENGTH_SHORT).show();
+
         if (productItems == null) {
             productItems = new ArrayList<>();
         }
@@ -573,8 +581,10 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
             ProductCategory productCategory = productCategoryListTemp.get(i);
             for (int j = 0; j < productCategory.getProducts().size(); j++) {
                 com.iota.eshopping.model.modelForView.Product product1 = productCategory.getProducts().get(j);
-                if (product.getParentId().equals(product1.getId())) {
-                    stickyAdapter.updateItemAmount(Collections.singletonList(productItem), false);
+                if(product.getParentId() != null){
+                    if (product.getParentId().equals(product1.getId())) {
+                        stickyAdapter.updateItemAmount(Collections.singletonList(productItem), false);
+                    }
                 }
             }
         }
@@ -589,4 +599,6 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
     public void onLoadProductCompleted(List<Category> categories) {
         fetchCachedProducts();
     }
+
+
 }
