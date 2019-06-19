@@ -35,4 +35,18 @@ public class Utils {
         return "";
     }
 
+    public static String FormatDate(String d){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        Date date;
+        try {
+            date = dateFormat.parse(d);
+
+            return new SimpleDateFormat("MMM dd, yyyy HH:mm:ss").format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return "";
+    }
+
 }

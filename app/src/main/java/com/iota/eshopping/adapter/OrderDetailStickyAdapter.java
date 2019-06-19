@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import static com.iota.eshopping.util.Utils.FormatDate;
 import static com.iota.eshopping.util.Utils.FormatDateTimeLocal;
 
 /**
@@ -185,7 +186,8 @@ public class OrderDetailStickyAdapter extends SectioningAdapter {
 
                 if (orderDate != null && !orderDate.isEmpty()) {
 //                    txtDeliveryDate.setText(orderDate);
-                    txtDeliveryDate.setText(String.format(" %s", FormatDateTimeLocal(orderDate)));
+                    Log.d("ooooo", orderDate);
+                    txtDeliveryDate.setText(String.format(" %s", FormatDate(orderDate)));
                 }
                 else {
                     txtDeliveryDate.setText("N/A");
