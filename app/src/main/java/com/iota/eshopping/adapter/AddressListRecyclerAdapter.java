@@ -77,7 +77,6 @@ public class AddressListRecyclerAdapter extends RecyclerView.Adapter<AddressList
         String addressLine = "";
         if (address.getStreet() != null && !address.getStreet().isEmpty()) {
             if (address.getStreet() != null && !address.getStreet().isEmpty()) {
-
                 addressLine = address.getStreet().get(0);
                 Gson gson = new Gson();
                 String json = gson.toJson(address.getStreet());
@@ -193,6 +192,20 @@ public class AddressListRecyclerAdapter extends RecyclerView.Adapter<AddressList
             }
 
             itemView.setOnClickListener(view -> {
+
+                Object lat = null, lng = null;
+                for (int i = 0; i < addressList.get(getAdapterPosition()).getCustomAttributes().size(); i++) {
+                    if (addressList.get(getAdapterPosition()).getCustomAttributes().get(i).getAttributeCode().equals("latitude")){
+                        lat = addressList.get(getAdapterPosition()).getCustomAttributes().get(i).getValue();
+                    }else if (addressList.get(getAdapterPosition()).getCustomAttributes().get(i).getAttributeCode().equals("longitude")){
+                        lng = addressList.get(getAdapterPosition()).getCustomAttributes().get(i).getValue();
+                    }
+                }
+                addressList.get(getAdapterPosition()).setLatitude(Double.parseDouble(lat.toString()));
+                addressList.get(getAdapterPosition()).setLongitude(Double.parseDouble(lng.toString()));
+
+                Log.d("ooooo", addressList.get(getAdapterPosition()).getStreet().get(0));
+
                 Intent intent = new Intent(itemView.getContext(), AddAddressActivity.class);
                 intent.putExtra(ConstantValue.ADDRESS, addressList.get(getAdapterPosition()));
                 intent.putExtra(ConstantValue.EDIT_ADDRESS, true);

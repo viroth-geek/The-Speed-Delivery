@@ -75,7 +75,6 @@ public class DeliveryAddressFragment extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
-
         checkAddressList();
     }
 
