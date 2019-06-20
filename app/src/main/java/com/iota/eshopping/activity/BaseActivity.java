@@ -146,6 +146,8 @@ public class BaseActivity extends AppCompatActivity
     private String mVerificationId;
     private PhoneAuthProvider.ForceResendingToken mResendToken;
 
+    final Handler handler = new Handler();
+
     @Override
     public void onAttachFragment(Fragment fragment) {
         super.onAttachFragment(fragment);
@@ -157,17 +159,19 @@ public class BaseActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        final Handler handler = new Handler();
-        handler.postDelayed(() -> {
-            if (listener != null) {
-                if (getIntent().getExtras().getString(ConstantValue.VIEW_BASKET) != null) {
-                    listener.onViewBasket();
-                }
-            }
-        }, 500);
-
         setContentView(R.layout.activity_base);
+
+        if (getIntent().getStringExtra(ConstantValue.VIEW_BASKET) != null) {
+            Toast.makeText(this, "intent in not null", Toast.LENGTH_SHORT).show();
+            handler.postDelayed(() -> {
+                if (listener != null) {
+                    if (getIntent().getExtras().getString(ConstantValue.VIEW_BASKET) != null) {
+                        listener.onViewBasket();
+                    }
+                }
+            }, 500);
+        }
+
         toolbar = findViewById(R.id.toolbar);
         drawer = findViewById(R.id.drawer_layout);
 //        progressBar = findViewById(R.id.loading_progress_bar);
