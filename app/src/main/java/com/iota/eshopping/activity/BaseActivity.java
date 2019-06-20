@@ -162,14 +162,13 @@ public class BaseActivity extends AppCompatActivity
         setContentView(R.layout.activity_base);
 
         if (getIntent().getStringExtra(ConstantValue.VIEW_BASKET) != null) {
-            Toast.makeText(this, "intent in not null", Toast.LENGTH_SHORT).show();
             handler.postDelayed(() -> {
                 if (listener != null) {
                     if (getIntent().getExtras().getString(ConstantValue.VIEW_BASKET) != null) {
                         listener.onViewBasket();
                     }
                 }
-            }, 500);
+            }, 700);
         }
 
         toolbar = findViewById(R.id.toolbar);
