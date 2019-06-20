@@ -52,6 +52,7 @@ import com.iota.eshopping.util.NumberUtils;
 import com.iota.eshopping.util.preference.StorePreference;
 import com.iota.eshopping.util.preference.TimeDeliveryPreference;
 
+import java.io.Serializable;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -203,14 +204,11 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
                     return;
                 }
 
-//                Intent intent = new Intent(this, ManageBasketActivity.class);
-//                intent.putExtra(ConstantValue.ITEMS, (Serializable) productItems);
-//                intent.putExtra(ConstantValue.STORE, store);
-//                startActivityForResult(intent, ConstantValue.GO_TO_BASKET);
+                Intent intent = new Intent(this, ManageBasketActivity.class);
+                intent.putExtra(ConstantValue.ITEMS, (Serializable) productItems);
+                intent.putExtra(ConstantValue.STORE, store);
+                startActivityForResult(intent, ConstantValue.GO_TO_BASKET);
 
-                Intent intent = new Intent(this, BaseActivity.class);
-                intent.putExtra(ConstantValue.VIEW_BASKET, "view_basket");
-                startActivity(intent);
 
             } else {
                 Toast.makeText(this, "No item in basket.", Toast.LENGTH_SHORT).show();

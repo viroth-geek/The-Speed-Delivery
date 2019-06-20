@@ -157,20 +157,17 @@ public class BaseActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_base);
 
         final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (listener != null) {
-                    if (getIntent().getExtras().getString(ConstantValue.VIEW_BASKET) != null) {
-                        listener.onViewBasket();
-                    }
+        handler.postDelayed(() -> {
+            if (listener != null) {
+                if (getIntent().getExtras().getString(ConstantValue.VIEW_BASKET) != null) {
+                    listener.onViewBasket();
                 }
             }
         }, 500);
 
+        setContentView(R.layout.activity_base);
         toolbar = findViewById(R.id.toolbar);
         drawer = findViewById(R.id.drawer_layout);
 //        progressBar = findViewById(R.id.loading_progress_bar);
