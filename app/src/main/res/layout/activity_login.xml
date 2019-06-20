@@ -132,6 +132,14 @@
                     android:layout_gravity="center_horizontal"
                     android:visibility="gone"/>
 
+             <Button
+                 android:id="@+id/btn_continue_phone"
+                 android:layout_width="240dp"
+                 android:layout_height="wrap_content"
+                 android:background="@color/transparent"
+                 android:text="Continue with Phonenumber"
+                 android:textColor="@color/link"/>
+
                 <Button android:id="@+id/btn_facebook_login"
                     android:background="@android:color/transparent"
                     android:layout_width="240dp"

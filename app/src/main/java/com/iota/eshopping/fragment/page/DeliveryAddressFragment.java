@@ -73,6 +73,7 @@ public class DeliveryAddressFragment extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
+        checkDB();
         checkAddressList();
     }
 
@@ -108,6 +109,7 @@ public class DeliveryAddressFragment extends Fragment{
     private void checkDB() {
         try {
             db = new FetchAddressDAO(DatabaseHelper.getInstance(getActivity()).getDatabase());
+            Log.d("ooooo", db.getListAddress().toString());
         } catch (Exception e) {
             LoggerHelper.showErrorLog("Address Table Error " + e.getMessage());
         }
