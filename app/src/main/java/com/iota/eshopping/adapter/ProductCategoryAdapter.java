@@ -35,7 +35,6 @@ import com.iota.eshopping.util.LoggerHelper;
 import com.iota.eshopping.util.NumberUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -213,13 +212,13 @@ public class ProductCategoryAdapter extends RecyclerView.Adapter<ProductCategory
 
     @Override
     public void onChange(ProductItem productItem) {
-        Toast.makeText(context, "UUID2" + ((com.iota.eshopping.model.modelForView.Product)productItem.getItem()).getProductUid(), Toast.LENGTH_SHORT).show();
 
+        Product product = (Product) productItem.getItem();
+        product.setCount(productItem.getCount());
+        product.setStoreId(this.store.getId());
+        productItem.setItem(product);
         ((StoreActivity)context).onChange(productItem);
-//        Product product = (Product) productItem.getItem();
-//        product.setCount(productItem.getCount());
-//        product.setStoreId(this.store.getId());
-//        updateItemAmount(Collections.singletonList(productItem), false);
+        //updateItemAmount(Collections.singletonList(productItem), false);
     }
 
     /**

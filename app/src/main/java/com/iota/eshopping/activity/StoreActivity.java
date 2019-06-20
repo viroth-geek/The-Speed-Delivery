@@ -564,8 +564,6 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onChange(ProductItem productItem) {
 
-        Toast.makeText(this, "UUID" + ((com.iota.eshopping.model.modelForView.Product)productItem.getItem()).getProductUid(), Toast.LENGTH_SHORT).show();
-
         if (productItems == null) {
             productItems = new ArrayList<>();
         }
