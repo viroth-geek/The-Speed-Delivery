@@ -33,8 +33,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:background="@drawable/shape_box_i"
+                android:orientation="horizontal"
                 android:padding="@dimen/margin_length_10">
 
                 <LinearLayout
@@ -139,11 +139,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="35dp"
                         android:layout_marginTop="@dimen/margin_length_8"
+                        android:layout_marginBottom="@dimen/margin_length_8"
                         android:background="@drawable/corner_radius_button"
                         android:text="Update"
-                        android:layout_marginBottom="@dimen/margin_length_8"
-                        android:textStyle="bold"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 

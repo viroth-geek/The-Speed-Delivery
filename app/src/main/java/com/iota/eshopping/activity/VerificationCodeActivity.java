@@ -142,7 +142,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
                     etCode.setEnabled(true);
                     etCode.setText("");
                     progressBar.setVisibility(View.GONE);
-                    Toast.makeText(this, "Invalid verification code entered.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Invalid verification code entered." + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
 

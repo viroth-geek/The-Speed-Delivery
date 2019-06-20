@@ -202,4 +202,6 @@
     <string name="first_name">First name</string>
     <string name="last_name">Last Name</string>
     <string name="already_have_an_account">Already have an account?</string>
+    <string name="please_enter_your_phone_number">Please enter your phone number</string>
+    <string name="sign_in">SIGN IN</string>
 </resources>

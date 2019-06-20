@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.iota.eshopping.R;
+import com.iota.eshopping.activity.StoreActivity;
 import com.iota.eshopping.constant.ApplicationConfiguration;
 import com.iota.eshopping.constant.ConstantValue;
 import com.iota.eshopping.event.InvokeAnimations;
@@ -212,10 +213,13 @@ public class ProductCategoryAdapter extends RecyclerView.Adapter<ProductCategory
 
     @Override
     public void onChange(ProductItem productItem) {
-        Product product = (Product) productItem.getItem();
-        product.setCount(productItem.getCount());
-        product.setStoreId(this.store.getId());
-        updateItemAmount(Collections.singletonList(productItem), false);
+        Toast.makeText(context, "UUID2" + ((com.iota.eshopping.model.modelForView.Product)productItem.getItem()).getProductUid(), Toast.LENGTH_SHORT).show();
+
+        ((StoreActivity)context).onChange(productItem);
+//        Product product = (Product) productItem.getItem();
+//        product.setCount(productItem.getCount());
+//        product.setStoreId(this.store.getId());
+//        updateItemAmount(Collections.singletonList(productItem), false);
     }
 
     /**

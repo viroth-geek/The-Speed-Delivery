@@ -2,15 +2,18 @@ package com.iota.eshopping.fragment.cart;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.iota.eshopping.R;
 import com.iota.eshopping.constant.ApplicationConfiguration;
+import com.iota.eshopping.constant.ConstantValue;
 import com.iota.eshopping.model.OptionProduct;
 import com.iota.eshopping.model.ProductOption;
 import com.iota.eshopping.model.modelForView.Product;
@@ -153,8 +156,6 @@ public class ItemAdjustment extends DialogFragment implements View.OnClickListen
             dismiss();
         } else if (btn_update.equals(view)) {
 
-
-
             if (store != null) {
                 List<Product> wrongProducts = productLocalService.getListItem();
                 wrongProducts = Observable.fromIterable(wrongProducts).filter(wrongProduct -> wrongProduct.getStoreId() != null && !wrongProduct.getStoreId().equals(store.getId())).toList().blockingGet();
@@ -191,6 +192,9 @@ public class ItemAdjustment extends DialogFragment implements View.OnClickListen
 
             productItem.setCount(productItemTemp.getCount());
             productItem.setItem(product);
+
+            Log.d(ConstantValue.TAG_LOG, "click update product: " + productItem.getItem());
+
             changeValue.onChange(productItem);
 
             view.setVisibility(View.GONE);
@@ -225,4 +229,6 @@ public class ItemAdjustment extends DialogFragment implements View.OnClickListen
     public interface OnChangeValue {
         void onChange(ProductItem productItem);
     }
+
+
 }
