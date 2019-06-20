@@ -11,6 +11,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -288,23 +289,27 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
             showLocationPicker();
         }
         else if (btn_basket.equals(view)) {
-            List<ProductItem> items = Observable.fromIterable(productItems).filter(productItem -> productItem.getCount() > 0).toList().blockingGet();
-            if (!items.isEmpty()) {
+            viewBasketDetail();
+        }
+    }
 
-                Product product = (Product) this.productItems.get(0).getItem();
-                if (storeList != null) {
-                    Store store = Observable.fromIterable(storeList).filter(store1 -> store1.getId().equals(product.getStoreId())).toList().blockingGet().get(0);
-                    Intent intent = new Intent(getContext(), ManageBasketActivity.class);
-                    intent.putExtra(ConstantValue.ITEMS, (Serializable) productItems);
-                    intent.putExtra(ConstantValue.STORE, store);
-                    startActivityForResult(intent, ConstantValue.GO_TO_BASKET);
-                } else {
-                    Toast.makeText(getContext(), "Cannot go to basket", Toast.LENGTH_SHORT).show();
-                }
+    private void viewBasketDetail() {
+        List<ProductItem> items = Observable.fromIterable(productItems).filter(productItem -> productItem.getCount() > 0).toList().blockingGet();
+        if (!items.isEmpty()) {
 
+            Product product = (Product) this.productItems.get(0).getItem();
+            if (storeList != null) {
+                Store store = Observable.fromIterable(storeList).filter(store1 -> store1.getId().equals(product.getStoreId())).toList().blockingGet().get(0);
+                Intent intent = new Intent(getContext(), ManageBasketActivity.class);
+                intent.putExtra(ConstantValue.ITEMS, (Serializable) productItems);
+                intent.putExtra(ConstantValue.STORE, store);
+                startActivityForResult(intent, ConstantValue.GO_TO_BASKET);
             } else {
-                Toast.makeText(getContext(), "No item to in basket.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Cannot go to basket", Toast.LENGTH_SHORT).show();
             }
+
+        } else {
+            Toast.makeText(getContext(), "No item to in basket.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -756,6 +761,19 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
             storeRestriction.setStoreRestriction(searchStoreRestriction);
             loadStoreList(storeRestriction);
         }
+    }
+
+    @Override
+    public void onViewBasket() {
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                viewBasketDetail();
+            }
+        }, 1000);
+
     }
 
 }

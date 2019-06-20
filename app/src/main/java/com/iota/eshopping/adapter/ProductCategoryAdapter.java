@@ -14,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.iota.eshopping.R;
-import com.iota.eshopping.activity.StoreActivity;
 import com.iota.eshopping.constant.ApplicationConfiguration;
 import com.iota.eshopping.constant.ConstantValue;
 import com.iota.eshopping.event.InvokeAnimations;
@@ -35,6 +34,7 @@ import com.iota.eshopping.util.LoggerHelper;
 import com.iota.eshopping.util.NumberUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -216,9 +216,8 @@ public class ProductCategoryAdapter extends RecyclerView.Adapter<ProductCategory
         Product product = (Product) productItem.getItem();
         product.setCount(productItem.getCount());
         product.setStoreId(this.store.getId());
-        productItem.setItem(product);
-        ((StoreActivity)context).onChange(productItem);
-        //updateItemAmount(Collections.singletonList(productItem), false);
+//        ((StoreActivity)context).onChange(productItem);
+        updateItemAmount(Collections.singletonList(productItem), false);
     }
 
     /**
