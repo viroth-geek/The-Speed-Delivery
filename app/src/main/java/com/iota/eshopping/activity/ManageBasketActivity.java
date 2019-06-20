@@ -166,13 +166,10 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
         } else if (btn_go_to_checkout.equals(v)) {
             List<ProductItem> items = Observable.fromIterable(itemsUpdated).filter(productItem -> productItem.getCount() > 0).toList().blockingGet();
             if (items != null && !items.isEmpty()) {
-                Log.d("ooooo", "1");
                 boolean isCanOrder = true;
                 String tomorrowText = TimeDeliveryPreference.getTimeDeliveryText(this).split(" ")[0];
                 if (tomorrowText.equalsIgnoreCase(DayType.TOMORROW.toString())) {
-                    Log.d("ooooo", "2");
                     if (!store.isStatusOpenTomorrow()) {
-                        Log.d("ooooo", "3");
                         isCanOrder = false;
                         AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         builder.setTitle("Store Message");
@@ -182,7 +179,6 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
                     }
                 } else {
                     if (!store.isOpenToday()) {
-                        Log.d("ooooo", "4");
                         isCanOrder = false;
                         AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         builder.setTitle("Store Message");
@@ -193,25 +189,19 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
                 }
 
                 if (isCanOrder) {
-                    Log.d("ooooo", "5");
                     if (userAccount.checkIsReadyLogged()) {
-                        Log.d("ooooo", "6");
                         if (TimeDeliveryPreference.getTimeDelivery(this) != null) {
-                            Log.d("ooooo", "10");
                             prepareBeforeCheckout();
                         } else {
-                            Log.d("ooooo", "7");
                             Toast.makeText(this, "Please choose time delivery.", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Log.d("ooooo", "8");
                         Intent intent = new Intent(this, LoginActivity.class);
                         startActivity(intent);
                     }
                 }
 
             } else {
-                Log.d("ooooo", "9");
                 Toast.makeText(this, "No items to order", Toast.LENGTH_SHORT).show();
             }
         } else if (txt_estore_name.equals(v)) {
@@ -513,9 +503,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
         fetchProductFromLocalCart();
 
         if (itemsUpdated != null) {
-            Log.d("ooooo", "12");
             if (itemsUpdated.size() > 0) {
-                Log.d("ooooo", "13");
                 List<CartProductItems> cartProductItems = new ArrayList<>();
                 for (ProductItem productItem : productItems) {
                     Product product = (Product) productItem.getItem();
@@ -525,7 +513,6 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
                         items.setQty(Long.valueOf(productItem.getCount()));
                         cartProductItems.add(items);
                     } else {
-                        Log.d("ooooo", "14");
                         CartProductItems items = new CartProductItems();
                         items.setProductId(product.getParentId());
                         items.setQty(Long.valueOf(productItem.getCount()));
@@ -544,11 +531,9 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
                                 }
                                 items.setCartAttributes(cartAttributes);
                             } else {
-                                Log.d("ooooo", "13");
                                 items.setCartAttributes(new ArrayList<>());
                             }
                             if (productAttributeOption.getOptionProducts() != null && !productAttributeOption.getOptionProducts().isEmpty()) {
-                                Log.d("ooooo", "14");
                                 List<OptionProduct> optionProducts = productAttributeOption.getOptionProducts();
                                 List<CartOption> cartOptions = new ArrayList<>();
                                 if (optionProducts != null && !optionProducts.isEmpty()) {
@@ -599,15 +584,52 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
      * bind product to detail to show option
      */
     private void bindProductDetail(boolean shouldFilter) {
+
         int countOption = 0;
         for (ProductItem productItem : itemsUpdated) {
             Product product = (Product) productItem.getItem();
+            Log.d(ConstantValue.TAG_LOG, "bindProductDetail: " + product.getProductUid());
             StringBuilder detailBuilder = new StringBuilder();
             countOption++;
+
             if (!productAttributeOption.getOptionProducts().isEmpty()) {
                 for (OptionProduct optionProduct : productAttributeOption.getOptionProducts()) {
                     if (!optionProduct.getOptionValues().isEmpty()) {
+
+//                        if (product.getProductUid() == null) {
+//                            ProductLocalService productLocalService = new ProductLocalService(this);
+//                            List<com.iota.eshopping.model.modelForView.Product> products = productLocalService.getListItem();
+//
+//                            Log.d(ConstantValue.TAG_LOG, String.valueOf(products));
+//
+//                            for (Product product1 : products) {
+//
+//                                if (product1.getProductUid().equals(optionProduct.getProductUid())) {
+//                                    detailBuilder.append(optionProduct.getTitle())
+//                                            .append(":\n");
+//                                    int countValue = 0;
+//                                    for (OptionValue optionValue : optionProduct.getOptionValues()) {
+//                                        countValue++;
+//                                        detailBuilder
+//                                                .append("\t\t")
+//                                                .append(optionValue.getTitle())
+//                                                .append(": $").append(optionValue.getPrice());
+//                                        if (countValue < optionProduct.getOptionValues().size()) {
+//                                            detailBuilder.append("\n");
+//                                        }
+//                                    }
+//                                    if (countOption <= productAttributeOption.getOptionProducts().size()) {
+//                                        detailBuilder.append("\n");
+//                                    } else {
+//                                        countOption = 0;
+//                                    }
+//                                }
+//                            }
+//
+//                        } else
+
                         if (product.getProductUid().equals(optionProduct.getProductUid())) {
+
                             detailBuilder.append(optionProduct.getTitle())
                                     .append(":\n");
                             int countValue = 0;
@@ -627,9 +649,11 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
                                 countOption = 0;
                             }
                         }
+
                     }
                 }
             }
+
             addProductWithOptionToMap(product, productAttributeOption);
             product.setDetail(detailBuilder.toString());
         }
@@ -793,8 +817,6 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
                 });
             } else {
                 container_float_loading.setVisibility(View.GONE);
-                Log.d("ooooo", "11");
-                Log.d("ooooo", token + "/" + isValid);
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
             }
@@ -804,7 +826,6 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onResume() {
         super.onResume();
-//        Log.d("ooooo", "OnResume");
         btn_go_to_checkout.setEnabled(true);
     }
 
