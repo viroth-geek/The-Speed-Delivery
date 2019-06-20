@@ -591,38 +591,46 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
             StringBuilder detailBuilder = new StringBuilder();
             countOption++;
 
-            if (!productAttributeOption.getOptionProducts().isEmpty()) {
-                for (OptionProduct optionProduct : productAttributeOption.getOptionProducts()) {
-                    if (!optionProduct.getOptionValues().isEmpty()) {
-                        
-                        if (product.getProductUid().equals(optionProduct.getProductUid())) {
 
-                            detailBuilder.append(optionProduct.getTitle())
-                                    .append(":\n");
-                            int countValue = 0;
-                            for (OptionValue optionValue : optionProduct.getOptionValues()) {
-                                countValue++;
-                                detailBuilder
-                                        .append("\t\t")
-                                        .append(optionValue.getTitle())
-                                        .append(": $").append(optionValue.getPrice());
-                                if (countValue < optionProduct.getOptionValues().size()) {
+            try {
+                if (!productAttributeOption.getOptionProducts().isEmpty()) {
+                    for (OptionProduct optionProduct : productAttributeOption.getOptionProducts()) {
+                        if (!optionProduct.getOptionValues().isEmpty()) {
+
+                            if (product.getProductUid().equals(optionProduct.getProductUid())) {
+
+                                detailBuilder.append(optionProduct.getTitle())
+                                        .append(":\n");
+                                int countValue = 0;
+                                for (OptionValue optionValue : optionProduct.getOptionValues()) {
+                                    countValue++;
+                                    detailBuilder
+                                            .append("\t\t")
+                                            .append(optionValue.getTitle())
+                                            .append(": $").append(optionValue.getPrice());
+                                    if (countValue < optionProduct.getOptionValues().size()) {
+                                        detailBuilder.append("\n");
+                                    }
+                                }
+                                if (countOption <= productAttributeOption.getOptionProducts().size()) {
                                     detailBuilder.append("\n");
+                                } else {
+                                    countOption = 0;
                                 }
                             }
-                            if (countOption <= productAttributeOption.getOptionProducts().size()) {
-                                detailBuilder.append("\n");
-                            } else {
-                                countOption = 0;
-                            }
-                        }
 
+                        }
                     }
                 }
-            }
 
-            addProductWithOptionToMap(product, productAttributeOption);
-            product.setDetail(detailBuilder.toString());
+                addProductWithOptionToMap(product, productAttributeOption);
+                product.setDetail(detailBuilder.toString());
+
+            } catch (Exception e) {
+                Intent intent = new Intent(this, BaseActivity.class);
+                intent.putExtra(ConstantValue.VIEW_BASKET, "view_basket");
+                startActivity(intent);
+            }
         }
         if (shouldFilter) {
             filterProduct();
