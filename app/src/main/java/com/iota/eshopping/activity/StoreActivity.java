@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,7 +52,6 @@ import com.iota.eshopping.util.NumberUtils;
 import com.iota.eshopping.util.preference.StorePreference;
 import com.iota.eshopping.util.preference.TimeDeliveryPreference;
 
-import java.io.Serializable;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -205,12 +203,14 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
                     return;
                 }
 
-                Log.d(ConstantValue.TAG_LOG, "onClick: " + productItems);
+//                Intent intent = new Intent(this, ManageBasketActivity.class);
+//                intent.putExtra(ConstantValue.ITEMS, (Serializable) productItems);
+//                intent.putExtra(ConstantValue.STORE, store);
+//                startActivityForResult(intent, ConstantValue.GO_TO_BASKET);
 
-                Intent intent = new Intent(this, ManageBasketActivity.class);
-                intent.putExtra(ConstantValue.ITEMS, (Serializable) productItems);
-                intent.putExtra(ConstantValue.STORE, store);
-                startActivityForResult(intent, ConstantValue.GO_TO_BASKET);
+                Intent intent = new Intent(this, BaseActivity.class);
+                intent.putExtra(ConstantValue.VIEW_BASKET, "view_basket");
+                startActivity(intent);
 
             } else {
                 Toast.makeText(this, "No item in basket.", Toast.LENGTH_SHORT).show();
@@ -597,6 +597,5 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
     public void onLoadProductCompleted(List<Category> categories) {
         fetchCachedProducts();
     }
-
 
 }

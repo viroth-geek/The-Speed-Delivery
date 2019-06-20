@@ -97,4 +97,6 @@ public class ConstantValue {
 
     public static final String VERIFICATION_METHOD = "verification up method";
     public static final String SAVE_NEW_ADDRESS = "pressback";
+
+    public static final String VIEW_BASKET = "view_basket";
 }

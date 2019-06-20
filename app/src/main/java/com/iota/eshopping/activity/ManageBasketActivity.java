@@ -2,7 +2,6 @@ package com.iota.eshopping.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -595,39 +594,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
             if (!productAttributeOption.getOptionProducts().isEmpty()) {
                 for (OptionProduct optionProduct : productAttributeOption.getOptionProducts()) {
                     if (!optionProduct.getOptionValues().isEmpty()) {
-
-//                        if (product.getProductUid() == null) {
-//                            ProductLocalService productLocalService = new ProductLocalService(this);
-//                            List<com.iota.eshopping.model.modelForView.Product> products = productLocalService.getListItem();
-//
-//                            Log.d(ConstantValue.TAG_LOG, String.valueOf(products));
-//
-//                            for (Product product1 : products) {
-//
-//                                if (product1.getProductUid().equals(optionProduct.getProductUid())) {
-//                                    detailBuilder.append(optionProduct.getTitle())
-//                                            .append(":\n");
-//                                    int countValue = 0;
-//                                    for (OptionValue optionValue : optionProduct.getOptionValues()) {
-//                                        countValue++;
-//                                        detailBuilder
-//                                                .append("\t\t")
-//                                                .append(optionValue.getTitle())
-//                                                .append(": $").append(optionValue.getPrice());
-//                                        if (countValue < optionProduct.getOptionValues().size()) {
-//                                            detailBuilder.append("\n");
-//                                        }
-//                                    }
-//                                    if (countOption <= productAttributeOption.getOptionProducts().size()) {
-//                                        detailBuilder.append("\n");
-//                                    } else {
-//                                        countOption = 0;
-//                                    }
-//                                }
-//                            }
-//
-//                        } else
-
+                        
                         if (product.getProductUid().equals(optionProduct.getProductUid())) {
 
                             detailBuilder.append(optionProduct.getTitle())
@@ -720,7 +687,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
                         currentValue.add(optionValue.getOptionTypeId());
                     }
 
-                    if ((previousProduct != null && !myMap.getKey().getId().equals(previousProduct.getId()) && previousValue.equals(currentValue)) || !previousValue.equals(currentValue)) {
+                    if ((previousProduct != null && !myMap.getKey().getId().equals(previousProduct.getId())) || !previousValue.equals(currentValue)) {
                         isExist = false;
                     } else if ((previousProduct != null && myMap.getKey().getId().equals(previousProduct.getId()) && previousValue.equals(currentValue))) {
                         currentProduct = previousProduct;
@@ -908,7 +875,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
             public void onError(Throwable e) {
                 LoggerHelper.showErrorLog("Error: ", e);
                 Toast.makeText(ManageBasketActivity.this, "Cannot not get delivery fee.", Toast.LENGTH_SHORT).show();
-                AlertUtils.showConfirmDialog(ManageBasketActivity.this, "Message", "Cannot not get delivery fee.", "OK", (DialogInterface.OnClickListener) (dialogInterface, i) -> {
+                AlertUtils.showConfirmDialog(ManageBasketActivity.this, "Message", "Cannot not get delivery fee.", "OK", (dialogInterface, i) -> {
                     openGoogleMap();
                 });
             }
@@ -956,4 +923,5 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
     public void setServerDateTime(String serverDateTime) {
         this.serverDateTime = serverDateTime;
     }
+
 }

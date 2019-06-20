@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -158,6 +159,18 @@ public class BaseActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
 
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (listener != null) {
+                    if (getIntent().getExtras().getString(ConstantValue.VIEW_BASKET) != null) {
+                        listener.onViewBasket();
+                    }
+                }
+            }
+        }, 500);
+
         toolbar = findViewById(R.id.toolbar);
         drawer = findViewById(R.id.drawer_layout);
 //        progressBar = findViewById(R.id.loading_progress_bar);
@@ -167,35 +180,40 @@ public class BaseActivity extends AppCompatActivity
 
         llProductFilter = findViewById(R.id.lyt_pro_filter);
 
-        fetchAddressDAO = new FetchAddressDAO(DatabaseHelper.getInstance(this).getDatabase());
+        if (getIntent().getStringExtra(ConstantValue.SAVE_NEW_ADDRESS) != null) {
 
-        initToolbar();
-        initFilterProductComponent();
-
-        mAuth = FirebaseAuth.getInstance();
-        phoneAuthCallBack();
-
-        if (getIntent().hasExtra(ConstantValue.NOTIFICATION) && checkUserData()) {
-            if (getIntent().hasExtra(ConstantValue.ITEMS)) {
-                Intent intent = new Intent(this, MyOrderDetailActivity.class);
-                intent.putExtra(ConstantValue.ITEMS, getIntent().getSerializableExtra(ConstantValue.ITEMS));
-                intent.putExtra(ConstantValue.HOME_CALLING, true);
-                startActivity(intent);
-            } else {
-                checkNewNotification();
-            }
         } else {
-            checkToHome();
-            if (getIntent().getStringExtra(ConstantValue.SAVE_NEW_ADDRESS) != null) {
-                addMoreAddress();
+            fetchAddressDAO = new FetchAddressDAO(DatabaseHelper.getInstance(this).getDatabase());
+
+            initToolbar();
+            initFilterProductComponent();
+
+            mAuth = FirebaseAuth.getInstance();
+            phoneAuthCallBack();
+
+            if (getIntent().hasExtra(ConstantValue.NOTIFICATION) && checkUserData()) {
+                if (getIntent().hasExtra(ConstantValue.ITEMS)) {
+                    Intent intent = new Intent(this, MyOrderDetailActivity.class);
+                    intent.putExtra(ConstantValue.ITEMS, getIntent().getSerializableExtra(ConstantValue.ITEMS));
+                    intent.putExtra(ConstantValue.HOME_CALLING, true);
+                    startActivity(intent);
+                } else {
+                    checkNewNotification();
+                }
+            } else {
+                checkToHome();
+                if (listener != null) {
+                    if (getIntent().getStringExtra(ConstantValue.SAVE_NEW_ADDRESS) != null) {
+                        addMoreAddress();
+                    }
+                }
+
             }
+
+            configureFacebookLogin();
+            configureGoogleSignIn();
+            configurePhoneAuthentication();
         }
-
-        configureFacebookLogin();
-        configureGoogleSignIn();
-        configurePhoneAuthentication();
-
-
     }
 
     private void initFilterProductComponent() {
