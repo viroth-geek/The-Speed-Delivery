@@ -249,7 +249,6 @@ public class AddAddressActivity extends AppCompatActivity {
         address.setTelephone(txt_phone_number.getText().toString());
         address.setDefaultBilling(chkDefaultBilling.isChecked());
         address.setDefaultShipping(chkDefaultBilling.isChecked());
-
         new UpdateAddress(prepareData(address), new UpdateAddress.InvokeOnCompleteAsync() {
             @Override
             public void onComplete(List<Address> addresses) {
