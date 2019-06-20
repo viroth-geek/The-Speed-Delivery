@@ -202,13 +202,10 @@ public class ProductOptionDialog extends DialogFragment implements View.OnClickL
      *
      */
     private void getConfigurableProduct() {
-
         if (prepareForGetProduct() == null) {
             return;
         }
-
         getItemProgressBar.setVisibility(View.VISIBLE);
-
         new FetchConfigurableProduct(prepareForGetProduct(), new FetchConfigurableProduct.InvokeOnCompleteAsync() {
             @Override
             public void onComplete(List<Product> products) {
@@ -231,7 +228,7 @@ public class ProductOptionDialog extends DialogFragment implements View.OnClickL
                     }
                     optionProduct.setOriginalProductId(product.getProductId());
                 }
-
+                
                 onOptionItemChooseListener.onOptionChoose(product, currentSelectedProductAttributeOption);
                 getItemProgressBar.setVisibility(View.GONE);
                 dismiss();
