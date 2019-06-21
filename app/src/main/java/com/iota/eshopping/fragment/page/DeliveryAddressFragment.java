@@ -24,6 +24,7 @@ import com.iota.eshopping.constant.ConstantValue;
 import com.iota.eshopping.model.Address;
 import com.iota.eshopping.model.Customer;
 import com.iota.eshopping.model.singleton.Singleton;
+import com.iota.eshopping.security.UserAccount;
 import com.iota.eshopping.server.DatabaseHelper;
 import com.iota.eshopping.service.base.InvokeOnCompleteAsync;
 import com.iota.eshopping.service.datahelper.datasource.offine.address.FetchAddressDAO;
@@ -109,7 +110,6 @@ public class DeliveryAddressFragment extends Fragment{
     private void checkDB() {
         try {
             db = new FetchAddressDAO(DatabaseHelper.getInstance(getActivity()).getDatabase());
-            Log.d("ooooo", db.getListAddress().toString());
         } catch (Exception e) {
             LoggerHelper.showErrorLog("Address Table Error " + e.getMessage());
         }
@@ -119,6 +119,8 @@ public class DeliveryAddressFragment extends Fragment{
      * fetch address list from server
      */
     private void checkAddressList(){
+        UserAccount userAccount = new UserAccount(getContext());
+        Log.d("userId", Singleton.userId.toString() + "//" + userAccount.getCustomerToken());
         new FetchAddressList(Singleton.userId, new InvokeOnCompleteAsync<Customer>() {
             @Override
             public void onComplete(Customer data) {
