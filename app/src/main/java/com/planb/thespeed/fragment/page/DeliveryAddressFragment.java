@@ -24,6 +24,7 @@ import com.planb.thespeed.constant.ConstantValue;
 import com.planb.thespeed.model.Address;
 import com.planb.thespeed.model.Customer;
 import com.planb.thespeed.model.singleton.Singleton;
+import com.planb.thespeed.security.UserAccount;
 import com.planb.thespeed.server.DatabaseHelper;
 import com.planb.thespeed.service.base.InvokeOnCompleteAsync;
 import com.planb.thespeed.service.datahelper.datasource.offine.address.FetchAddressDAO;
@@ -53,8 +54,6 @@ public class DeliveryAddressFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_delivery_address, container, false);
 
-        Log.d("ooooo", "here onCreateView");
-
         FloatingActionButton floatingActionButton = view.findViewById(R.id.fab);
         list_address = view.findViewById(R.id.list_address);
         list_address.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -75,10 +74,7 @@ public class DeliveryAddressFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
-        checkDB();
-        getListAddress();
-        bindData();
+        checkAddressList();
     }
 
     @Override
@@ -121,7 +117,9 @@ public class DeliveryAddressFragment extends Fragment {
     /**
      * fetch address list from server
      */
-    private void checkAddressList() {
+    private void checkAddressList(){
+        UserAccount userAccount = new UserAccount(getContext());
+        Log.d("userId", Singleton.userId.toString() + "//" + userAccount.getCustomerToken());
         new FetchAddressList(Singleton.userId, new InvokeOnCompleteAsync<Customer>() {
             @Override
             public void onComplete(Customer data) {

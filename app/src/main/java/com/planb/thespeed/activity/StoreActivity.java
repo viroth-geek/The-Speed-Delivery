@@ -347,6 +347,7 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
 
 //            txt_estore_name.setText(store.getName());
 //            txt_estore_type.setText(estoreType.toString());
+
             if (!store.isOpenToday()) {
                 txt_is_open.setTextColor(getResources().getColor(R.color.red));
             } else {

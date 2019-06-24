@@ -1,23 +1,19 @@
-package com.planb.thespeed.model.modelForView;
+package com.planb.thespeed.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.planb.thespeed.model.modelForView.Address1;
 
-/**
- * @author yeakleang.ay on 6/11/18.
- */
-
-public class CreateAddress {
-
+public class CreateAddress1 {
     @SerializedName("address")
     @Expose
-    private Address address;
+    private Address1 address;
 
-    public Address getAddress() {
+    public Address1 getAddress() {
         return address;
     }
 
-    public void setAddress(Address address) {
+    public void setAddress(Address1 address) {
         this.address = address;
     }
 

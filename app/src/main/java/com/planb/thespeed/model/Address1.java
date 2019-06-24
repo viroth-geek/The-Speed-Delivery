@@ -3,12 +3,10 @@ package com.planb.thespeed.model.modelForView;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 /**
  * Created by NokorGroup on 6/11/18.
  */
-public class Address {
+public class Address1 {
 
     @SerializedName("id")
     @Expose
@@ -39,7 +37,7 @@ public class Address {
     private String company;
     @SerializedName("street")
     @Expose
-    private List<String> streets;
+    private String streets;
     @SerializedName("isDefaultBilling")
     @Expose
     private Boolean isDefaultBilling;
@@ -201,7 +199,7 @@ public class Address {
      *
      * @return
      */
-    public List<String> getStreets() {
+    public String getStreets() {
         return streets;
     }
 
@@ -209,7 +207,7 @@ public class Address {
      *
      * @param streets
      */
-    public void setStreets(List<String> streets) {
+    public void setStreets(String streets) {
         this.streets = streets;
     }
 

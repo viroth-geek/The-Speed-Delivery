@@ -190,8 +190,18 @@ public class AddressListRecyclerAdapter extends RecyclerView.Adapter<AddressList
             }
 
             itemView.setOnClickListener(view -> {
-                Log.d(ConstantValue.TAG_LOG, "latitude" + addressList.get(getAdapterPosition()).getLatitude());
-                Log.d(ConstantValue.TAG_LOG, "langitude" + addressList.get(getAdapterPosition()).getLatitude());
+
+                Object lat = null, lng = null;
+                for (int i = 0; i < addressList.get(getAdapterPosition()).getCustomAttributes().size(); i++) {
+                    if (addressList.get(getAdapterPosition()).getCustomAttributes().get(i).getAttributeCode().equals("latitude")){
+                        lat = addressList.get(getAdapterPosition()).getCustomAttributes().get(i).getValue();
+                    }else if (addressList.get(getAdapterPosition()).getCustomAttributes().get(i).getAttributeCode().equals("longitude")){
+                        lng = addressList.get(getAdapterPosition()).getCustomAttributes().get(i).getValue();
+                    }
+                }
+                addressList.get(getAdapterPosition()).setLatitude(Double.parseDouble(lat.toString()));
+                addressList.get(getAdapterPosition()).setLongitude(Double.parseDouble(lng.toString()));
+                Log.d("addressList", addressList.get(getAdapterPosition()).getId() + "");
                 Intent intent = new Intent(itemView.getContext(), AddAddressActivity.class);
                 intent.putExtra(ConstantValue.ADDRESS, addressList.get(getAdapterPosition()));
                 intent.putExtra(ConstantValue.EDIT_ADDRESS, true);

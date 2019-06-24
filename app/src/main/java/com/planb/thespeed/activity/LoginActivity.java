@@ -63,7 +63,7 @@ import java.util.Arrays;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
 
-    private Button btn_log_in, btn_sign_up;
+    private Button btn_log_in, btn_sign_up, btn_continue_phone;
     private EditText edt_email_address, edt_password;
     private View container_float_loading;
     private UserAccount userAccount;
@@ -100,6 +100,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         container_float_loading = findViewById(R.id.container_float_loading);
         btn_log_in = findViewById(R.id.btn_log_in);
         btn_sign_up = findViewById(R.id.btn_sign_up);
+        btn_continue_phone = findViewById(R.id.btn_continue_phone);
 
         edt_email_address = findViewById(R.id.edt_email_address);
         edt_password = findViewById(R.id.edt_password);
@@ -122,6 +123,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btn_forget_password.setOnClickListener(this);
         btn_log_in.setOnClickListener(this);
         btn_sign_up.setOnClickListener(this);
+        btn_continue_phone.setOnClickListener(this);
 
         db = new FetchAddressDAO(DatabaseHelper.getInstance(this).getDatabase());
 
@@ -295,6 +297,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             signInWithGoogle();
         } else if (btn_forget_password.equals(v)) {
             showForgetPasswordDialog();
+        }else if (btn_continue_phone.equals(v)){
+            Intent intent = new Intent(this, BaseActivity.class);
+            intent.putExtra("CONTINUE_PHONE", "phone");
+            startActivity(intent);
+            finish();
         }
     }
 

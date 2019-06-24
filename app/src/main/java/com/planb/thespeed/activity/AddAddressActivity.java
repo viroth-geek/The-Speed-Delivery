@@ -167,13 +167,18 @@ public class AddAddressActivity extends AppCompatActivity {
         customer = userAccount.getCustomer();
 
         address = (com.planb.thespeed.model.Address) getIntent().getSerializableExtra(ConstantValue.ADDRESS);
-
-        if (address.getAddressLine() != null) {
-            String[] addressStreet = address.getAddressLine().split(" / ");
-            address.setStreet(Arrays.asList(addressStreet));
-        }
-
-        if (!address.getStreet().isEmpty() && address.getStreet().size() >= 2) {
+//        if (address.getAddressLine() != null) {
+//            String[] addressStreet = address.getAddressLine().split(" / ");
+//            address.setStreet(Arrays.asList(addressStreet));
+//        }
+//
+//        if (!address.getStreet().isEmpty() && address.getStreet().size() >= 2) {
+//            txt_street.setText(address.getStreet().get(0));
+//            txtStreet1.setText(address.getStreet().get(1));
+//        } else {
+//            txt_street.setText(address.getAddressLine());
+//        }
+        if (isEdit){
             txt_street.setText(address.getStreet().get(0));
             txtStreet1.setText(address.getStreet().get(1));
         } else {

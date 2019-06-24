@@ -288,8 +288,7 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
                     }
                     Store store = storeList.get(position);
                     Intent intent = new Intent(context, StoreActivity.class);
-                    ActivityOptionsCompat options = ActivityOptionsCompat.
-                            makeSceneTransitionAnimation((Activity) context, img_estore, "image_store");
+                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, img_estore, "image_store");
                     intent.putExtra(ConstantValue.STORE, store);
 //                    intent.putExtra(ConstantValue.STORE_IMAGE, ImageViewUtil.byteArray(img_estore));
                     intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_CLEAR_TOP);

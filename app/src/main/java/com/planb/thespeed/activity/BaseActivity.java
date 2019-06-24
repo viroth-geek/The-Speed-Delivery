@@ -168,8 +168,6 @@ public class BaseActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
 
-        printHashKey(this);
-
         if (getIntent().getStringExtra(ConstantValue.VIEW_BASKET) != null) {
             handler.postDelayed(() -> {
                 if (listener != null) {
@@ -188,6 +186,10 @@ public class BaseActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         llProductFilter = findViewById(R.id.lyt_pro_filter);
+
+        if (getIntent().getStringExtra("CONTINUE_PHONE") != null){
+            drawer.openDrawer(GravityCompat.START);
+        }
 
         if (getIntent().getStringExtra(ConstantValue.SAVE_NEW_ADDRESS) == null) {
 
