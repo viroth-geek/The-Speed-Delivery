@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -181,9 +180,11 @@ public class AddAddressActivity extends AppCompatActivity {
 //        }
         if (isEdit){
             txt_street.setText(address.getStreet().get(0));
-        }else {
+            txtStreet1.setText(address.getStreet().get(1));
+        } else {
             txt_street.setText(address.getAddressLine());
         }
+
         txt_first_name.setText(address.getFirstname());
         txt_last_name.setText(address.getLastname());
         txt_phone_number.setText(address.getTelephone());
@@ -248,6 +249,7 @@ public class AddAddressActivity extends AppCompatActivity {
         address.setTelephone(txt_phone_number.getText().toString());
         address.setDefaultBilling(chkDefaultBilling.isChecked());
         address.setDefaultShipping(chkDefaultBilling.isChecked());
+
         new UpdateAddress(prepareData(address), new UpdateAddress.InvokeOnCompleteAsync() {
             @Override
             public void onComplete(List<Address> addresses) {
@@ -258,7 +260,6 @@ public class AddAddressActivity extends AppCompatActivity {
 
             @Override
             public void onError(Throwable e) {
-                Log.d("oooooo", e.getLocalizedMessage());
                 Toast.makeText(AddAddressActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 loadingLayout.setVisibility(View.GONE);
                 btn_save.setVisibility(View.VISIBLE);

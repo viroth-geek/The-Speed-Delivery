@@ -38,7 +38,7 @@ import java.util.List;
  * @author channarith.bong
  * @author viroth.ty
  */
-public class DeliveryAddressFragment extends Fragment{
+public class DeliveryAddressFragment extends Fragment {
 
     private RecyclerView list_address;
     private FetchAddressDAO db;
@@ -74,7 +74,6 @@ public class DeliveryAddressFragment extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
-        checkDB();
         checkAddressList();
     }
 
@@ -137,7 +136,6 @@ public class DeliveryAddressFragment extends Fragment{
 
             @Override
             public void onError(Throwable e) {
-                Log.d("checkAddressList", e.getMessage() );
                 Toast.makeText(getContext(), "Something went wrong!", Toast.LENGTH_LONG).show();
             }
         });

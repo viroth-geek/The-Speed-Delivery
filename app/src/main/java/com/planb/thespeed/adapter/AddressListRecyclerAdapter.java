@@ -77,10 +77,8 @@ public class AddressListRecyclerAdapter extends RecyclerView.Adapter<AddressList
         String addressLine = "";
         if (address.getStreet() != null && !address.getStreet().isEmpty()) {
             if (address.getStreet() != null && !address.getStreet().isEmpty()) {
+
                 addressLine = address.getStreet().get(0);
-                Gson gson = new Gson();
-                String json = gson.toJson(address.getStreet());
-                Log.d(ConstantValue.TAG_LOG, json);
             }
         } else if (address.getAddressLine() != null) {
             addressLine = address.getAddressLine();

@@ -2,7 +2,6 @@ package com.planb.thespeed.fragment.cart;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 
 import com.planb.thespeed.R;
 import com.planb.thespeed.constant.ApplicationConfiguration;
-import com.planb.thespeed.constant.ConstantValue;
 import com.planb.thespeed.model.OptionProduct;
 import com.planb.thespeed.model.ProductOption;
 import com.planb.thespeed.model.modelForView.Product;
@@ -192,7 +190,6 @@ public class ItemAdjustment extends DialogFragment implements View.OnClickListen
             productItem.setCount(productItemTemp.getCount());
             productItem.setItem(product);
 
-            Log.d(ConstantValue.TAG_LOG, "click update product: " + productItem.getItem());
 
             changeValue.onChange(productItem);
 

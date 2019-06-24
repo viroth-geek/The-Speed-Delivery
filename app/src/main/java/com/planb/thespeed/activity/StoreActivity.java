@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
@@ -203,7 +204,7 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
                     builder.create().show();
                     return;
                 }
-
+                Log.d(ConstantValue.TAG_LOG, "onClick: " + productItems.size());
                 Intent intent = new Intent(this, ManageBasketActivity.class);
                 intent.putExtra(ConstantValue.ITEMS, (Serializable) productItems);
                 intent.putExtra(ConstantValue.STORE, store);

@@ -547,12 +547,6 @@ public class StoreView extends Entity implements Serializable {
         this.count = count;
     }
 
-//    @Override
-//    public String toString() {
-//        return new ToStringBuilder(this).append("id", id).append("name", name).append("code", code).append("imageUrl", imageUrl).append("rate", rate).append("percentage", percentage).append("Tag", Tags).append("timeDelivery", timeDelivery).append("categories", categories).append("isOpen", isOpen).append("estoreTypes", estoreTypes).toString();
-//    }
-
-
     @Override
     public String toString() {
         return "StoreView{" +

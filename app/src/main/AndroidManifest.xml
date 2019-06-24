@@ -19,6 +19,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name="com.planb.thespeed.activity.NetworkBaseActivity" />
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
         <activity
             android:name="com.planb.thespeed.activity.VerificationCodeActivity"
             android:label="@string/confirm_sms_code"

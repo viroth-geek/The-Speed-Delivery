@@ -58,6 +58,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.onesignal.OSPermissionSubscriptionState;
+import com.onesignal.OneSignal;
 import com.planb.thespeed.R;
 import com.planb.thespeed.constant.ConstantValue;
 import com.planb.thespeed.constant.entity.FacebookAccessScope;
@@ -91,8 +93,6 @@ import com.planb.thespeed.util.ExceptionUtils;
 import com.planb.thespeed.util.LoggerHelper;
 import com.planb.thespeed.util.NetworkConnectHelper;
 import com.planb.thespeed.util.Utils;
-import com.onesignal.OSPermissionSubscriptionState;
-import com.onesignal.OneSignal;
 
 import org.json.JSONException;
 
@@ -152,7 +152,7 @@ public class BaseActivity extends AppCompatActivity
     private String mVerificationId;
     private PhoneAuthProvider.ForceResendingToken mResendToken;
 
-    private FetchAddressDAO db;
+    final Handler handler = new Handler();
 
     @Override
     public void onAttachFragment(Fragment fragment) {
@@ -161,6 +161,7 @@ public class BaseActivity extends AppCompatActivity
             listener = (HomeFragment) fragment;
         }
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,7 +180,6 @@ public class BaseActivity extends AppCompatActivity
         }, 500);
 
         setContentView(R.layout.activity_base);
-        printHashKey(this);
         toolbar = findViewById(R.id.toolbar);
         drawer = findViewById(R.id.drawer_layout);
 //        progressBar = findViewById(R.id.loading_progress_bar);
@@ -188,13 +188,8 @@ public class BaseActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         llProductFilter = findViewById(R.id.lyt_pro_filter);
 
-        if (getIntent().getStringExtra("CONTINUE_PHONE") != null){
-            drawer.openDrawer(GravityCompat.START);
-        }
+        if (getIntent().getStringExtra(ConstantValue.SAVE_NEW_ADDRESS) == null) {
 
-        if (getIntent().getStringExtra(ConstantValue.SAVE_NEW_ADDRESS) != null) {
-
-        } else {
             fetchAddressDAO = new FetchAddressDAO(DatabaseHelper.getInstance(this).getDatabase());
 
             initToolbar();
@@ -225,23 +220,6 @@ public class BaseActivity extends AppCompatActivity
             configureFacebookLogin();
             configureGoogleSignIn();
             configurePhoneAuthentication();
-
-        }
-    }
-
-    public static void printHashKey(Context pContext) {
-        try {
-            PackageInfo info = pContext.getPackageManager().getPackageInfo(pContext.getPackageName(), PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                String hashKey = new String(Base64.encode(md.digest(), 0));
-                Log.i("KEY_HASH", "printHashKey() Hash Key: " + hashKey);
-            }
-        } catch (NoSuchAlgorithmException e) {
-            Log.e("KEY_HASH", "printHashKey()", e);
-        } catch (Exception e) {
-            Log.e("KEY_HASH", "printHashKey()", e);
         }
     }
 
@@ -372,6 +350,7 @@ public class BaseActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+
         //ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
 
         if (isCanBroadCast) {
@@ -462,7 +441,7 @@ public class BaseActivity extends AppCompatActivity
             public void onComplete(List<UserPlayerId> userPlayerIds) {
                 LoggerHelper.showDebugLog("===> Save user player id successfully" + userPlayerId.toString());
                 Singleton.userId = Long.parseLong(userPlayerId.getUserId());
-//                Log.d("oooooId", Singleton.userId.toString());
+                Log.d("oooooId", Singleton.userId.toString());
             }
 
             @Override

@@ -4,7 +4,6 @@ buildscript {
     repositories {
         google()
         jcenter()
-
         maven {
             url 'https://maven.fabric.io/public'
         }
@@ -17,6 +16,7 @@ buildscript {
         classpath 'com.google.gms:google-services:3.1.0'
         // Add dependency
         classpath 'io.fabric.tools:gradle:1.29.0'  // Crashlytics plugin
+
     }
 }
 

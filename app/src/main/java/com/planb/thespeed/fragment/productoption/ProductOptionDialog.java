@@ -58,6 +58,7 @@ public class ProductOptionDialog extends DialogFragment implements View.OnClickL
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_popup_product_option, container, false);
 
+        Toast.makeText(getContext(), "Please select all options.", Toast.LENGTH_LONG).show();
         RecyclerView productOptionRecyclerView = view.findViewById(R.id.product_option_recycler_view);
 
         productOptionRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));

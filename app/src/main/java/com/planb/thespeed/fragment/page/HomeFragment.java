@@ -18,7 +18,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -509,7 +508,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
                         }
                         loadingProgressBar.setVisibility(View.GONE);
                         LoggerHelper.showErrorLog(" Error Store ! ", e);
-                        Log.d("ooooo", e.getMessage());
                         Toast.makeText(getActivity(), "Error: " + e, Toast.LENGTH_SHORT).show();
                     }
                 } else {
@@ -772,7 +770,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
             public void run() {
                 viewBasketDetail();
             }
-        }, 1000);
+        }, 1200);
     }
 }
 
