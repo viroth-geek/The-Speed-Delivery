@@ -36,7 +36,7 @@ import java.util.List;
  * @author channarith.bong
  * @author viroth.ty
  */
-public class DeliveryAddressFragment extends Fragment{
+public class DeliveryAddressFragment extends Fragment {
 
     private RecyclerView list_address;
     private FetchAddressDAO db;
@@ -51,6 +51,8 @@ public class DeliveryAddressFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_delivery_address, container, false);
+
+        Log.d("ooooo", "here onCreateView");
 
         FloatingActionButton floatingActionButton = view.findViewById(R.id.fab);
         list_address = view.findViewById(R.id.list_address);
@@ -72,7 +74,10 @@ public class DeliveryAddressFragment extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
-        checkAddressList();
+
+        checkDB();
+        getListAddress();
+        bindData();
     }
 
     @Override
@@ -115,7 +120,7 @@ public class DeliveryAddressFragment extends Fragment{
     /**
      * fetch address list from server
      */
-    private void checkAddressList(){
+    private void checkAddressList() {
         new FetchAddressList(Singleton.userId, new InvokeOnCompleteAsync<Customer>() {
             @Override
             public void onComplete(Customer data) {

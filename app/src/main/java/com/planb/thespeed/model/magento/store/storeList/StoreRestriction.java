@@ -10,7 +10,6 @@ import com.planb.thespeed.model.magento.search.SearchStoreRestriction;
  * @author channarith.bong
  */
 public class StoreRestriction extends Entity {
-
     @SerializedName("storeRestriction")
     @Expose
     private SearchStoreRestriction storeRestriction;

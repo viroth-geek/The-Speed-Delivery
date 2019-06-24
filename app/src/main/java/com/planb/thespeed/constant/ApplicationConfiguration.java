@@ -30,18 +30,12 @@ public class ApplicationConfiguration {
 //    public static final String CERT_NAME = "fullchain.pem";
 
     //        planb domain 1
-//    public static final String BASE_URL = "http://thespeed.planbtesting.club/index.php/rest/";
-//    public static final String PRODUCT_IMAGE_URL = "http://thespeed.planbtesting.club/pub/media/catalog/product/";
-//    public static final String STORE_IMAGE_URL = "http://thespeed.planbtesting.club/pub/media/catalog/category/";
-//    public static final String ADMIN_TOKEN = "hpsewqv17mc06e9uns3e5lrn8rsmbbow";
-//    public static final String CERT_NAME = "planbchain.pem";
+    public static final String BASE_URL = "http://thespeed.planbtesting.club/index.php/rest/";
+    public static final String PRODUCT_IMAGE_URL = "http://thespeed.planbtesting.club/pub/media/catalog/product/";
+    public static final String STORE_IMAGE_URL = "http://thespeed.planbtesting.club/pub/media/catalog/category/";
+    public static final String ADMIN_TOKEN = "hpsewqv17mc06e9uns3e5lrn8rsmbbow";
+    public static final String CERT_NAME = "planbchain.pem";
 
-// New domain
-    public static final String BASE_URL = "http://testing.thespeed.planbtesting.club/index.php/rest/";
-    public static final String PRODUCT_IMAGE_URL = "http://testing.thespeed.planbtesting.club/pub/media/catalog/product/";
-    public static final String STORE_IMAGE_URL = "http://testing.thespeed.planbtesting.club/pub/media/catalog/category/";
-    public static final String ADMIN_TOKEN = "y86bv8vbk5hvffwc7ikmwd5g03y3u9f3";
-    public static final String CERT_NAME = "newchain.pem";
 
     // Enable all 'Log.d()' when DEVELOPER_MODE = true
     public static final Boolean DEVELOPER_MODE = true; // PRODUCTION_MODE or DEVELOPER_MODE = false
