@@ -3,12 +3,14 @@ package com.iota.eshopping.model.modelForView;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by channarith.bong on 3/1/18.
  *
  * @author channarith.bong
  */
-public class Tag {
+public class Tag implements Serializable {
 
     @SerializedName("id")
     @Expose

@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
@@ -346,6 +347,7 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
 
 //            txt_estore_name.setText(store.getName());
 //            txt_estore_type.setText(estoreType.toString());
+
             if (!store.isOpenToday()) {
                 txt_is_open.setTextColor(getResources().getColor(R.color.red));
             } else {

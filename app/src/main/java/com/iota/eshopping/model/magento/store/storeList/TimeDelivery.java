@@ -7,7 +7,9 @@ import com.iota.eshopping.model.Entity;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class TimeDelivery extends Entity {
+import java.io.Serializable;
+
+public class TimeDelivery extends Entity implements Serializable {
 
     @SerializedName("0")
     @Expose

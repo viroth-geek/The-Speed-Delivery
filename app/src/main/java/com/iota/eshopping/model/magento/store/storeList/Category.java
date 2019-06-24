@@ -6,9 +6,10 @@ import com.google.gson.annotations.SerializedName;
 import com.iota.eshopping.model.Entity;
 import com.iota.eshopping.model.Product;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Category extends Entity {
+public class Category extends Entity implements Serializable {
 
     @SerializedName("id")
     @Expose

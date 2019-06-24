@@ -2,12 +2,13 @@ package com.iota.eshopping.model.modelForView;
 
 import com.iota.eshopping.model.Entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author channarith.bong
  */
-public class Store extends Entity {
+public class Store extends Entity implements Serializable {
 
     private static final Long ID_0 = 0L;
     private static final Long ID_1 = 1L;
@@ -162,6 +163,10 @@ public class Store extends Entity {
      */
     public void setStoreTypes(List<StoreType> estoreTypes) {
         this.estoreTypes = estoreTypes;
+    }
+
+    public boolean isStatusOpenToday() {
+        return statusOpenToday;
     }
 
     /**
@@ -491,6 +496,7 @@ public class Store extends Entity {
         return "Store{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", nameKh='" + nameKh + '\'' +
                 ", categories=" + categories +
                 ", estoreTypes=" + estoreTypes +
                 ", rate=" + rate +
@@ -514,6 +520,9 @@ public class Store extends Entity {
                 ", distant=" + distant +
                 ", fee=" + fee +
                 ", shippingMethod='" + shippingMethod + '\'' +
+                ", statusOpenToday=" + statusOpenToday +
+                ", statusOpenTomorrow=" + statusOpenTomorrow +
+                ", isOpenToday=" + isOpenToday +
                 '}';
     }
 }

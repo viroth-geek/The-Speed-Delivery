@@ -7,9 +7,10 @@ import com.iota.eshopping.model.Entity;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ListStore extends Entity {
+public class ListStore extends Entity implements Serializable {
 
     @SerializedName("list")
     @Expose

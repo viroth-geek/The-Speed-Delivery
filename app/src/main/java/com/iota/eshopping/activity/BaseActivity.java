@@ -2,8 +2,11 @@ package com.iota.eshopping.activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.content.res.Configuration;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -23,6 +26,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -92,6 +96,8 @@ import com.onesignal.OneSignal;
 
 import org.json.JSONException;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -162,13 +168,18 @@ public class BaseActivity extends AppCompatActivity
         final Handler handler = new Handler();
         handler.postDelayed(() -> {
             if (listener != null) {
-                if (getIntent().getExtras().getString(ConstantValue.VIEW_BASKET) != null) {
+                Log.d("listener", "listener");
+//                if (getIntent().getExtras().getString(ConstantValue.VIEW_BASKET) != null) {
+//                    listener.onViewBasket();
+//                }
+                if (getIntent().getStringExtra(ConstantValue.VIEW_BASKET) != null){
                     listener.onViewBasket();
                 }
             }
         }, 500);
 
         setContentView(R.layout.activity_base);
+        printHashKey(this);
         toolbar = findViewById(R.id.toolbar);
         drawer = findViewById(R.id.drawer_layout);
 //        progressBar = findViewById(R.id.loading_progress_bar);
@@ -215,6 +226,22 @@ public class BaseActivity extends AppCompatActivity
             configureGoogleSignIn();
             configurePhoneAuthentication();
 
+        }
+    }
+
+    public static void printHashKey(Context pContext) {
+        try {
+            PackageInfo info = pContext.getPackageManager().getPackageInfo(pContext.getPackageName(), PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                String hashKey = new String(Base64.encode(md.digest(), 0));
+                Log.i("KEY_HASH", "printHashKey() Hash Key: " + hashKey);
+            }
+        } catch (NoSuchAlgorithmException e) {
+            Log.e("KEY_HASH", "printHashKey()", e);
+        } catch (Exception e) {
+            Log.e("KEY_HASH", "printHashKey()", e);
         }
     }
 
