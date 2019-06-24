@@ -1,9 +1,19 @@
 package com.planb.thespeed.util;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.planb.thespeed.constant.ConstantValue;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -47,6 +57,22 @@ public class Utils {
         }
 
         return "";
+    }
+
+    public void printHashKey(Context pContext) {
+        try {
+            PackageInfo info = pContext.getPackageManager().getPackageInfo(pContext.getPackageName(), PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                String hashKey = new String(Base64.encode(md.digest(), 0));
+                Log.d(ConstantValue.TAG_LOG, "printHashKey() Hash Key: " + hashKey);
+            }
+        } catch (NoSuchAlgorithmException e) {
+            Log.e(ConstantValue.TAG_LOG, "printHashKey()", e);
+        } catch (Exception e) {
+            Log.e(ConstantValue.TAG_LOG, "printHashKey()", e);
+        }
     }
 
 }

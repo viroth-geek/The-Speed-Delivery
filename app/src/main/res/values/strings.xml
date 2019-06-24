@@ -154,8 +154,13 @@
     <bool name="isLarge">false</bool>
 
     <!--Facebook APP ID-->
-    <string name="facebook_app_id">641389056228040</string>
-    <string name="fb_login_protocol_scheme">fb641389056228040</string>
+    <!--<string name="facebook_app_id">641389056228040</string>-->
+    <!--<string name="fb_login_protocol_scheme">fb641389056228040</string>-->
+
+    <string name="facebook_app_id">646708915837878</string>
+    <string name="fb_login_protocol_scheme">fb646708915837878</string>
+
+
     <string name="login_with_facebook">Login with Facebook</string>
     <string name="login_with_google">Login with Google</string>
     <string name="title_activity_forget_password">ForgetPasswordActivity</string>

@@ -2,8 +2,11 @@ package com.planb.thespeed.activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.content.res.Configuration;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -23,6 +26,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -54,6 +58,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.onesignal.OSPermissionSubscriptionState;
+import com.onesignal.OneSignal;
 import com.planb.thespeed.R;
 import com.planb.thespeed.constant.ConstantValue;
 import com.planb.thespeed.constant.entity.FacebookAccessScope;
@@ -87,11 +93,11 @@ import com.planb.thespeed.util.ExceptionUtils;
 import com.planb.thespeed.util.LoggerHelper;
 import com.planb.thespeed.util.NetworkConnectHelper;
 import com.planb.thespeed.util.Utils;
-import com.onesignal.OSPermissionSubscriptionState;
-import com.onesignal.OneSignal;
 
 import org.json.JSONException;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -156,10 +162,13 @@ public class BaseActivity extends AppCompatActivity
         }
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
+
+        printHashKey(this);
 
         if (getIntent().getStringExtra(ConstantValue.VIEW_BASKET) != null) {
             handler.postDelayed(() -> {
