@@ -1,11 +1,11 @@
 <resources>
     <!--<string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyC3Ih6HMiDQusX7Lxi30YXDoknBwY9WXO8</string>-->
 
-    <!--planb key-->
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyDlgHptQqVkcIXbDScv1I1_ARBc45cN2L8</string>
+    <!--&lt;!&ndash;planb key&ndash;&gt;-->
+    <!--<string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyDlgHptQqVkcIXbDScv1I1_ARBc45cN2L8</string>-->
 
 
     <!--from taxi-->
-    <!--<string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBGxNKjI2GCdN7CbAOmHKQQvWV9aA6kdiU</string>-->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBGxNKjI2GCdN7CbAOmHKQQvWV9aA6kdiU</string>
 
 </resources>

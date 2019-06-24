@@ -117,6 +117,46 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:53437243757:android:278d3fea6baa3113",
+        "android_client_info": {
+          "package_name": "com.planb.thespeed"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "53437243757-7dc896ml2ahas5ths6df92kubod9oots.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.planb.thespeed",
+            "certificate_hash": "01d0e243b286eb50dba43bb5da8e3dafc0ac0a7d"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzatpYCK-X0eYPq-roHL-BW9SIqkWltyc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "53437243757-9n7021deacrghbmrkbrq3v3ngec01uc1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "53437243757-s79oev5h03afpofem7cuts1iacacoh2n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.thespeeddelivery.planb"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

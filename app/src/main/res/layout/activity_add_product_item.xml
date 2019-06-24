@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.iota.eshopping.activity.AddProductItemActivity">
+    tools:context="com.planb.thespeed.activity.AddProductItemActivity">
     <include layout="@layout/view_product_desc"/>
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
