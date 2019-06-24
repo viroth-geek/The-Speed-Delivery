@@ -12,7 +12,7 @@
         android:visibility="visible"
         android:layout_gravity="center"/>
 
-    <com.iota.eshopping.widget.NkrNumberPicker
+    <com.planb.thespeed.widget.NkrNumberPicker
         android:visibility="gone"
         android:id="@+id/picker_time_picker_today"
         android:layout_width="200dp"
