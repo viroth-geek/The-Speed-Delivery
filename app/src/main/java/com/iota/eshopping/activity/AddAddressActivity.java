@@ -168,7 +168,6 @@ public class AddAddressActivity extends AppCompatActivity {
         customer = userAccount.getCustomer();
 
         address = (com.iota.eshopping.model.Address) getIntent().getSerializableExtra(ConstantValue.ADDRESS);
-
 //        if (address.getAddressLine() != null) {
 //            String[] addressStreet = address.getAddressLine().split(" / ");
 //            address.setStreet(Arrays.asList(addressStreet));

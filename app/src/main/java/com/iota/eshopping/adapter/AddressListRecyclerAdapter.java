@@ -203,6 +203,7 @@ public class AddressListRecyclerAdapter extends RecyclerView.Adapter<AddressList
                 }
                 addressList.get(getAdapterPosition()).setLatitude(Double.parseDouble(lat.toString()));
                 addressList.get(getAdapterPosition()).setLongitude(Double.parseDouble(lng.toString()));
+                Log.d("addressList", addressList.get(getAdapterPosition()).getId() + "");
                 Intent intent = new Intent(itemView.getContext(), AddAddressActivity.class);
                 intent.putExtra(ConstantValue.ADDRESS, addressList.get(getAdapterPosition()));
                 intent.putExtra(ConstantValue.EDIT_ADDRESS, true);

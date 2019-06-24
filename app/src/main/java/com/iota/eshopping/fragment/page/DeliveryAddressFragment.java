@@ -137,6 +137,7 @@ public class DeliveryAddressFragment extends Fragment{
 
             @Override
             public void onError(Throwable e) {
+                Log.d("checkAddressList", e.getMessage() );
                 Toast.makeText(getContext(), "Something went wrong!", Toast.LENGTH_LONG).show();
             }
         });
