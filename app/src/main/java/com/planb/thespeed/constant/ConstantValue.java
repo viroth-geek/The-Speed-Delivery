@@ -95,6 +95,7 @@ public class ConstantValue {
     public static final String REGISTER_BY_PHONE_NUMBER = "sign_in_by_phone_number";
     public static final String EMAIL_EXISTED = "Email already exist";
 
+
     public static final String VERIFICATION_METHOD = "verification up method";
     public static final String SAVE_NEW_ADDRESS = "pressback";
 
