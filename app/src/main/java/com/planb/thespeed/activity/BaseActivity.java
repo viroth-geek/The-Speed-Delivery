@@ -2,11 +2,8 @@ package com.planb.thespeed.activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.content.res.Configuration;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -26,7 +23,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -96,8 +92,6 @@ import com.planb.thespeed.util.Utils;
 
 import org.json.JSONException;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -169,7 +163,6 @@ public class BaseActivity extends AppCompatActivity
         final Handler handler = new Handler();
         handler.postDelayed(() -> {
             if (listener != null) {
-                Log.d("listener", "listener");
 //                if (getIntent().getExtras().getString(ConstantValue.VIEW_BASKET) != null) {
 //                    listener.onViewBasket();
 //                }
@@ -187,6 +180,10 @@ public class BaseActivity extends AppCompatActivity
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         llProductFilter = findViewById(R.id.lyt_pro_filter);
+
+        if (getIntent().getStringExtra("CONTINUE_PHONE") != null){
+            drawer.openDrawer(GravityCompat.START);
+        }
 
         if (getIntent().getStringExtra(ConstantValue.SAVE_NEW_ADDRESS) == null) {
 

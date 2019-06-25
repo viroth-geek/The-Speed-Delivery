@@ -471,7 +471,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
                         if (storeList == null) {
                             storeList = new ArrayList<>();
                             storeList = DataMatcher.getInstance().getStoreList(listStores.get(0).getList());
-
                             adapter = new StoreRecyclerAdapter(getActivity(), storeList, isShowAds);
                             adapter.setLoadingProgressBar(loadingProgressBar);
                             adapter.notifyDataSetChanged();
