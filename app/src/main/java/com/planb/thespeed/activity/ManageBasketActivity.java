@@ -170,7 +170,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
                 if (tomorrowText.equalsIgnoreCase(DayType.TOMORROW.toString())) {
                     if (!store.isStatusOpenTomorrow()) {
                         isCanOrder = false;
-                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogPrimary);
                         builder.setTitle("Store Message");
                         builder.setMessage(store.getNameKh().isEmpty() ? store.getName() + " is not opened tomorrow." : store.getNameKh() + " is not opened tomorrow.");
                         builder.setPositiveButton("OK", (dialogInterface, i) -> dialogInterface.dismiss());
@@ -179,7 +179,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
                 } else {
                     if (!store.isOpenToday()) {
                         isCanOrder = false;
-                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogDanger);
                         builder.setTitle("Store Message");
                         builder.setMessage(store.getNameKh().isEmpty() ? store.getName() + " is not open." : store.getNameKh() + " is not open.");
                         builder.setPositiveButton("OK", (dialogInterface, i) -> dialogInterface.dismiss());

@@ -43,8 +43,7 @@ public class ApplicationConfiguration {
 //    public static final String STORE_IMAGE_URL = "http://testing.thespeed.planbtesting.club/pub/media/catalog/category/";
 //    public static final String ADMIN_TOKEN = "y86bv8vbk5hvffwc7ikmwd5g03y3u9f3";
 //    public static final String CERT_NAME = "planbchain3.pem";
-
-
+    
     // Enable all 'Log.d()' when DEVELOPER_MODE = true
     public static final Boolean DEVELOPER_MODE = true; // PRODUCTION_MODE or DEVELOPER_MODE = false
 
