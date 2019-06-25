@@ -179,6 +179,7 @@ public class BaseActivity extends AppCompatActivity
         drawer.addDrawerListener(this);
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
         llProductFilter = findViewById(R.id.lyt_pro_filter);
 
         if (getIntent().getStringExtra("CONTINUE_PHONE") != null){

@@ -187,7 +187,7 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
                 String tomorrowText = TimeDeliveryPreference.getTimeDeliveryText(this).split(" ")[0];
                 if (tomorrowText.equalsIgnoreCase(DayType.TOMORROW.toString())) {
                     if (!store.isStatusOpenTomorrow()) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogPrimary);
                         builder.setTitle("Store Message");
                         builder.setMessage(store.getNameKh().isEmpty() ? store.getName() : store.getNameKh() + " is not opened tomorrow.");
                         builder.setPositiveButton("OK", (dialogInterface, i) -> dialogInterface.dismiss());
@@ -197,7 +197,7 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
                 }
 
                 if (!store.isOpenToday()) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogDanger);
                     builder.setTitle("Store Message");
                     builder.setMessage(store.getNameKh().isEmpty() ? store.getName() : store.getNameKh() + " is not open.");
                     builder.setPositiveButton("OK", (dialogInterface, i) -> dialogInterface.dismiss());
@@ -209,8 +209,7 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
                 intent.putExtra(ConstantValue.ITEMS, (Serializable) productItems);
                 intent.putExtra(ConstantValue.STORE, store);
                 startActivityForResult(intent, ConstantValue.GO_TO_BASKET);
-
-
+                
             } else {
                 Toast.makeText(this, "No item in basket.", Toast.LENGTH_SHORT).show();
             }
