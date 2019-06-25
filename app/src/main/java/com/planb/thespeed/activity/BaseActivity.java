@@ -163,9 +163,6 @@ public class BaseActivity extends AppCompatActivity
         final Handler handler = new Handler();
         handler.postDelayed(() -> {
             if (listener != null) {
-//                if (getIntent().getExtras().getString(ConstantValue.VIEW_BASKET) != null) {
-//                    listener.onViewBasket();
-//                }
                 if (getIntent().getStringExtra(ConstantValue.VIEW_BASKET) != null){
                     listener.onViewBasket();
                 }

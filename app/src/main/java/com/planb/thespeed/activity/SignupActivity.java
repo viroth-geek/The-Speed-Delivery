@@ -41,6 +41,9 @@ import com.planb.thespeed.util.LoggerHelper;
 import com.planb.thespeed.util.NetworkConnectHelper;
 import com.planb.thespeed.util.Utils;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * @author channarith.bong
  */
@@ -49,13 +52,13 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private Button btn_log_in;
     private Button btn_create_account;
     private EditText etPhoneNumber;
-    private EditText edt_first_name;
-    private EditText edt_last_name;
-    private EditText edt_email_address;
-    private EditText edt_password;
+    private EditText etFirstName;
+    private EditText etLastName;
+    private EditText etEmailAddress;
+    private EditText etPassword;
     private RelativeLayout progressBar;
 
-    private View container_float_loading;
+    private View containerFloatLoading;
     private View parentPanel;
     private ImageButton btnShowHidePassword;
 
@@ -84,13 +87,13 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         btnShowHidePassword = findViewById(R.id.btn_show_hide_password);
         btnShowHidePassword.setAlpha(0.25f);
         btnShowHidePassword.setOnClickListener(view -> {
-            TransformationMethod transformationMethod = edt_password.getTransformationMethod();
+            TransformationMethod transformationMethod = etPassword.getTransformationMethod();
             if (transformationMethod == null) {
                 btnShowHidePassword.setImageResource(R.drawable.ic_visibility_off_black_24dp);
-                edt_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
             } else {
                 btnShowHidePassword.setImageResource(R.drawable.ic_visibility_black_24dp);
-                edt_password.setTransformationMethod(null);
+                etPassword.setTransformationMethod(null);
             }
         });
         btn_log_in.setOnClickListener(this);
@@ -100,12 +103,12 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         btn_create_account = findViewById(R.id.btn_create_account);
         btn_create_account.setOnClickListener(this);
 
-        container_float_loading = findViewById(R.id.container_float_loading);
+        containerFloatLoading = findViewById(R.id.container_float_loading);
         etPhoneNumber = findViewById(R.id.edt_phone_number);
-        edt_first_name = findViewById(R.id.edt_first_name);
-        edt_last_name = findViewById(R.id.edt_last_name);
-        edt_email_address = findViewById(R.id.edt_email_address);
-        edt_password = findViewById(R.id.edt_password);
+        etFirstName = findViewById(R.id.edt_first_name);
+        etLastName = findViewById(R.id.edt_last_name);
+        etEmailAddress = findViewById(R.id.edt_email_address);
+        etPassword = findViewById(R.id.edt_password);
 
         if (getIntent().getExtras() != null) {
             mRegisterType = getIntent().getStringExtra(ConstantValue.REGISTER_BY_PHONE_NUMBER);
@@ -114,7 +117,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         //if register by phone
         if (mRegisterType != null) {
             etPhoneNumber.setVisibility(View.VISIBLE);
-            edt_password.setVisibility(View.GONE);
+            etPassword.setVisibility(View.GONE);
             btnShowHidePassword.setVisibility(View.GONE);
         }
 
@@ -138,15 +141,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             boolean isConnect = NetworkConnectHelper.getInstance().isConnectionOnline(getApplicationContext());
             if (isConnect) {
                 if (mRegisterType != null) {
-                    PhoneNumber.CustomerPhone customerPhone = new PhoneNumber.CustomerPhone();
-                    PhoneNumber phoneNumber = new PhoneNumber();
-                    phoneNumber.setPhoneNumber(etPhoneNumber.getText().toString());
-                    phoneNumber.setFirstName(edt_first_name.getText().toString());
-                    phoneNumber.setLastName(edt_last_name.getText().toString());
-                    phoneNumber.setEmail(edt_email_address.getText().toString());
-                    phoneNumber.setEmail(edt_email_address.getText().toString());
-
-                    customerPhone.setPhoneNumber(phoneNumber);
+                    PhoneNumber.CustomerPhone customerPhone = getValueFromViewByPhone();
                     requestTokenByPhone(customerPhone);
 
                 } else {
@@ -170,29 +165,64 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
+    private PhoneNumber.CustomerPhone getValueFromViewByPhone() {
+        boolean hasError = false;
+
+        Log.d("isEmailValid", isEmailValid(etEmailAddress.getText().toString()) + "");
+        if (etPhoneNumber.getText().toString().isEmpty()) {
+            etFirstName.setError("First name cannot be empty");
+            hasError = true;
+        }
+        if (etFirstName.getText().toString().isEmpty()) {
+            etFirstName.setError("First name cannot be empty");
+            hasError = true;
+        }
+        if (etLastName.getText().toString().isEmpty()) {
+            etLastName.setError("Last name cannot be empty");
+            hasError = true;
+        }
+        if (etEmailAddress.getText().toString().isEmpty() || !isEmailValid(etEmailAddress.getText().toString())) {
+            etEmailAddress.setError("Email cannot be empty");
+            hasError = true;
+        }
+        if (hasError) {
+            return null;
+        }
+
+        PhoneNumber.CustomerPhone customerPhone = new PhoneNumber.CustomerPhone();
+        PhoneNumber phoneNumber = new PhoneNumber();
+        phoneNumber.setPhoneNumber(etPhoneNumber.getText().toString());
+        phoneNumber.setFirstName(etFirstName.getText().toString());
+        phoneNumber.setLastName(etLastName.getText().toString());
+        phoneNumber.setEmail(etEmailAddress.getText().toString());
+
+        customerPhone.setPhoneNumber(phoneNumber);
+        return customerPhone;
+    }
+
     /**
      * @return UserSecure
      */
     private UserSecure getValueFromView() {
 
         boolean hasError = false;
-        if (edt_first_name.getText().toString().isEmpty()) {
-            edt_first_name.setError("First name cannot be empty");
+        if (etFirstName.getText().toString().isEmpty()) {
+            etFirstName.setError("First name cannot be empty");
             hasError = true;
         }
-        if (edt_last_name.getText().toString().isEmpty()) {
-            edt_last_name.setError("Last name cannot be empty");
+        if (etLastName.getText().toString().isEmpty()) {
+            etLastName.setError("Last name cannot be empty");
             hasError = true;
         }
-        if (edt_email_address.getText().toString().isEmpty()) {
-            edt_email_address.setError("Email cannot be empty");
+        if (etEmailAddress.getText().toString().isEmpty()) {
+            etEmailAddress.setError("Email cannot be empty");
             hasError = true;
         }
-        if (edt_password.getText().toString().isEmpty()) {
-            edt_password.setError("Password cannot be empty");
+        if (etPassword.getText().toString().isEmpty()) {
+            etPassword.setError("Password cannot be empty");
             hasError = true;
-        } else if (edt_password.getText().length() < 8) {
-            edt_password.setError("Password must be at least 8 characters");
+        } else if (etPassword.getText().length() < 8) {
+            etPassword.setError("Password must be at least 8 characters");
             hasError = true;
         }
 
@@ -205,16 +235,23 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         if (etPhoneNumber.getVisibility() == View.VISIBLE) {
             customer.setPhonenumber(etPhoneNumber.getText().toString());
         }
-        customer.setEmail(edt_email_address.getText().toString());
-        customer.setFirstname(edt_first_name.getText().toString());
-        customer.setLastname(edt_last_name.getText().toString());
+        customer.setEmail(etEmailAddress.getText().toString());
+        customer.setFirstname(etFirstName.getText().toString());
+        customer.setLastname(etLastName.getText().toString());
         customer.setCreatedAt(DateUtil.getCurrent());
         customer.setUpdateAt(DateUtil.getCurrent());
         userSecure.setCustomer(customer);
         if (mRegisterType == null) {
-            userSecure.setPassword(edt_password.getText().toString());
+            userSecure.setPassword(etPassword.getText().toString());
         }
         return userSecure;
+    }
+
+    public static boolean isEmailValid(String email) {
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 
     /**
@@ -265,7 +302,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             public void onComplete(String token) {
                 if (token.equals(ConstantValue.EMAIL_EXISTED)) {
                     progressBar.setVisibility(View.GONE);
-//                    Toast.makeText(SignupActivity.this, token, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignupActivity.this, token, Toast.LENGTH_LONG).show();
                 } else {
                     progressBar.setVisibility(View.GONE);
                     userAccount = new UserAccount(SignupActivity.this);
@@ -307,7 +344,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 } else {
                     Snackbar.make(parentPanel, "Sorry, please try again.", Snackbar.LENGTH_LONG).show();
                 }
-                container_float_loading.setVisibility(View.GONE);
+                containerFloatLoading.setVisibility(View.GONE);
             }
 
             @Override
@@ -315,7 +352,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 //Snackbar.make(parentPanel, "You logged fail: " + ExceptionUtils.translateExceptionMessage(e), Snackbar.LENGTH_LONG).show();
                 Toast.makeText(SignupActivity.this, "You logged fail: " + ExceptionUtils.translateExceptionMessage(e), Toast.LENGTH_SHORT).show();
                 LoggerHelper.showErrorLog("409, Login Page: ", e);
-                container_float_loading.setVisibility(View.GONE);
+                containerFloatLoading.setVisibility(View.GONE);
             }
         });
     }
@@ -359,9 +396,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
      */
     private void settingProcessBar(Boolean isShow, String message) {
         InputHelper.hideKeyboard(this);
-        TextView txt = container_float_loading.findViewById(R.id.txt_container_loading_label);
-        ProgressBar loading_cycle_i = container_float_loading.findViewById(R.id.loading_cycle_ii);
-        container_float_loading.setVisibility(isShow ? View.VISIBLE : View.GONE);
+        TextView txt = containerFloatLoading.findViewById(R.id.txt_container_loading_label);
+        ProgressBar loading_cycle_i = containerFloatLoading.findViewById(R.id.loading_cycle_ii);
+        containerFloatLoading.setVisibility(isShow ? View.VISIBLE : View.GONE);
         if (message != null) {
             loading_cycle_i.setVisibility(View.GONE);
             txt.setText(message);
