@@ -180,6 +180,7 @@ public class MyOrderDetailActivity extends AppCompatActivity implements View.OnC
 
         loadingLayout = findViewById(R.id.container_float_loading);
 
+        btn_reorder.setEnabled(false);
         btn_store_name.setOnClickListener(this);
         btn_reorder.setOnClickListener(this);
 
@@ -714,6 +715,7 @@ public class MyOrderDetailActivity extends AppCompatActivity implements View.OnC
      * @param orderId Long
      */
     private void fetchOrderItems(Long orderId) {
+
         new FetchOrderItem(orderId, new InvokeOnCompleteAsync<List<OrderItem>>() {
             @Override
             public void onComplete(List<OrderItem> orderItemList) {
@@ -797,6 +799,7 @@ public class MyOrderDetailActivity extends AppCompatActivity implements View.OnC
 
                 orderDetail.setProductItems(productItems);
                 productLoadingProgressBar.setVisibility(View.GONE);
+                btn_reorder.setEnabled(true);
 
                 OrderItemListViewAdapter listViewAdapter = new OrderItemListViewAdapter(MyOrderDetailActivity.this, list_item, orderDetail.getProductItems());
                 list_item = listViewAdapter.setChildViewIntoLinearLayout();

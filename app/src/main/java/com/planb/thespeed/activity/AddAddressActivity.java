@@ -180,7 +180,6 @@ public class AddAddressActivity extends AppCompatActivity {
 //        }
         if (isEdit){
             txt_street.setText(address.getStreet().get(0));
-            txtStreet1.setText(address.getStreet().get(1));
         } else {
             txt_street.setText(address.getAddressLine());
         }
@@ -225,14 +224,7 @@ public class AddAddressActivity extends AppCompatActivity {
                 loadingLayout.setVisibility(View.GONE);
                 btn_save.setVisibility(View.VISIBLE);
                 db.insert(address);
-
-//                String action;
-//                setResult(ConstantValue.HOME_CALLING_CODE);
                 finish();
-
-//                Intent intent = new Intent(AddAddressActivity.this, BaseActivity.class);
-//                intent.putExtra(ConstantValue.SAVE_NEW_ADDRESS, true);
-//                startActivity(intent);
             }
 
             @Override
