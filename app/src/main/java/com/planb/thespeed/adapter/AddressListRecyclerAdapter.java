@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.planb.thespeed.R;
 import com.planb.thespeed.activity.AddAddressActivity;
 import com.planb.thespeed.constant.ConstantValue;

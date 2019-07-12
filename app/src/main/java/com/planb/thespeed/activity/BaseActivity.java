@@ -283,6 +283,10 @@ public class BaseActivity extends AppCompatActivity
             if (fragmentName == null || HomeFragment.class.getSimpleName().equals(fragmentName)) {
                 searchMenuItem.setVisible(true);
                 filterMenuItem.setVisible(true);
+
+                allProductImg.setVisibility(View.VISIBLE);
+                openProductImg.setVisibility(View.GONE);
+
             } else {
                 searchMenuItem.setVisible(false);
                 filterMenuItem.setVisible(false);
@@ -348,7 +352,7 @@ public class BaseActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
 
-        //ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
+        ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
 
         if (isCanBroadCast) {
 //            if (homeFragment != null) {
