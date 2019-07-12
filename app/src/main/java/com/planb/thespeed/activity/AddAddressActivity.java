@@ -35,31 +35,18 @@ import java.util.List;
 public class AddAddressActivity extends AppCompatActivity {
 
     private TextView txt_first_name;
-
     private TextView txt_last_name;
-
     private PhoneNumberField txt_phone_number;
-
     private TextView txt_street;
-
     private EditText txtStreet1;
-
     private TextView txt_city;
-
     private TextView txt_province;
-
     private TextView txt_country;
-
     private Button btn_save;
-
     private CheckBox chkDefaultBilling;
-
     private CheckBox chkDefaultShipping;
-
     private Toolbar toolbar;
-
     private FrameLayout loadingLayout;
-
     private com.planb.thespeed.model.Address address;
 
     private Customer customer;
@@ -167,6 +154,7 @@ public class AddAddressActivity extends AppCompatActivity {
         customer = userAccount.getCustomer();
 
         address = (com.planb.thespeed.model.Address) getIntent().getSerializableExtra(ConstantValue.ADDRESS);
+
 //        if (address.getAddressLine() != null) {
 //            String[] addressStreet = address.getAddressLine().split(" / ");
 //            address.setStreet(Arrays.asList(addressStreet));

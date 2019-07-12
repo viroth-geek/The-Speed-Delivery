@@ -37,7 +37,8 @@ public class UpdateAddress implements Observer<List<Address>> {
      * @param createAddress
      */
     private void request(CreateAddress createAddress) {
-        ServiceGenerator.createService(CustomerService.class)
+        ServiceGenerator
+                .createService(CustomerService.class)
                 .updateAddress(createAddress)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
