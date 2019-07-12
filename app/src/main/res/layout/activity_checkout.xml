@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context="com.iota.eshopping.activity.CheckoutActivity">
+    tools:context="com.planb.thespeed.activity.CheckoutActivity">
     <include layout="@layout/view_toolbar"
         android:id="@+id/toolbar"/>
 
@@ -133,7 +133,7 @@
                             android:textSize="15sp"
                             android:text="+(855)"/>
 
-                        <com.iota.eshopping.util.PhoneNumberField
+                        <com.planb.thespeed.util.PhoneNumberField
                             android:inputType="phone"
                             android:id="@+id/edt_phone_number"
                             android:layout_marginStart="5dp"

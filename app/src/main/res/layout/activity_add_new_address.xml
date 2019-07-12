@@ -74,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:text="Phone Number:"/>
 
-            <com.iota.eshopping.util.PhoneNumberField
+            <com.planb.thespeed.util.PhoneNumberField
                 android:maxLength="12"
                 android:id="@+id/txt_phone_number"
                 android:inputType="phone"

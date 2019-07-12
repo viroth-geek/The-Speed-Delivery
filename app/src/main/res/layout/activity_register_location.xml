@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.iota.eshopping.activity.RegisterLocationActivity">
+    tools:context="com.planb.thespeed.activity.RegisterLocationActivity">
 
     <include layout="@layout/view_toolbar"
         android:id="@+id/toolbar"/>
