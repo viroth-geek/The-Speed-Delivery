@@ -41,6 +41,9 @@ import com.planb.thespeed.util.LoggerHelper;
 import com.planb.thespeed.util.NetworkConnectHelper;
 import com.planb.thespeed.util.Utils;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * @author channarith.bong
  */
@@ -177,6 +180,12 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             etLastName.setError("Last name cannot be empty");
             hasError = true;
         }
+        if (!etEmailAddress.getText().toString().equals("")) {
+            if (!isEmailValid(etEmailAddress.getText().toString())) {
+                etEmailAddress.setError("Email invalid");
+                hasError = true;
+            }
+        }
 
         if (hasError) {
             return null;
@@ -238,6 +247,13 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             userSecure.setPassword(etPassword.getText().toString());
         }
         return userSecure;
+    }
+
+    public static boolean isEmailValid(String email) {
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 
     /**

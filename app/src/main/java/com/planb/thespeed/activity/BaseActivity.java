@@ -2,13 +2,11 @@ package com.planb.thespeed.activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.content.res.Configuration;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -26,7 +24,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -79,6 +76,7 @@ import com.planb.thespeed.model.enumeration.SocialType;
 import com.planb.thespeed.model.form.FormSocialUser;
 import com.planb.thespeed.model.form.SocialLoginForm;
 import com.planb.thespeed.model.singleton.Singleton;
+import com.planb.thespeed.security.ForceUpdateChecker;
 import com.planb.thespeed.security.UserAccount;
 import com.planb.thespeed.server.DatabaseHelper;
 import com.planb.thespeed.service.base.InvokeOnCompleteAsync;
@@ -96,8 +94,6 @@ import com.planb.thespeed.util.Utils;
 
 import org.json.JSONException;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -107,7 +103,7 @@ import java.util.concurrent.TimeUnit;
  * @author viroth.ty
  */
 public class BaseActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, DrawerLayout.DrawerListener {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, DrawerLayout.DrawerListener, ForceUpdateChecker.OnUpdateNeededListener {
 
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private Toolbar toolbar;
@@ -166,18 +162,16 @@ public class BaseActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_base);
-
-        if (getIntent().getStringExtra(ConstantValue.VIEW_BASKET) != null) {
-            handler.postDelayed(() -> {
-                if (listener != null) {
-                    if (getIntent().getExtras().getString(ConstantValue.VIEW_BASKET) != null) {
-                        listener.onViewBasket();
-                    }
+        final Handler handler = new Handler();
+        handler.postDelayed(() -> {
+            if (listener != null) {
+                if (getIntent().getStringExtra(ConstantValue.VIEW_BASKET) != null) {
+                    listener.onViewBasket();
                 }
-            }, 500);
-        }
+            }
+        }, 500);
 
+        setContentView(R.layout.activity_base);
         toolbar = findViewById(R.id.toolbar);
         drawer = findViewById(R.id.drawer_layout);
 //        progressBar = findViewById(R.id.loading_progress_bar);
@@ -975,28 +969,28 @@ public class BaseActivity extends AppCompatActivity
         snackbar.show();
     }
 
-//    @Override
-//    public void onUpdateNeeded(String updateUrl) {
-//        AlertDialog dialog = new AlertDialog.Builder(this)
-//                .setTitle("New version available")
-//                .setMessage("Please, update app to new version to continue.")
-//                .setPositiveButton("Update",
-//                        (dialog1, which) -> redirectStore(updateUrl))
-//                .setCancelable(false)
-//                .create();
-//        dialog.show();
-//    }
+    @Override
+    public void onUpdateNeeded(String updateUrl) {
+        AlertDialog dialog = new AlertDialog.Builder(this, R.style.AlertDialogPrimary)
+                .setTitle("New version available")
+                .setMessage("Please, update app to new version to continue.")
+                .setPositiveButton("Update",
+                        (dialog1, which) -> redirectStore(updateUrl))
+                .setCancelable(false)
+                .create();
+        dialog.show();
+    }
 
-//    /**
-//     * redirect to play store
-//     *
-//     * @param updateUrl String
-//     */
-//    private void redirectStore(String updateUrl) {
-//        final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(updateUrl));
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        startActivity(intent);
-//    }
+    /**
+     * redirect to play store
+     *
+     * @param updateUrl String
+     */
+    private void redirectStore(String updateUrl) {
+        final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(updateUrl));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
 
 
     /**

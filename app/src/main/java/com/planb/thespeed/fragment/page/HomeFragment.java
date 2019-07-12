@@ -471,7 +471,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
                         if (storeList == null) {
                             storeList = new ArrayList<>();
                             storeList = DataMatcher.getInstance().getStoreList(listStores.get(0).getList());
-
                             adapter = new StoreRecyclerAdapter(getActivity(), storeList, isShowAds);
                             adapter.setLoadingProgressBar(loadingProgressBar);
                             adapter.notifyDataSetChanged();
@@ -744,8 +743,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
             typeOfFilter = 0;
             StoreRestriction storeRestriction = new StoreRestriction();
             SearchStoreRestriction searchStoreRestriction = new SearchStoreRestriction();
-            searchStoreRestriction.setLatitude(mAddress.getLatitude());
-            searchStoreRestriction.setLongitude(mAddress.getLongitude());
+            try {
+                searchStoreRestriction.setLatitude(mAddress.getLatitude());
+                searchStoreRestriction.setLongitude(mAddress.getLongitude());
+            } catch (Exception ex) {
+
+            }
             searchStoreRestriction.setOpen(0);
             storeRestriction.setStoreRestriction(searchStoreRestriction);
             loadStoreList(storeRestriction);
@@ -753,8 +756,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
             typeOfFilter = 1;
             StoreRestriction storeRestriction = new StoreRestriction();
             SearchStoreRestriction searchStoreRestriction = new SearchStoreRestriction();
-            searchStoreRestriction.setLatitude(mAddress.getLatitude());
-            searchStoreRestriction.setLongitude(mAddress.getLongitude());
+            try {
+                searchStoreRestriction.setLatitude(mAddress.getLatitude());
+                searchStoreRestriction.setLongitude(mAddress.getLongitude());
+            } catch (Exception ex) {
+
+            }
             searchStoreRestriction.setOpen(1);
             storeRestriction.setStoreRestriction(searchStoreRestriction);
             loadStoreList(storeRestriction);

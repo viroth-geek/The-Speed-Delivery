@@ -19,8 +19,8 @@ android {
 
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 5
-        versionName '1.5'
+        versionCode 11
+        versionName '1.11'
 
         multiDexEnabled true
 
@@ -31,7 +31,7 @@ android {
         }
 
         // TODO: Please update the OneSignal ID below to yours!
-        manifestPlaceholders = [onesignal_app_id               : "65ac04a0-c2bf-43e2-a444-d811977bbd51",
+        manifestPlaceholders = [onesignal_app_id               : "15533f79-e2fa-4c4c-914b-9115e8fa05cb",
                                 // Project number pulled from dashboard, local value is ignored.
                                 onesignal_google_project_number: 'REMOTE']
     }
@@ -175,7 +175,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:12.0.1'
     implementation 'com.google.firebase:firebase-core:12.0.1'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
-
-
 }
 apply plugin: 'com.google.gms.google-services'

@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "53437243757-5kqoqk1iieq7rugd6gm15tuuonlttg8f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.iota.eshopping",
+            "certificate_hash": "b325cffa9bda51ddd1610cbaffae0229fdfc2d40"
+          }
+        },
+        {
+          "client_id": "53437243757-k51j1tlqqvvu6tlck65boldgujku614j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.iota.eshopping",
+            "certificate_hash": "e1e91ff795c4685c97e2c2dd542127b393425dbb"
+          }
+        },
+        {
           "client_id": "53437243757-3t3n6cqavibargdrpl4ec3059q9l9n4i.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -127,10 +143,74 @@
       },
       "oauth_client": [
         {
+          "client_id": "53437243757-2l4c128ik2a0bsp93vsaav835erkogte.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.planb.thespeed",
+            "certificate_hash": "14c5aded2692244668a8d13ce7dafba1398c8205"
+          }
+        },
+        {
+          "client_id": "53437243757-fj5fhmu7gc0htojfg7609csj4t9qgs0h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.planb.thespeed",
+            "certificate_hash": "b325cffa9bda51ddd1610cbaffae0229fdfc2d40"
+          }
+        },
+        {
+          "client_id": "53437243757-76gkj743k22ch2sd5uc8nsv8p1rdbt62.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.planb.thespeed",
+            "certificate_hash": "e1e91ff795c4685c97e2c2dd542127b393425dbb"
+          }
+        },
+        {
           "client_id": "53437243757-7dc896ml2ahas5ths6df92kubod9oots.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.planb.thespeed",
+            "certificate_hash": "01d0e243b286eb50dba43bb5da8e3dafc0ac0a7d"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzatpYCK-X0eYPq-roHL-BW9SIqkWltyc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "53437243757-9n7021deacrghbmrkbrq3v3ngec01uc1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "53437243757-s79oev5h03afpofem7cuts1iacacoh2n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.thespeeddelivery.planb"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:53437243757:android:d41ac39e587e56e6",
+        "android_client_info": {
+          "package_name": "com.planb.thespeed.driver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "53437243757-2rl59htfs9jnslkj29g03096ntqeda30.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.planb.thespeed.driver",
             "certificate_hash": "01d0e243b286eb50dba43bb5da8e3dafc0ac0a7d"
           }
         }

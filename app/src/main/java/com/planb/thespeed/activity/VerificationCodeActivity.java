@@ -286,7 +286,6 @@ public class VerificationCodeActivity extends AppCompatActivity {
                         mVerificationId = verificationId;
                         mResendToken = token;
                         handler.post(new CountdownTask());
-
                     }
                 });
     }
