@@ -36,7 +36,7 @@ public class ApplicationConfiguration {
     public static final String ADMIN_TOKEN = "6237903gbjym1isaob8et3pqaljax6tw";
     public static final String CERT_NAME = "planbchain.pem";
 
-//    //        planb domain 2
+//    planb domain 2
 //    public static final String BASE_URL = "http://testing.thespeed.planbtesting.club/index.php/rest/";
 //    public static final String PRODUCT_IMAGE_URL = "http://testing.thespeed.planbtesting.club/pub/media/catalog/product/";
 //    public static final String STORE_IMAGE_URL = "http://testing.thespeed.planbtesting.club/pub/media/catalog/category/";
