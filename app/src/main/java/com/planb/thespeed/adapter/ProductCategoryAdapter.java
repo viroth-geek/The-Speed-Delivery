@@ -212,9 +212,13 @@ public class ProductCategoryAdapter extends RecyclerView.Adapter<ProductCategory
 
     @Override
     public void onChange(ProductItem productItem) {
+
         Product product = (Product) productItem.getItem();
         product.setCount(productItem.getCount());
         product.setStoreId(this.store.getId());
+
+//        ((StoreActivity)context).onChange(productItem);
+
         updateItemAmount(Collections.singletonList(productItem), false);
     }
 

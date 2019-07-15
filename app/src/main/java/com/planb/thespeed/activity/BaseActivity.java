@@ -8,6 +8,7 @@ import android.content.res.Configuration;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,11 +22,18 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,11 +50,17 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.onesignal.OSPermissionSubscriptionState;
 import com.onesignal.OneSignal;
 import com.planb.thespeed.R;
 import com.planb.thespeed.constant.ConstantValue;
 import com.planb.thespeed.constant.entity.FacebookAccessScope;
+import com.planb.thespeed.event.ISaveAddress;
 import com.planb.thespeed.fragment.page.AboutFragment;
 import com.planb.thespeed.fragment.page.DeliveryAddressFragment;
 import com.planb.thespeed.fragment.page.HomeFragment;
@@ -61,6 +75,7 @@ import com.planb.thespeed.model.UserPlayerId;
 import com.planb.thespeed.model.enumeration.SocialType;
 import com.planb.thespeed.model.form.FormSocialUser;
 import com.planb.thespeed.model.form.SocialLoginForm;
+import com.planb.thespeed.model.singleton.Singleton;
 import com.planb.thespeed.security.ForceUpdateChecker;
 import com.planb.thespeed.security.UserAccount;
 import com.planb.thespeed.server.DatabaseHelper;
@@ -74,18 +89,23 @@ import com.planb.thespeed.service.location.LocationService;
 import com.planb.thespeed.util.AlertUtils;
 import com.planb.thespeed.util.ExceptionUtils;
 import com.planb.thespeed.util.LoggerHelper;
+import com.planb.thespeed.util.NetworkConnectHelper;
+import com.planb.thespeed.util.Utils;
 
 import org.json.JSONException;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author channarith.bong
+ * @author viroth.ty
  */
 public class BaseActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, ForceUpdateChecker.OnUpdateNeededListener {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, DrawerLayout.DrawerListener, ForceUpdateChecker.OnUpdateNeededListener {
 
+    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private Toolbar toolbar;
     private ActionBarDrawerToggle toggle;
     private DrawerLayout drawer;
@@ -95,69 +115,131 @@ public class BaseActivity extends AppCompatActivity
     private TextView txt_user_email;
     private NavigationView navigationView;
     private MenuItem searchMenuItem;
-
+    private MenuItem filterMenuItem;
+    private LinearLayout llProductFilter;
+    private EditText etPhoneNumber;
+    private Button btPhoneOk;
     private Snackbar snackbar;
+    private RelativeLayout progressBar;
 
     private UserAccount userAccount;
-
     private CallbackManager callbackManager;
-
     private LoginButton facebookLoginButton;
     private Button btn_facebook_login;
-
     private GoogleSignInClient mGoogleSignInClient;
     //    private SignInButton googleSignInButton;
     private Button btn_google_login;
-
     private boolean isShowAds = true;
     private Customer customer;
     private FetchAddressDAO fetchAddressDAO;
-
     private String fragmentName;
     private HomeFragment homeFragment;
-
     private boolean isCanBroadCast = false;
+    private ISaveAddress listener;
 
-    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+    private RelativeLayout openStore;
+    private RelativeLayout allStore;
+    private ImageView allProductImg;
+    private ImageView openProductImg;
+
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
+    private FirebaseAuth mAuth;
+
+    private String mVerificationId;
+    private PhoneAuthProvider.ForceResendingToken mResendToken;
+
+    final Handler handler = new Handler();
+
+    @Override
+    public void onAttachFragment(Fragment fragment) {
+        super.onAttachFragment(fragment);
+        if (fragment instanceof ISaveAddress) {
+            listener = (HomeFragment) fragment;
+        }
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_base);
+        final Handler handler = new Handler();
+        handler.postDelayed(() -> {
+            if (listener != null) {
+                if (getIntent().getStringExtra(ConstantValue.VIEW_BASKET) != null) {
+                    listener.onViewBasket();
+                }
+            }
+        }, 500);
 
+        setContentView(R.layout.activity_base);
         toolbar = findViewById(R.id.toolbar);
         drawer = findViewById(R.id.drawer_layout);
+//        progressBar = findViewById(R.id.loading_progress_bar);
+        drawer.addDrawerListener(this);
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        fetchAddressDAO = new FetchAddressDAO(DatabaseHelper.getInstance(this).getDatabase());
+        llProductFilter = findViewById(R.id.lyt_pro_filter);
 
-        initToolbar();
-
-        if (getIntent().hasExtra(ConstantValue.NOTIFICATION) && checkUserData()) {
-            if (getIntent().hasExtra(ConstantValue.ITEMS)) {
-                Intent intent = new Intent(this, MyOrderDetailActivity.class);
-                intent.putExtra(ConstantValue.ITEMS, getIntent().getSerializableExtra(ConstantValue.ITEMS));
-                intent.putExtra(ConstantValue.HOME_CALLING, true);
-                startActivity(intent);
-            }
-            else {
-                checkNewNotification();
-            }
-        } else {
-            checkToHome();
+        if (getIntent().getStringExtra("CONTINUE_PHONE") != null){
+            drawer.openDrawer(GravityCompat.START);
         }
 
-        configureFacebookLogin();
-        configureGoogleSignIn();
+        if (getIntent().getStringExtra(ConstantValue.SAVE_NEW_ADDRESS) == null) {
+
+            fetchAddressDAO = new FetchAddressDAO(DatabaseHelper.getInstance(this).getDatabase());
+
+            initToolbar();
+            initFilterProductComponent();
+
+            mAuth = FirebaseAuth.getInstance();
+            phoneAuthCallBack();
+
+            if (getIntent().hasExtra(ConstantValue.NOTIFICATION) && checkUserData()) {
+                if (getIntent().hasExtra(ConstantValue.ITEMS)) {
+                    Intent intent = new Intent(this, MyOrderDetailActivity.class);
+                    intent.putExtra(ConstantValue.ITEMS, getIntent().getSerializableExtra(ConstantValue.ITEMS));
+                    intent.putExtra(ConstantValue.HOME_CALLING, true);
+                    startActivity(intent);
+                } else {
+                    checkNewNotification();
+                }
+            } else {
+                checkToHome();
+                if (listener != null) {
+                    if (getIntent().getStringExtra(ConstantValue.SAVE_NEW_ADDRESS) != null) {
+                        addMoreAddress();
+                    }
+                }
+
+            }
+
+            configureFacebookLogin();
+            configureGoogleSignIn();
+            configurePhoneAuthentication();
+        }
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
+    private void initFilterProductComponent() {
+
+        allStore = findViewById(R.id.lyt_filter_all);
+        openStore = findViewById(R.id.lyt_filter_open);
+        allProductImg = findViewById(R.id.img_product_all);
+        openProductImg = findViewById(R.id.img_product_open);
+
+        allStore.setOnClickListener(this);
+        openStore.setOnClickListener(this);
+
+        allProductImg.setVisibility(View.VISIBLE);
+        openProductImg.setVisibility(View.GONE);
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (searchMenuItem != null) {
             searchMenuItem.setVisible(false);
+            filterMenuItem.setVisible(false);
         }
         switch (id) {
             case R.id.nav_find_product:
@@ -187,6 +269,7 @@ public class BaseActivity extends AppCompatActivity
             default:
                 checkToHome();
         }
+
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -196,10 +279,17 @@ public class BaseActivity extends AppCompatActivity
         if (isShowAds) {
             getMenuInflater().inflate(R.menu.menu_main, menu);
             searchMenuItem = menu.findItem(R.id.action_search);
+            filterMenuItem = menu.findItem(R.id.action_filter);
             if (fragmentName == null || HomeFragment.class.getSimpleName().equals(fragmentName)) {
                 searchMenuItem.setVisible(true);
+                filterMenuItem.setVisible(true);
+
+                allProductImg.setVisibility(View.VISIBLE);
+                openProductImg.setVisibility(View.GONE);
+
             } else {
                 searchMenuItem.setVisible(false);
+                filterMenuItem.setVisible(false);
             }
         }
         return super.onCreateOptionsMenu(menu);
@@ -210,6 +300,14 @@ public class BaseActivity extends AppCompatActivity
         if (item.getItemId() == R.id.action_search) {
             Intent intent = new Intent(this, SearchActivity.class);
             startActivity(intent);
+        } else if (item.getItemId() == R.id.action_filter) {
+            if (llProductFilter.getVisibility() == View.GONE) {
+                llProductFilter.animate().translationY(0F);
+                llProductFilter.setVisibility(View.VISIBLE);
+            } else {
+                llProductFilter.setVisibility(View.GONE);
+                llProductFilter.animate().translationY(-50F);
+            }
         } else if (item.getItemId() == android.R.id.home) {
             if (!isShowAds) {
                 finish();
@@ -297,6 +395,8 @@ public class BaseActivity extends AppCompatActivity
         txt_user_name = navigationView.getHeaderView(0).findViewById(R.id.txt_user_name);
         btn_sign_up = navigationView.getHeaderView(1).findViewById(R.id.btn_sign_up);
         btn_log_in = navigationView.getHeaderView(1).findViewById(R.id.btn_log_in);
+        progressBar = navigationView.getHeaderView(1).findViewById(R.id.loading_progress_bar);
+        btPhoneOk = navigationView.getHeaderView(1).findViewById(R.id.btn_ok);
         drawViewSideMenu();
     }
 
@@ -331,14 +431,18 @@ public class BaseActivity extends AppCompatActivity
 
     /**
      * save user player id
-     * @see UserPlayerId
+     *
      * @param userPlayerId UserPlayerId
+     * @see UserPlayerId
+     * @see UserPlayerId
      */
     private void saveUserPlayerId(UserPlayerId userPlayerId) {
         new SaveUserPlayerId(userPlayerId, new SaveUserPlayerId.InvokeOnCompleteAsync() {
             @Override
             public void onComplete(List<UserPlayerId> userPlayerIds) {
                 LoggerHelper.showDebugLog("===> Save user player id successfully" + userPlayerId.toString());
+                Singleton.userId = Long.parseLong(userPlayerId.getUserId());
+                Log.d("oooooId", Singleton.userId.toString());
             }
 
             @Override
@@ -350,6 +454,7 @@ public class BaseActivity extends AppCompatActivity
 
     /**
      * prepare for UserPlayerId
+     *
      * @param userId
      * @return
      */
@@ -368,6 +473,7 @@ public class BaseActivity extends AppCompatActivity
     /**
      * Check if Ready Logged
      */
+
     private boolean checkUserData() {
         UserAccount userAccount = new UserAccount(this);
         customer = userAccount.getCustomer();
@@ -382,6 +488,10 @@ public class BaseActivity extends AppCompatActivity
         homeFragment = new HomeFragment();
         if (searchMenuItem != null) {
             searchMenuItem.setVisible(true);
+            filterMenuItem.setVisible(true);
+
+            allProductImg.setVisibility(View.VISIBLE);
+            openProductImg.setVisibility(View.GONE);
         }
         displaySelectedFragment(homeFragment);
     }
@@ -389,22 +499,19 @@ public class BaseActivity extends AppCompatActivity
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    LoggerHelper.showDebugLog("Granted");
-                    BaseActivity.this.requestGps();
+        if (requestCode == PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                LoggerHelper.showDebugLog("Granted");
+                BaseActivity.this.requestGps();
+            } else {
+                LoggerHelper.showDebugLog("Not Granted");
+                if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    Toast.makeText(this, "To enable the function of this application please enable location permission of the application from the setting screen of the terminal.", Toast.LENGTH_SHORT).show();
                 } else {
-                    LoggerHelper.showDebugLog("Not Granted");
-                    if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-                        Toast.makeText(this, "To enable the function of this application please enable location permission of the application from the setting screen of the terminal.", Toast.LENGTH_SHORT).show();
-                    } else {
-                        ActivityCompat.requestPermissions(this,
-                                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-                    }
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
                 }
-                break;
             }
         }
     }
@@ -504,7 +611,7 @@ public class BaseActivity extends AppCompatActivity
      */
     private void checkToSignup() {
         toolbar.setTitle(R.string.about);
-        Intent intent = new Intent(this, SigninActivity.class);
+        Intent intent = new Intent(this, SignupActivity.class);
         startActivityForResult(intent, ConstantValue.SIGN_UP_CODE);
     }
 
@@ -550,12 +657,11 @@ public class BaseActivity extends AppCompatActivity
      * @param fragment Fragment
      */
     private void displaySelectedFragment(Fragment fragment) {
-//        if (fragmentName == null || !fragment.getClass().getSimpleName().equals(fragmentName)) {
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.frame_container, fragment);
-            fragmentTransaction.commit();
-            fragmentName = fragment.getClass().getSimpleName();
-//        }
+        llProductFilter.setVisibility(View.GONE);
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frame_container, fragment, "HomeFragment");
+        fragmentTransaction.commit();
+        fragmentName = fragment.getClass().getSimpleName();
     }
 
     /**
@@ -661,7 +767,7 @@ public class BaseActivity extends AppCompatActivity
                                     builder.setTitle("Message");
                                     builder.setMessage("Error while retrieve facebook data. Please sign up with your email.");
                                     builder.setPositiveButton("OK", (dialog, which) -> {
-                                        Intent intent = new Intent(BaseActivity.this, SigninActivity.class);
+                                        Intent intent = new Intent(BaseActivity.this, SignupActivity.class);
                                         startActivity(intent);
                                         finish();
                                     });
@@ -800,10 +906,45 @@ public class BaseActivity extends AppCompatActivity
 
     @Override
     public void onClick(View view) {
+
         if (btn_facebook_login.equals(view)) {
             facebookLoginButton.performClick();
         } else if (btn_google_login.equals(view)) {
             signInWithGoogle();
+        } else if (view.equals(btPhoneOk)) {
+            boolean isConnect = NetworkConnectHelper.getInstance().isConnectionOnline(getApplicationContext());
+            if (isConnect) {
+                progressBar.setVisibility(View.VISIBLE);
+                btPhoneOk.setVisibility(View.GONE);
+                String _mPhoneNumber = etPhoneNumber.getText().toString();
+                if (validatePhoneNumber(_mPhoneNumber)) {
+                    btPhoneOk.setEnabled(false);
+                    FireBasePhoneAuthentication("+855" + _mPhoneNumber);
+                } else {
+                    progressBar.setVisibility(View.GONE);
+                    btPhoneOk.setVisibility(View.VISIBLE);
+                    int errorColor = getResources().getColor(R.color.white);
+                    String errorString = "Please check phone number again.";  // Your custom error message.
+                    ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(errorColor);
+                    SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(errorString);
+                    spannableStringBuilder.setSpan(foregroundColorSpan, 0, errorString.length(), 0);
+                    etPhoneNumber.setError(spannableStringBuilder);
+                }
+            } else {
+                Toast.makeText(this, "Internet disconnected!. Try again", Toast.LENGTH_SHORT).show();
+            }
+
+        } else if (view.equals(allStore)) {
+            allProductImg.setVisibility(View.VISIBLE);
+            openProductImg.setVisibility(View.GONE);
+            llProductFilter.setVisibility(View.GONE);
+            listener.onAddressSave(ConstantValue.PRODUCT_ALL);
+
+        } else if (view.equals(openStore)) {
+            allProductImg.setVisibility(View.GONE);
+            openProductImg.setVisibility(View.VISIBLE);
+            llProductFilter.setVisibility(View.GONE);
+            listener.onAddressSave(ConstantValue.PRODUCT_OPEN);
         }
     }
 
@@ -837,7 +978,7 @@ public class BaseActivity extends AppCompatActivity
 
     @Override
     public void onUpdateNeeded(String updateUrl) {
-        AlertDialog dialog = new AlertDialog.Builder(this)
+        AlertDialog dialog = new AlertDialog.Builder(this, R.style.AlertDialogPrimary)
                 .setTitle("New version available")
                 .setMessage("Please, update app to new version to continue.")
                 .setPositiveButton("Update",
@@ -849,11 +990,115 @@ public class BaseActivity extends AppCompatActivity
 
     /**
      * redirect to play store
+     *
      * @param updateUrl String
      */
     private void redirectStore(String updateUrl) {
         final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(updateUrl));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+
+
+    /**
+     * phone authentication
+     */
+
+    private void configurePhoneAuthentication() {
+        etPhoneNumber = navigationView.getHeaderView(1).findViewById(R.id.edt_phone_nubmer);
+        btPhoneOk = navigationView.getHeaderView(1).findViewById(R.id.btn_ok);
+        btPhoneOk.setOnClickListener(this);
+    }
+
+    private boolean validatePhoneNumber(String phone_number) {
+        return phone_number.length() >= 8;
+    }
+
+    private void FireBasePhoneAuthentication(String phoneNumber) {
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                phoneNumber,
+                30L,
+                TimeUnit.SECONDS,
+                this,
+                mCallbacks);
+    }
+
+    private void phoneAuthCallBack() {
+        mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            @Override
+            public void onVerificationCompleted(PhoneAuthCredential credential) {
+                progressBar.setVisibility(View.GONE);
+                btPhoneOk.setVisibility(View.VISIBLE);
+                btPhoneOk.setEnabled(true);
+                signInWithPhoneAuthCredential(credential);
+            }
+
+            @Override
+            public void onVerificationFailed(FirebaseException e) {
+                Log.d(ConstantValue.TAG_LOG, "onVerificationFailed " + e.getMessage());
+                progressBar.setVisibility(View.GONE);
+                btPhoneOk.setVisibility(View.VISIBLE);
+                btPhoneOk.setEnabled(true);
+                Toast.makeText(BaseActivity.this, "Sign In Failed", Toast.LENGTH_SHORT).show();
+                Log.d(ConstantValue.TAG_LOG, "onVerificationFailed " + e.getMessage());
+            }
+
+            @Override
+            public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
+                progressBar.setVisibility(View.GONE);
+                btPhoneOk.setVisibility(View.VISIBLE);
+                btPhoneOk.setEnabled(true);
+                mVerificationId = verificationId;
+                mResendToken = token;
+                Intent intent = new Intent(BaseActivity.this, VerificationCodeActivity.class);
+                intent.putExtra(ConstantValue.VERIFICATION_ID, mVerificationId);
+                intent.putExtra(ConstantValue.PHONE_NUMBER, etPhoneNumber.getText().toString());
+                etPhoneNumber.setText("");
+                startActivity(intent);
+            }
+        };
+    }
+
+
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+
+                        final FirebaseUser user = task.getResult().getUser();
+                        Log.d(ConstantValue.TAG, "Firebase user " + user.getDisplayName() + " " + user.getEmail());
+
+                        user.getIdToken(true).addOnCompleteListener(task1 -> {
+                            if (task1.isSuccessful()) {
+                                Log.d(ConstantValue.TAG_LOG, "tokenId " + task1.toString());
+                            }
+                        });
+                    } else {
+                        task.getException();// The verification code entered was invalid
+                    }
+                });
+    }
+
+
+    @Override
+    public void onDrawerSlide(View drawerView, float slideOffset) {
+
+    }
+
+    @Override
+    public void onDrawerOpened(View drawerView) {
+
+    }
+
+    @Override
+    public void onDrawerClosed(View drawerView) {
+        Utils.hideKeyboard(this);
+        etPhoneNumber.setText("");
+    }
+
+    @Override
+    public void onDrawerStateChanged(int newState) {
+
     }
 }

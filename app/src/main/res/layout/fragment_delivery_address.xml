@@ -5,12 +5,12 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.planb.thespeed.fragment.page.DeliveryAddressFragment">
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list_address"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        
-    </android.support.v7.widget.RecyclerView>
+        android:layout_height="wrap_content"/>
+
     <android.support.design.widget.FloatingActionButton
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
@@ -20,4 +20,37 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@drawable/ic_add_white" />
+
+    <FrameLayout
+        android:id="@+id/container_float_loading"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:background="@color/colorTransparency"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <include
+                android:id="@+id/delivery_address_loading"
+                layout="@layout/view_progress_bar_ii" />
+
+            <TextView
+                android:id="@+id/txt_container_loading_label"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/margin_length_5"
+                android:gravity="center"
+                android:text="Loading.."
+                android:textColor="@color/black"
+                android:textSize="@dimen/simple_font_size"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </FrameLayout>
 </RelativeLayout>

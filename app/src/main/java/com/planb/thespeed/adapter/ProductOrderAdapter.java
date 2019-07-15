@@ -25,7 +25,7 @@ public class ProductOrderAdapter extends RecyclerView.Adapter<ProductOrderAdapte
     private Typeface font;
 
     /**
-     * @param context Context
+     * @param context    Context
      * @param orderItems list of OrderItem
      */
     public ProductOrderAdapter(Context context, List<OrderItem> orderItems) {

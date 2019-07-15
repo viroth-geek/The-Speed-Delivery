@@ -164,6 +164,13 @@ public class MagentoStoreViewsRestructurer implements DataForm {
         store.setLatitude(storeView.getLatitude());
         store.setLongitude(storeView.getLongitude());
         store.setCategories(margeProductCategoryV2(storeView.getCategories()));
+
+        store.setOpenToday(storeView.isOpen());
+        store.setStatusOpenToday(storeView.getStatusOpenToday());
+        store.setStatusOpenTomorrow(storeView.getStatusOpenTomorrow());
+        store.setOpenHour(storeView.getOpenHour());
+        store.setCloseHour(storeView.getCloseHour());
+        store.setRate(Float.valueOf(storeView.getRate().toString()));
         return store;
     }
 

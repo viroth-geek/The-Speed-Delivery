@@ -66,6 +66,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 import static com.planb.thespeed.util.NumberUtils.strMoney;
+import static com.planb.thespeed.util.Utils.FormatDateTimeLocal;
 
 /**
  * @author channarith.bong
@@ -133,6 +134,7 @@ public class MyOrderDetailActivity extends AppCompatActivity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_order_detail);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         txt_order_status = findViewById(R.id.txt_order_status);
         txt_order_id = findViewById(R.id.txt_order_id);
@@ -178,6 +180,7 @@ public class MyOrderDetailActivity extends AppCompatActivity implements View.OnC
 
         loadingLayout = findViewById(R.id.container_float_loading);
 
+        btn_reorder.setEnabled(false);
         btn_store_name.setOnClickListener(this);
         btn_reorder.setOnClickListener(this);
 
@@ -284,7 +287,7 @@ public class MyOrderDetailActivity extends AppCompatActivity implements View.OnC
             txt_order_id.setText(orderDetail.getIncrementId());
             txt_order_address.setText(orderDetail.getBillingAddress().getStreet().get(0));
 
-            txt_order_date.setText(String.format(" %s", orderDetail.getUpdatedAt()));
+            txt_order_date.setText(String.format(" %s", FormatDateTimeLocal(orderDetail.getUpdatedAt())));
 
             txt_number_product.setText(String.format("%s", orderDetail.getTotalItemCount()));
             txt_sub_total.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), strMoney(orderDetail.getSubtotal().floatValue())));
@@ -712,6 +715,7 @@ public class MyOrderDetailActivity extends AppCompatActivity implements View.OnC
      * @param orderId Long
      */
     private void fetchOrderItems(Long orderId) {
+
         new FetchOrderItem(orderId, new InvokeOnCompleteAsync<List<OrderItem>>() {
             @Override
             public void onComplete(List<OrderItem> orderItemList) {
@@ -795,6 +799,7 @@ public class MyOrderDetailActivity extends AppCompatActivity implements View.OnC
 
                 orderDetail.setProductItems(productItems);
                 productLoadingProgressBar.setVisibility(View.GONE);
+                btn_reorder.setEnabled(true);
 
                 OrderItemListViewAdapter listViewAdapter = new OrderItemListViewAdapter(MyOrderDetailActivity.this, list_item, orderDetail.getProductItems());
                 list_item = listViewAdapter.setChildViewIntoLinearLayout();

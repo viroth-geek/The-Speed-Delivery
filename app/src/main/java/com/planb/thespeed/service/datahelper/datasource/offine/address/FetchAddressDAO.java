@@ -179,16 +179,16 @@ public class FetchAddressDAO {
 //            values.put(AddressM.ADDRESS_LINE, address.getAddressLine());
 //        }
         if (address.getStreet() != null && !address.getStreet().isEmpty()) {
-            StringBuilder street = new StringBuilder();
-            int index = 0;
-            for (String s : address.getStreet()) {
-                street.append(s);
-                if (index < address.getStreet().size() - 1) {
-                    street.append(", ");
-                }
-                index++;
-            }
-            values.put(AddressM.ADDRESS_LINE, StringUtils.join(address.getStreet(), " / "));
+//            StringBuilder street = new StringBuilder();
+//            int index = 0;
+//            for (String s : address.getStreet()) {
+//                street.append(s);
+//                if (index < address.getStreet().size() - 1) {
+//                    street.append(", ");
+//                }
+//                index++;
+//            }
+            values.put(AddressM.ADDRESS_LINE, StringUtils.join(address.getStreet()));
         }
 
         if (address.getLatitude() != null) {

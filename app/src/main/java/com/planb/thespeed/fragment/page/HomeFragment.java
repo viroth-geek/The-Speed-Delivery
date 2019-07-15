@@ -11,6 +11,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -38,6 +39,7 @@ import com.planb.thespeed.activity.SearchActivity;
 import com.planb.thespeed.adapter.StoreRecyclerAdapter;
 import com.planb.thespeed.constant.ApplicationConfiguration;
 import com.planb.thespeed.constant.ConstantValue;
+import com.planb.thespeed.event.ISaveAddress;
 import com.planb.thespeed.fragment.time.NkrTimePicker;
 import com.planb.thespeed.model.ServerDateTime;
 import com.planb.thespeed.model.magento.search.SearchStoreRestriction;
@@ -73,7 +75,7 @@ import io.reactivex.Observable;
 /**
  * @author channarith.bong
  */
-public class HomeFragment extends Fragment implements View.OnClickListener {
+public class HomeFragment extends Fragment implements View.OnClickListener, ISaveAddress {
 
     private FrameLayout viewBasket;
 
@@ -109,6 +111,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private int PAGE = 1;
 
     private String serverDateTime = DateUtil.getNowAdd45Mn();
+
+    private int typeOfFilter = 0;
 
     /**
      * @return HomeFragment
@@ -188,6 +192,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             int visibleItemCount = layoutManager.getChildCount();
             int totalItemCount = layoutManager.getItemCount();
             int firstVisibleItem = 0;
+
             if (layoutManager instanceof LinearLayoutManager) {
                 firstVisibleItem = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
             }
@@ -283,23 +288,27 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             showLocationPicker();
         }
         else if (btn_basket.equals(view)) {
-            List<ProductItem> items = Observable.fromIterable(productItems).filter(productItem -> productItem.getCount() > 0).toList().blockingGet();
-            if (!items.isEmpty()) {
+            viewBasketDetail();
+        }
+    }
 
-                Product product = (Product) this.productItems.get(0).getItem();
-                if (storeList != null) {
-                    Store store = Observable.fromIterable(storeList).filter(store1 -> store1.getId().equals(product.getStoreId())).toList().blockingGet().get(0);
-                    Intent intent = new Intent(getContext(), ManageBasketActivity.class);
-                    intent.putExtra(ConstantValue.ITEMS, (Serializable) productItems);
-                    intent.putExtra(ConstantValue.STORE, store);
-                    startActivityForResult(intent, ConstantValue.GO_TO_BASKET);
-                } else {
-                    Toast.makeText(getContext(), "Cannot go to basket", Toast.LENGTH_SHORT).show();
-                }
+    private void viewBasketDetail() {
+        List<ProductItem> items = Observable.fromIterable(productItems).filter(productItem -> productItem.getCount() > 0).toList().blockingGet();
+        if (!items.isEmpty()) {
 
+            Product product = (Product) this.productItems.get(0).getItem();
+            if (storeList != null) {
+                Store store = Observable.fromIterable(storeList).filter(store1 -> store1.getId().equals(product.getStoreId())).toList().blockingGet().get(0);
+                Intent intent = new Intent(getContext(), ManageBasketActivity.class);
+                intent.putExtra(ConstantValue.ITEMS, (Serializable) productItems);
+                intent.putExtra(ConstantValue.STORE, store);
+                startActivityForResult(intent, ConstantValue.GO_TO_BASKET);
             } else {
-                Toast.makeText(getContext(), "No item to in basket.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Cannot go to basket", Toast.LENGTH_SHORT).show();
             }
+
+        } else {
+            Toast.makeText(getContext(), "No item to in basket.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -363,7 +372,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             this.productItems.clear();
         }
 
-        for (com.planb.thespeed.model.modelForView.Product product : products) {
+        for (Product product : products) {
             this.productItems.add(new ProductItem<>(product.getId(), product.getCount(), product.getPrice(), product));
         }
 
@@ -422,6 +431,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private StoreRestriction prepareForGetStore(com.planb.thespeed.model.Address address) {
         StoreRestriction storeRestriction = new StoreRestriction();
         SearchStoreRestriction restriction = new SearchStoreRestriction();
+        restriction.setOpen(typeOfFilter);
         restriction.setPage(PAGE);
         restriction.setLimit(ApplicationConfiguration.LIMIT);
         if (address != null) {
@@ -432,6 +442,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         return storeRestriction;
     }
 
+
     /**
      * Get all available store for agent
      */
@@ -440,9 +451,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         if (loadingProgressBar.getVisibility() == View.GONE) {
             loadingProgressBar.setVisibility(View.VISIBLE);
         }
-
         new FetchListStores(restriction, new FetchListStores.InvokeOnCompleteAsync() {
-
             @Override
             public void onComplete(List<ListStore> listStores) {
                 if (listStores != null && !listStores.isEmpty()) {
@@ -462,7 +471,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         if (storeList == null) {
                             storeList = new ArrayList<>();
                             storeList = DataMatcher.getInstance().getStoreList(listStores.get(0).getList());
-
                             adapter = new StoreRecyclerAdapter(getActivity(), storeList, isShowAds);
                             adapter.setLoadingProgressBar(loadingProgressBar);
                             adapter.notifyDataSetChanged();
@@ -714,6 +722,62 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             estoreList.setAdapter(null);
             adapter.notifyDataSetChanged();
         }
+    }
+
+
+    /**
+     * @return click when filter
+     */
+    @Override
+    public void onAddressSave(String type) {
+
+        try {
+            if (storeList.size() > 0 && storeList != null) {
+                storeList.clear();
+                adapter.notifyDataSetChanged();
+            }
+        } catch (Exception e) {
+
+        }
+        if (type.equals(ConstantValue.PRODUCT_ALL)) {
+            typeOfFilter = 0;
+            StoreRestriction storeRestriction = new StoreRestriction();
+            SearchStoreRestriction searchStoreRestriction = new SearchStoreRestriction();
+            try {
+                searchStoreRestriction.setLatitude(mAddress.getLatitude());
+                searchStoreRestriction.setLongitude(mAddress.getLongitude());
+            } catch (Exception ex) {
+
+            }
+            searchStoreRestriction.setOpen(0);
+            storeRestriction.setStoreRestriction(searchStoreRestriction);
+            loadStoreList(storeRestriction);
+        } else if (type.equals(ConstantValue.PRODUCT_OPEN)) {
+            typeOfFilter = 1;
+            StoreRestriction storeRestriction = new StoreRestriction();
+            SearchStoreRestriction searchStoreRestriction = new SearchStoreRestriction();
+            try {
+                searchStoreRestriction.setLatitude(mAddress.getLatitude());
+                searchStoreRestriction.setLongitude(mAddress.getLongitude());
+            } catch (Exception ex) {
+
+            }
+            searchStoreRestriction.setOpen(1);
+            storeRestriction.setStoreRestriction(searchStoreRestriction);
+            loadStoreList(storeRestriction);
+        }
+    }
+
+    @Override
+    public void onViewBasket() {
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                viewBasketDetail();
+            }
+        }, 1200);
     }
 }
 

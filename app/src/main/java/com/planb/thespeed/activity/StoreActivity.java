@@ -6,10 +6,12 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +33,7 @@ import com.planb.thespeed.fragment.cart.ItemAdjustment;
 import com.planb.thespeed.fragment.category.CategoryPagerFragment;
 import com.planb.thespeed.fragment.productoption.ProductOptionDialog;
 import com.planb.thespeed.model.Product;
+import com.planb.thespeed.model.enumeration.DayType;
 import com.planb.thespeed.model.magento.store.storeList.Category;
 import com.planb.thespeed.model.modelForView.OrderItem;
 import com.planb.thespeed.model.modelForView.ProductAttributeOption;
@@ -48,6 +51,7 @@ import com.planb.thespeed.util.ImageViewUtil;
 import com.planb.thespeed.util.LoggerHelper;
 import com.planb.thespeed.util.NumberUtils;
 import com.planb.thespeed.util.preference.StorePreference;
+import com.planb.thespeed.util.preference.TimeDeliveryPreference;
 
 import java.io.Serializable;
 import java.net.SocketTimeoutException;
@@ -180,27 +184,27 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
             List<ProductItem> items = Observable.fromIterable(productItems).filter(productItem -> productItem.getCount() > 0).toList().blockingGet();
             if (!items.isEmpty()) {
 
-//                String tomorrowText = TimeDeliveryPreference.getTimeDeliveryText(this).split(" ")[0];
-//                if (tomorrowText.equalsIgnoreCase(DayType.TOMORROW.toString())) {
-//                    if (!store.isStatusOpenTomorrow()) {
-//                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//                        builder.setTitle("Store Message");
-//                        builder.setMessage(store.getNameKh().isEmpty() ? store.getName() : store.getNameKh() + " is not opened tomorrow.");
-//                        builder.setPositiveButton("OK", (dialogInterface, i) -> dialogInterface.dismiss());
-//                        builder.create().show();
-//                        return;
-//                    }
-//                }
-//
-//                if (!store.isOpenToday()) {
-//                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//                    builder.setTitle("Store Message");
-//                    builder.setMessage(store.getNameKh().isEmpty() ? store.getName() : store.getNameKh() + " is not open.");
-//                    builder.setPositiveButton("OK", (dialogInterface, i) -> dialogInterface.dismiss());
-//                    builder.create().show();
-//                    return;
-//                }
+                String tomorrowText = TimeDeliveryPreference.getTimeDeliveryText(this).split(" ")[0];
+                if (tomorrowText.equalsIgnoreCase(DayType.TOMORROW.toString())) {
+                    if (!store.isStatusOpenTomorrow()) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogPrimary);
+                        builder.setTitle("Store Message");
+                        builder.setMessage(store.getNameKh().isEmpty() ? store.getName() : store.getNameKh() + " is not opened tomorrow.");
+                        builder.setPositiveButton("OK", (dialogInterface, i) -> dialogInterface.dismiss());
+                        builder.create().show();
+                        return;
+                    }
+                }
 
+                if (!store.isOpenToday()) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogDanger);
+                    builder.setTitle("Store Message");
+                    builder.setMessage(store.getNameKh().isEmpty() ? store.getName() : store.getNameKh() + " is not open.");
+                    builder.setPositiveButton("OK", (dialogInterface, i) -> dialogInterface.dismiss());
+                    builder.create().show();
+                    return;
+                }
+                Log.d(ConstantValue.TAG_LOG, "onClick: " + productItems.size());
                 Intent intent = new Intent(this, ManageBasketActivity.class);
                 intent.putExtra(ConstantValue.ITEMS, (Serializable) productItems);
                 intent.putExtra(ConstantValue.STORE, store);
@@ -342,6 +346,7 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
 
 //            txt_estore_name.setText(store.getName());
 //            txt_estore_type.setText(estoreType.toString());
+
             if (!store.isOpenToday()) {
                 txt_is_open.setTextColor(getResources().getColor(R.color.red));
             } else {
@@ -482,6 +487,8 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
                 categoryPagerFragment.setOptionLoadingProgressBar(optionLoadingProgressBar);
                 categoryPagerFragment.setOnLoadProductCompletedListener(this);
                 categoryPagerFragments.add(categoryPagerFragment);
+
+
             }
 
             CategoryPagerAdapter categoryPagerAdapter = new CategoryPagerAdapter(getSupportFragmentManager(), categoryPagerFragments);
@@ -520,6 +527,7 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
         adjustment.setStore(store);
         adjustment.setProduct(proItem, this);
         adjustment.setProductAttributeOption(productAttributeOption);
+
         if (getSupportFragmentManager() != null) {
             adjustment.show(getSupportFragmentManager(), "ITEM");
         }
@@ -570,8 +578,10 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
             ProductCategory productCategory = productCategoryListTemp.get(i);
             for (int j = 0; j < productCategory.getProducts().size(); j++) {
                 com.planb.thespeed.model.modelForView.Product product1 = productCategory.getProducts().get(j);
-                if (product.getParentId().equals(product1.getId())) {
-                    stickyAdapter.updateItemAmount(Collections.singletonList(productItem), false);
+                if(product.getParentId() != null){
+                    if (product.getParentId().equals(product1.getId())) {
+                        stickyAdapter.updateItemAmount(Collections.singletonList(productItem), false);
+                    }
                 }
             }
         }
@@ -586,4 +596,5 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
     public void onLoadProductCompleted(List<Category> categories) {
         fetchCachedProducts();
     }
+
 }

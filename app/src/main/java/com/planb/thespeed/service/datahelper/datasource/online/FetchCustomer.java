@@ -1,5 +1,7 @@
 package com.planb.thespeed.service.datahelper.datasource.online;
 
+import android.util.Log;
+
 import com.planb.thespeed.model.Customer;
 import com.planb.thespeed.model.UserSecure;
 import com.planb.thespeed.server.ServiceGenerator;
@@ -51,6 +53,8 @@ public class FetchCustomer implements Observer<Customer> {
         this.completeAsync = completeAsync;
         requestUpdate(customer, token);
     }
+
+
 
     /**
      *
@@ -128,4 +132,12 @@ public class FetchCustomer implements Observer<Customer> {
         void onComplete(Customer customerInfo);
         void onError(Throwable e);
     }
+
+
+    /**
+     *
+     * @return
+     */
+
+
 }

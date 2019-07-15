@@ -35,37 +35,22 @@ import java.util.List;
 public class AddAddressActivity extends AppCompatActivity {
 
     private TextView txt_first_name;
-
     private TextView txt_last_name;
-
     private PhoneNumberField txt_phone_number;
-
     private TextView txt_street;
-
     private EditText txtStreet1;
-
     private TextView txt_city;
-
     private TextView txt_province;
-
     private TextView txt_country;
-
     private Button btn_save;
-
     private CheckBox chkDefaultBilling;
-
     private CheckBox chkDefaultShipping;
-
     private Toolbar toolbar;
-
     private FrameLayout loadingLayout;
-
     private com.planb.thespeed.model.Address address;
 
     private Customer customer;
-
     private FetchAddressDAO db;
-    
     private Boolean isEdit = false;
 
     @Override
@@ -160,22 +145,27 @@ public class AddAddressActivity extends AppCompatActivity {
      *
      */
     private void bindData() {
-        
+
         isEdit = getIntent().getBooleanExtra(ConstantValue.EDIT_ADDRESS, false);
-        
+
         UserAccount userAccount = new UserAccount(this);
         customer = userAccount.getCustomer();
 
         address = (com.planb.thespeed.model.Address) getIntent().getSerializableExtra(ConstantValue.ADDRESS);
 
-        if (address.getAddressLine() != null) {
-            String[] addressStreet = address.getAddressLine().split(" / ");
-            address.setStreet(Arrays.asList(addressStreet));
-        }
-
-        if (!address.getStreet().isEmpty() && address.getStreet().size() >= 2) {
+//        if (address.getAddressLine() != null) {
+//            String[] addressStreet = address.getAddressLine().split(" / ");
+//            address.setStreet(Arrays.asList(addressStreet));
+//        }
+//
+//        if (!address.getStreet().isEmpty() && address.getStreet().size() >= 2) {
+//            txt_street.setText(address.getStreet().get(0));
+//            txtStreet1.setText(address.getStreet().get(1));
+//        } else {
+//            txt_street.setText(address.getAddressLine());
+//        }
+        if (isEdit){
             txt_street.setText(address.getStreet().get(0));
-            txtStreet1.setText(address.getStreet().get(1));
         } else {
             txt_street.setText(address.getAddressLine());
         }
@@ -219,11 +209,7 @@ public class AddAddressActivity extends AppCompatActivity {
                 Toast.makeText(AddAddressActivity.this, "Save Successfully!", Toast.LENGTH_SHORT).show();
                 loadingLayout.setVisibility(View.GONE);
                 btn_save.setVisibility(View.VISIBLE);
-
-                if (addresses.size() > 0) {
-                    db.insert(address);
-                }
-                setResult(ConstantValue.HOME_CALLING_CODE);
+                db.insert(address);
                 finish();
             }
 
@@ -291,4 +277,8 @@ public class AddAddressActivity extends AppCompatActivity {
         return createAddress;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

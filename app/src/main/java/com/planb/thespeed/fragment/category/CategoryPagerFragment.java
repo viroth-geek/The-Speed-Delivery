@@ -112,6 +112,7 @@ public class CategoryPagerFragment extends Fragment {
                 productCategoryAdapter.notifyDataSetChanged();
                 optionLoadingProgressBar.setVisibility(View.GONE);
                 onLoadProductCompletedListener.onLoadProductCompleted(data);
+
             }
 
             @Override

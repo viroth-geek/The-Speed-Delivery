@@ -101,7 +101,7 @@ public class ImageViewUtil {
                         .dontAnimate()
                         .dontTransform()
                         .fitCenter()
-                        .error(R.color.colorDeliverBackgroundLightGrayI)
+                        .error(R.drawable.default_product)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .skipMemoryCache(true)
                 )

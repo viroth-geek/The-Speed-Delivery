@@ -4,11 +4,11 @@ import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
+import com.onesignal.OneSignal;
 import com.planb.thespeed.server.DatabaseHelper;
 import com.planb.thespeed.service.notification.AppNotificationOpenedHandler;
 import com.planb.thespeed.service.notification.AppNotificationReceivedHandler;
 import com.planb.thespeed.util.NetworkConnectHelper;
-import com.onesignal.OneSignal;
 
 /**
  * Created by channarith.bong on 1/18/18.

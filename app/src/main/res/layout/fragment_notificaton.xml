@@ -17,4 +17,38 @@
         android:layout_height="50dp"
         android:layout_centerInParent="true"/>
 
+
+    <FrameLayout
+        android:id="@+id/notification_container_float_loading"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:background="@color/colorTransparency"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <include
+                android:id="@+id/notification_delivery_address_loading"
+                layout="@layout/view_progress_bar_ii" />
+
+            <TextView
+                android:id="@+id/tv_notification_label"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/margin_length_5"
+                android:gravity="center"
+                android:text="Loading.."
+                android:textColor="@color/black"
+                android:textSize="@dimen/simple_font_size"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </FrameLayout>
+
 </RelativeLayout>

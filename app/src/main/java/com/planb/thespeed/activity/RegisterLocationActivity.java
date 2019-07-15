@@ -139,7 +139,7 @@ public class RegisterLocationActivity extends AppCompatActivity implements OnMap
     private OrderDetail orderDetail;
 
     private Timer refreshDriverLocationTimer;
-    
+
     private MarkerOptions driverMarker;
 
     @Override

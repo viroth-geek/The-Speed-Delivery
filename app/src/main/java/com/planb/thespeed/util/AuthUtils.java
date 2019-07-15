@@ -1,5 +1,7 @@
 package com.planb.thespeed.util;
 
+import android.util.Log;
+
 import com.planb.thespeed.model.Customer;
 import com.planb.thespeed.service.datahelper.datasource.online.FetchCustomer;
 

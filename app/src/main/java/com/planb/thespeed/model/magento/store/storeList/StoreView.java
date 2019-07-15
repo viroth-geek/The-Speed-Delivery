@@ -6,11 +6,10 @@ import com.google.gson.annotations.SerializedName;
 import com.planb.thespeed.model.Entity;
 import com.planb.thespeed.model.modelForView.Tag;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
+import java.io.Serializable;
 import java.util.List;
 
-public class StoreView extends Entity {
+public class StoreView extends Entity implements Serializable {
 
     @SerializedName("id")
     @Expose
@@ -84,6 +83,7 @@ public class StoreView extends Entity {
     @SerializedName("shipping_method")
     @Expose
     private String shippingMethod;
+
     @SerializedName("is_open")
     @Expose
     private boolean isOpen;
@@ -549,7 +549,35 @@ public class StoreView extends Entity {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("id", id).append("name", name).append("code", code).append("imageUrl", imageUrl).append("rate", rate).append("percentage", percentage).append("Tag", Tags).append("timeDelivery", timeDelivery).append("categories", categories).append("estoreTypes", estoreTypes).toString();
+        return "StoreView{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", nameKh='" + nameKh + '\'' +
+                ", code='" + code + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", logoUrl='" + logoUrl + '\'' +
+                ", rate=" + rate +
+                ", percentage=" + percentage +
+                ", Tags=" + Tags +
+                ", timeDelivery=" + timeDelivery +
+                ", description='" + description + '\'' +
+                ", categories=" + categories +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", openHour='" + openHour + '\'' +
+                ", closeHour='" + closeHour + '\'' +
+                ", status='" + status + '\'' +
+                ", isSponsor=" + isSponsor +
+                ", isRecommend=" + isRecommend +
+                ", isNewArrival=" + isNewArrival +
+                ", estoreTypes=" + estoreTypes +
+                ", distant=" + distant +
+                ", feeBaseOnDistant=" + feeBaseOnDistant +
+                ", shippingMethod='" + shippingMethod + '\'' +
+                ", isOpen=" + isOpen +
+                ", statusOpenToday=" + statusOpenToday +
+                ", statusOpenTomorrow=" + statusOpenTomorrow +
+                ", count=" + count +
+                '}';
     }
-
 }

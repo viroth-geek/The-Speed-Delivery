@@ -60,6 +60,7 @@ public class FetchListStores implements Observer<List<ListStore>> {
         request(restriction);
     }
 
+
     /**
      * @param page
      * @param limit

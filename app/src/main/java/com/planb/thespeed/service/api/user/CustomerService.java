@@ -1,6 +1,9 @@
 package com.planb.thespeed.service.api.user;
 
 import com.planb.thespeed.model.Customer;
+import com.planb.thespeed.model.CustomerPhoneNumber;
+import com.planb.thespeed.model.PhoneNumber;
+import com.planb.thespeed.model.TokenPhoneNumber;
 import com.planb.thespeed.model.UserSecure;
 import com.planb.thespeed.model.form.ForgetPasswordForm;
 import com.planb.thespeed.model.modelForView.Address;
@@ -89,4 +92,12 @@ public interface CustomerService {
 
     @PUT("V1/customers/password")
     Observable<Boolean> sendForgetPassword(@Body ForgetPasswordForm forgetPasswordForm);
+
+
+    @POST("V2/eshopping/customer/registerPhoneNumber")
+    Observable<String> getCustomerByPhone(@Body PhoneNumber.CustomerPhone phoneNumber);
+
+    @POST("V2/eshopping/customer/loginByPhoneNumber")
+    Observable<CustomerPhoneNumber> loginByPhoneNumber(@Body TokenPhoneNumber tokenPhoneNumber);
+
 }

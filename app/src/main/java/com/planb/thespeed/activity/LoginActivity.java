@@ -50,6 +50,7 @@ import com.planb.thespeed.service.datahelper.datasource.online.SocialLoginServic
 import com.planb.thespeed.util.ExceptionUtils;
 import com.planb.thespeed.util.InputHelper;
 import com.planb.thespeed.util.LoggerHelper;
+import com.planb.thespeed.util.NetworkConnectHelper;
 import com.planb.thespeed.widget.ForgetPasswordAlertDialog;
 
 import org.json.JSONException;
@@ -61,7 +62,8 @@ import java.util.Arrays;
  */
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button btn_log_in, btn_sign_up;
+
+    private Button btn_log_in, btn_sign_up, btn_continue_phone;
     private EditText edt_email_address, edt_password;
     private View container_float_loading;
     private UserAccount userAccount;
@@ -77,7 +79,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button btn_facebook_login;
 
     private GoogleSignInClient mGoogleSignInClient;
-//    private SignInButton googleSignInButton;
+    //    private SignInButton googleSignInButton;
     private Button btn_google_login;
 
     private Button btn_forget_password;
@@ -87,6 +89,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         parentPanel = findViewById(R.id.parentPanel);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -97,6 +100,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         container_float_loading = findViewById(R.id.container_float_loading);
         btn_log_in = findViewById(R.id.btn_log_in);
         btn_sign_up = findViewById(R.id.btn_sign_up);
+        btn_continue_phone = findViewById(R.id.btn_continue_phone);
 
         edt_email_address = findViewById(R.id.edt_email_address);
         edt_password = findViewById(R.id.edt_password);
@@ -119,6 +123,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btn_forget_password.setOnClickListener(this);
         btn_log_in.setOnClickListener(this);
         btn_sign_up.setOnClickListener(this);
+        btn_continue_phone.setOnClickListener(this);
 
         db = new FetchAddressDAO(DatabaseHelper.getInstance(this).getDatabase());
 
@@ -160,7 +165,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     builder.setTitle("Message");
                                     builder.setMessage("Problem while retrieve facebook data. Please sign up with your email.");
                                     builder.setPositiveButton("OK", (dialog, which) -> {
-                                        Intent intent = new Intent(LoginActivity.this, SigninActivity.class);
+                                        Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
                                         startActivity(intent);
                                         finish();
                                     });
@@ -227,6 +232,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     /**
      * handle after sign click
+     *
      * @param completedTask Task<GoogleSignInAccount>
      */
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
@@ -275,20 +281,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         if (btn_sign_up.equals(v)) {
-            Intent intent = new Intent(this, SigninActivity.class);
+            Intent intent = new Intent(this, SignupActivity.class);
             startActivity(intent);
             finish();
         } else if (btn_log_in.equals(v)) {
-            prepareBeforeLogin();
-        }
-        else if (btn_facebook_login.equals(v)) {
+            boolean isConnect = NetworkConnectHelper.getInstance().isConnectionOnline(getApplicationContext());
+            if (isConnect) {
+                prepareBeforeLogin();
+            } else {
+                Toast.makeText(this, "Internet disconnected!. Try again", Toast.LENGTH_SHORT).show();
+            }
+        } else if (btn_facebook_login.equals(v)) {
             facebookLoginButton.performClick();
-        }
-        else if (btn_google_login.equals(v)) {
+        } else if (btn_google_login.equals(v)) {
             signInWithGoogle();
-        }
-        else if (btn_forget_password.equals(v)) {
+        } else if (btn_forget_password.equals(v)) {
             showForgetPasswordDialog();
+        }else if (btn_continue_phone.equals(v)){
+            Intent intent = new Intent(this, BaseActivity.class);
+            intent.putExtra("CONTINUE_PHONE", "phone");
+            startActivity(intent);
+            finish();
         }
     }
 
@@ -302,6 +315,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     /**
      * login with social account
+     *
      * @param socialLoginForm SocialLoginForm
      */
     private void loginWithSocialAccount(SocialLoginForm socialLoginForm) {
@@ -330,7 +344,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     /**
-     *
      * @param formSocialUser FormSocialUser
      * @return SocialLoginForm
      */
@@ -353,6 +366,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         logoutFromFacebook();
         logoutFromGoogle();
+
     }
 
     /**
@@ -483,7 +497,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     /**
-     *
      * @param userId Long
      */
     private void syncAddressList(Long userId) {

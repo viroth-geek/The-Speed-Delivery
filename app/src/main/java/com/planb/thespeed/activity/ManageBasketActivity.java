@@ -2,12 +2,12 @@ package com.planb.thespeed.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -77,7 +77,9 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
     private LinearLayout list_basket_items;
 
     private TextView txtSubTotal;
-    private TextView txtTotalItem;
+    private TextView txtServiceFee;
+    private TextView txt_amount;
+    private TextView txt_delivery_fee;
 
     private TextView txt_bk_change;
     private TextView txt_bk_change_time;
@@ -94,9 +96,11 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
 
     private Store store;
     private float itemAmount = 0f;
-    private Float deliveryFee = 0f;
+    private float deliveryFee = 0f;
+    private float serviceFee = 0f;
     private static int ATTEMPT_COUNT = 0;
     private static int MAX_ATTEMPT = 2;
+    private float amount = 0f;
 
     private Map<Product, List<OptionValue>> productListHashMap = new HashMap<>();
     private ProductAttributeOption productAttributeOption;
@@ -126,11 +130,13 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
         txt_estore_name = findViewById(R.id.txt_estore_name);
 
         txtSubTotal = findViewById(R.id.txt_sub_total);
-        txtTotalItem = findViewById(R.id.txt_total_item_count);
-        
+        txtServiceFee = findViewById(R.id.txt_total_item_count);
+        txt_amount = findViewById(R.id.txt_amount);
+        txt_delivery_fee = findViewById(R.id.txt_delivery_fee);
+
         txt_estore_name.setOnClickListener(this);
         txt_bk_change.setOnClickListener(this);
-        
+
         container_float_loading = findViewById(R.id.container_float_loading);
         txt_bk_change_time = findViewById(R.id.txt_bk_change_time);
 
@@ -140,6 +146,8 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
         if (timeDelivery != null && !timeDelivery.isEmpty()) {
             txt_bk_change_time.setText(timeDelivery);
         }
+
+        serviceFee = StorePreference.getServiceFee(this);
 
         productLocalService = new ProductLocalService(this);
         productOptionDAO = new ProductOptionDAO(this);
@@ -154,8 +162,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         if (txt_bk_change.equals(v)) {
             showTimePicker();
-        }
-        else if (btn_go_to_checkout.equals(v)) {
+        } else if (btn_go_to_checkout.equals(v)) {
             List<ProductItem> items = Observable.fromIterable(itemsUpdated).filter(productItem -> productItem.getCount() > 0).toList().blockingGet();
             if (items != null && !items.isEmpty()) {
                 boolean isCanOrder = true;
@@ -163,17 +170,16 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
                 if (tomorrowText.equalsIgnoreCase(DayType.TOMORROW.toString())) {
                     if (!store.isStatusOpenTomorrow()) {
                         isCanOrder = false;
-                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogPrimary);
                         builder.setTitle("Store Message");
                         builder.setMessage(store.getNameKh().isEmpty() ? store.getName() + " is not opened tomorrow." : store.getNameKh() + " is not opened tomorrow.");
                         builder.setPositiveButton("OK", (dialogInterface, i) -> dialogInterface.dismiss());
                         builder.create().show();
                     }
-                }
-                else {
+                } else {
                     if (!store.isOpenToday()) {
                         isCanOrder = false;
-                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogDanger);
                         builder.setTitle("Store Message");
                         builder.setMessage(store.getNameKh().isEmpty() ? store.getName() + " is not open." : store.getNameKh() + " is not open.");
                         builder.setPositiveButton("OK", (dialogInterface, i) -> dialogInterface.dismiss());
@@ -197,8 +203,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
             } else {
                 Toast.makeText(this, "No items to order", Toast.LENGTH_SHORT).show();
             }
-        }
-        else if (txt_estore_name.equals(v)) {
+        } else if (txt_estore_name.equals(v)) {
             Intent intent = new Intent(this, StoreActivity.class);
             intent.putExtra(ConstantValue.STORE, store);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
@@ -248,8 +253,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
                     ServerDateTime serverDateTime = serverDateTimes.get(0);
                     String dateTime = serverDateTime.getDate() + " " + serverDateTime.getTime();
                     setServerDateTime(dateTime);
-                }
-                else {
+                } else {
                     setServerDateTime(DateUtil.getNowAdd45Mn());
                 }
             }
@@ -260,12 +264,10 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
                     if (ATTEMPT_COUNT < MAX_ATTEMPT) {
                         fetchServerDateTime();
                         ATTEMPT_COUNT++;
-                    }
-                    else {
+                    } else {
                         setServerDateTime(DateUtil.getNowAdd45Mn());
                     }
-                }
-                else {
+                } else {
                     setServerDateTime(DateUtil.getNowAdd45Mn());
                 }
             }
@@ -297,19 +299,19 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
                 if (data.hasExtra(ConstantValue.ADDRESS)) {
 
                 }
-                    android.location.Address addressMap = (android.location.Address) data.getExtras().get(ConstantValue.ADDRESS);
+                android.location.Address addressMap = (android.location.Address) data.getExtras().get(ConstantValue.ADDRESS);
 
-                    if (addressMap != null) {
-                        Address address = new Address();
-                        address.setCountryId(addressMap.getCountryCode());
-                        address.setCity(addressMap.getLocality());
-                        address.setPostcode(addressMap.getPostalCode() == null ? ConstantValue.POST_CODE : addressMap.getPostalCode());
-                        address.setAddressLine(addressMap.getAddressLine(0));
-                        List<String> streets = new ArrayList<>();
-                        streets.add(addressMap.getAddressLine(0));
-                        address.setStreet(streets);
-                        address.setLatitude(addressMap.getLatitude());
-                        address.setLongitude(addressMap.getLongitude());
+                if (addressMap != null) {
+                    Address address = new Address();
+                    address.setCountryId(addressMap.getCountryCode());
+                    address.setCity(addressMap.getLocality());
+                    address.setPostcode(addressMap.getPostalCode() == null ? ConstantValue.POST_CODE : addressMap.getPostalCode());
+                    address.setAddressLine(addressMap.getAddressLine(0));
+                    List<String> streets = new ArrayList<>();
+                    streets.add(addressMap.getAddressLine(0));
+                    address.setStreet(streets);
+                    address.setLatitude(addressMap.getLatitude());
+                    address.setLongitude(addressMap.getLongitude());
 
                     fetchDeliveryFee(prepareForGetDeliveryFee(address));
                 }
@@ -352,9 +354,12 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
 
         calculateServiceFee(store.getId(), itemAmount);
 
-        txtSubTotal.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(itemAmount)));
-        txtTotalItem.setText(String.valueOf(itemCount));
-
+        amount = Float.parseFloat(NumberUtils.strMoney(itemAmount));
+//        txtSubTotal.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(itemAmount + deliveryFee)));
+        txt_amount.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(itemAmount)));
+//        txtTotalItem.setText(String.valueOf(itemCount));
+        txtServiceFee.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(serviceFee)));
+        fetchDeliveryFee(prepareForGetDeliveryFee(null));
 //        txt_item_service_fee.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(serviceFee)));
 //        txt_item_total.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(itemTotal)));
     }
@@ -403,8 +408,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
 
         if (getIntent().hasExtra(ConstantValue.PRODUCT_ATTRIBUTE_OPTION)) {
             productAttributeOption = (ProductAttributeOption) getIntent().getSerializableExtra(ConstantValue.PRODUCT_ATTRIBUTE_OPTION);
-        }
-        else {
+        } else {
             productAttributeOption = new ProductAttributeOption();
             productAttributeOption.setProductOptions(productOptionDAO.getProductOptions());
             productAttributeOption.setOptionProducts(optionProductDAO.getOptionProducts());
@@ -430,8 +434,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
         for (OptionProduct optionProduct : productAttributeOption.getOptionProducts()) {
             if (optionProducts.isEmpty()) {
                 optionProducts.add(optionProduct);
-            }
-            else {
+            } else {
                 boolean isExist = false;
                 for (OptionProduct optionProduct1 : optionProducts) {
                     if (optionProduct.getOptionId().equals(optionProduct1.getOptionId()) && optionProduct.getProductUid().equals(optionProduct1.getProductUid())) {
@@ -440,8 +443,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
                 }
                 if (!isExist) {
                     optionProducts.add(optionProduct);
-                }
-                else {
+                } else {
                     for (OptionProduct optionProduct1 : optionProducts) {
                         if (optionProduct.getOptionId().equals(optionProduct1.getOptionId()) && optionProduct.getProductUid().equals(optionProduct1.getProductUid())) {
                             List<OptionValue> optionValueList = new ArrayList<>();
@@ -495,9 +497,8 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
      * Get all select items from view and request to server
      */
     private void prepareBeforeCheckout() {
+
         container_float_loading.setVisibility(View.VISIBLE);
-
-
         fetchProductFromLocalCart();
 
         if (itemsUpdated != null) {
@@ -510,8 +511,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
                         items.setProductId(productItem.getId());
                         items.setQty(Long.valueOf(productItem.getCount()));
                         cartProductItems.add(items);
-                    }
-                    else {
+                    } else {
                         CartProductItems items = new CartProductItems();
                         items.setProductId(product.getParentId());
                         items.setQty(Long.valueOf(productItem.getCount()));
@@ -529,8 +529,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
                                     }
                                 }
                                 items.setCartAttributes(cartAttributes);
-                            }
-                            else {
+                            } else {
                                 items.setCartAttributes(new ArrayList<>());
                             }
                             if (productAttributeOption.getOptionProducts() != null && !productAttributeOption.getOptionProducts().isEmpty()) {
@@ -562,8 +561,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
                                     }
                                 }
                                 items.setCartOptions(cartOptions);
-                            }
-                            else {
+                            } else {
                                 items.setCartOptions(new ArrayList<>());
                             }
                         }
@@ -585,39 +583,54 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
      * bind product to detail to show option
      */
     private void bindProductDetail(boolean shouldFilter) {
+
         int countOption = 0;
         for (ProductItem productItem : itemsUpdated) {
             Product product = (Product) productItem.getItem();
+            Log.d(ConstantValue.TAG_LOG, "bindProductDetail: " + product.getProductUid());
             StringBuilder detailBuilder = new StringBuilder();
             countOption++;
-            if (!productAttributeOption.getOptionProducts().isEmpty()) {
-                for (OptionProduct optionProduct : productAttributeOption.getOptionProducts()) {
-                    if (!optionProduct.getOptionValues().isEmpty()) {
-                        if (product.getProductUid().equals(optionProduct.getProductUid())) {
-                            detailBuilder.append(optionProduct.getTitle())
-                                    .append(":\n");
-                            int countValue = 0;
-                            for (OptionValue optionValue : optionProduct.getOptionValues()) {
-                                countValue++;
-                                detailBuilder
-                                        .append("\t\t")
-                                        .append(optionValue.getTitle())
-                                        .append(": $").append(optionValue.getPrice());
-                                if (countValue < optionProduct.getOptionValues().size()) {
+
+
+            try {
+                if (!productAttributeOption.getOptionProducts().isEmpty()) {
+                    for (OptionProduct optionProduct : productAttributeOption.getOptionProducts()) {
+                        if (!optionProduct.getOptionValues().isEmpty()) {
+
+                            if (product.getProductUid().equals(optionProduct.getProductUid())) {
+
+                                detailBuilder.append(optionProduct.getTitle())
+                                        .append(":\n");
+                                int countValue = 0;
+                                for (OptionValue optionValue : optionProduct.getOptionValues()) {
+                                    countValue++;
+                                    detailBuilder
+                                            .append("\t\t")
+                                            .append(optionValue.getTitle())
+                                            .append(": $").append(optionValue.getPrice());
+                                    if (countValue < optionProduct.getOptionValues().size()) {
+                                        detailBuilder.append("\n");
+                                    }
+                                }
+                                if (countOption <= productAttributeOption.getOptionProducts().size()) {
                                     detailBuilder.append("\n");
+                                } else {
+                                    countOption = 0;
                                 }
                             }
-                            if (countOption <= productAttributeOption.getOptionProducts().size()) {
-                                detailBuilder.append("\n");
-                            } else {
-                                countOption = 0;
-                            }
+
                         }
                     }
                 }
+
+                addProductWithOptionToMap(product, productAttributeOption);
+                product.setDetail(detailBuilder.toString());
+
+            } catch (Exception e) {
+                Intent intent = new Intent(this, BaseActivity.class);
+                intent.putExtra(ConstantValue.VIEW_BASKET, "view_basket");
+                startActivity(intent);
             }
-            addProductWithOptionToMap(product, productAttributeOption);
-            product.setDetail(detailBuilder.toString());
         }
         if (shouldFilter) {
             filterProduct();
@@ -626,7 +639,8 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
 
     /**
      * filter same product with option
-     * @param product Product
+     *
+     * @param product                Product
      * @param productAttributeOption ProductAttributeOption
      */
     private void addProductWithOptionToMap(Product product, ProductAttributeOption productAttributeOption) {
@@ -640,17 +654,14 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
 
         if (product.getProductType().equals(ConstantValue.SIMPLE_PRODUCT)) {
             productListHashMap.put(product, new ArrayList<>());
-        }
-        else {
+        } else {
             if (productAttributeOption.getOptionProducts().isEmpty()) {
                 productListHashMap.put(product, new ArrayList<>());
-            }
-            else {
+            } else {
                 List<OptionProduct> list = Observable.fromIterable(productAttributeOption.getOptionProducts()).filter(optionProduct -> optionProduct.getProductUid().equals(product.getProductUid())).toList().blockingGet();
                 if (list.isEmpty()) {
                     productListHashMap.put(product, new ArrayList<>());
-                }
-                else {
+                } else {
                     for (OptionProduct optionProduct : productAttributeOption.getOptionProducts()) {
                         if (optionProduct.getProductUid().equals(product.getProductUid())) {
                             List<OptionValue> optionValues = Observable.fromIterable(optionProduct.getOptionValues()).filter(optionValue -> optionValue.getProductUid().equals(product.getProductUid())).sorted((optionValue, t1) -> optionValue.getOptionTypeId().compareTo(t1.getOptionTypeId())).toList().blockingGet();
@@ -673,8 +684,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
         for (Map.Entry<Product, List<OptionValue>> myMap : productListHashMap.entrySet()) {
             if (myMap.getKey().getProductType().equals(ConstantValue.SIMPLE_PRODUCT)) {
                 productListMap.put(myMap.getKey(), myMap.getValue());
-            }
-            else {
+            } else {
                 Product currentProduct = null;
                 List<Long> currentValue = new ArrayList<>();
 
@@ -685,21 +695,18 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
                         currentValue.add(optionValue.getOptionTypeId());
                     }
 
-                    if ((previousProduct != null && !myMap.getKey().getId().equals(previousProduct.getId()) && previousValue.equals(currentValue)) || !previousValue.equals(currentValue)) {
+                    if ((previousProduct != null && !myMap.getKey().getId().equals(previousProduct.getId())) || !previousValue.equals(currentValue)) {
                         isExist = false;
-                    }
-                    else if ((previousProduct != null && myMap.getKey().getId().equals(previousProduct.getId()) && previousValue.equals(currentValue))) {
+                    } else if ((previousProduct != null && myMap.getKey().getId().equals(previousProduct.getId()) && previousValue.equals(currentValue))) {
                         currentProduct = previousProduct;
-                    }
-                    else if (previousProduct == null) {
+                    } else if (previousProduct == null) {
                         isExist = false;
                     }
                 }
 
                 if (!isExist) {
                     productListMap.put(myMap.getKey(), myMap.getValue());
-                }
-                else {
+                } else {
                     if (currentProduct != null) {
                         Product product = myMap.getKey();
                         product.setCount(product.getCount() + previousProduct.getCount());
@@ -714,7 +721,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
         }
 
         productItems.clear();
-        for(Map.Entry<Product, List<OptionValue>> map : productListMap.entrySet()) {
+        for (Map.Entry<Product, List<OptionValue>> map : productListMap.entrySet()) {
             Product product = map.getKey();
             productItems.add(new ProductItem<>(product.getId(), product.getCount(), product.getPrice(), product));
         }
@@ -758,8 +765,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
                             if (responseAddToCart.getCartProductItems() != null && !responseAddToCart.getCartProductItems().isEmpty()) {
                                 container_float_loading.setVisibility(View.GONE);
                                 gotoCheckout(responseAddToCart);
-                            }
-                            else {
+                            } else {
                                 container_float_loading.setVisibility(View.GONE);
                                 Toast.makeText(ManageBasketActivity.this, "Can't add item to cart.", Toast.LENGTH_SHORT).show();
                             }
@@ -819,9 +825,8 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
     }
 
     /**
-     *
      * @param storeId Long
-     * @param total Float
+     * @param total   Float
      */
     private void calculateServiceFee(Long storeId, Float total) {
 
@@ -839,8 +844,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
                 if (ATTEMPT_COUNT < MAX_ATTEMPT) {
                     calculateServiceFee(storeId, total);
                     ATTEMPT_COUNT++;
-                }
-                else {
+                } else {
                     Toast.makeText(ManageBasketActivity.this, "Cannot not get service fee.", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -849,6 +853,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
 
     /**
      * Get delivery fee
+     *
      * @param formForGetDeliveryFee FormForGetDeliveryFee
      */
     private void fetchDeliveryFee(FormForGetDeliveryFee formForGetDeliveryFee) {
@@ -867,6 +872,8 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
                 if (storeDeliveryFees.size() > 0) {
                     StoreDeliveryFee storeDeliveryFee = storeDeliveryFees.get(0);
                     deliveryFee = storeDeliveryFee.getDeliveryFee().floatValue();
+                    txtSubTotal.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(itemAmount + deliveryFee + serviceFee)));
+                    txt_delivery_fee.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(deliveryFee)));
                     store.setFee(storeDeliveryFee.getDeliveryFee().floatValue());
                     store.setShippingMethod(storeDeliveryFee.getShippingMethod());
                 }
@@ -875,8 +882,8 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void onError(Throwable e) {
                 LoggerHelper.showErrorLog("Error: ", e);
-//                Toast.makeText(ManageBasketActivity.this, "Cannot not get delivery fee.", Toast.LENGTH_SHORT).show();
-                AlertUtils.showConfirmDialog(ManageBasketActivity.this, "Message", "Cannot not get delivery fee.", "OK", (DialogInterface.OnClickListener) (dialogInterface, i) -> {
+                Toast.makeText(ManageBasketActivity.this, "Cannot not get delivery fee.", Toast.LENGTH_SHORT).show();
+                AlertUtils.showConfirmDialog(ManageBasketActivity.this, "Message", "Cannot not get delivery fee.", "OK", (dialogInterface, i) -> {
                     openGoogleMap();
                 });
             }
@@ -898,6 +905,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
 
     /**
      * Prepare for get delivery fee
+     *
      * @return FormForGetDeliveryFee
      */
     private FormForGetDeliveryFee prepareForGetDeliveryFee(Address address) {
@@ -905,8 +913,7 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
         if (address == null) {
             if (getIntent().hasExtra(ConstantValue.ADDRESS)) {
                 address = (Address) getIntent().getSerializableExtra(ConstantValue.ADDRESS);
-            }
-            else {
+            } else {
                 address = LocationPreference.getLocation(this);
             }
         }
@@ -924,4 +931,5 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
     public void setServerDateTime(String serverDateTime) {
         this.serverDateTime = serverDateTime;
     }
+
 }

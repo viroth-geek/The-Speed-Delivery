@@ -5,13 +5,13 @@ import com.planb.thespeed.model.ExchangeRate;
 import com.planb.thespeed.model.ServerDateTime;
 import com.planb.thespeed.model.StoreDeliveryFee;
 import com.planb.thespeed.model.Tag;
+import com.planb.thespeed.model.direction.Direction;
 import com.planb.thespeed.model.form.FormForGetDeliveryFee;
 import com.planb.thespeed.model.form.FormForGetDirection;
 import com.planb.thespeed.model.magento.store.StoreFee;
 import com.planb.thespeed.model.magento.store.storeList.ListStore;
 import com.planb.thespeed.model.magento.store.storeList.StoreRestriction;
 import com.planb.thespeed.model.magento.store.storeList.StoreView;
-import com.planb.thespeed.model.direction.Direction;
 
 import java.util.List;
 
@@ -54,7 +54,10 @@ public interface StoreService {
      * @return Observable<List<StoreView>>
      */
     @GET("V2/eshopping/store/getStoreById/{storeId}/productList/{productSize}")
-    Observable<List<StoreView>> getStoreViewByIdWithSizeProduct(@Path("storeId") Long storeId, @Path("productSize") int productSize);
+    Observable<List<StoreView>> getStoreViewByIdWithSizeProduct(
+            @Path("storeId") Long storeId,
+            @Path("productSize") int productSize
+    );
 
     /**
      * Get store view as paging
@@ -95,6 +98,19 @@ public interface StoreService {
      */
     @POST("V2/eshopping/storeList")
     Observable<List<ListStore>> getStoreList(@Body StoreRestriction restriction);
+
+    /**
+     * Get list store by filter store
+     *
+     * @param restriction
+     * @return List of list store
+     * @see StoreRestriction
+     * @see ListStore
+     */
+
+    @POST("V2/eshopping/storeList")
+    Observable<List<ListStore>> getStoreListByFilter(@Body StoreRestriction restriction);
+
 
     /**
      *

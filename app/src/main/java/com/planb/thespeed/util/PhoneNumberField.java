@@ -56,7 +56,9 @@ public class PhoneNumberField extends AppCompatEditText implements TextWatcher {
     public PhoneNumberField(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.addTextChangedListener(this);
-        this.setFilters(new InputFilter[] { inputFilter, inputLengthFilter });
+        this.setFilters(new InputFilter[]{
+                inputFilter, inputLengthFilter
+        });
     }
 
 

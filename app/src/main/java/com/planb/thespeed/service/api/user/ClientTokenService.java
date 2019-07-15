@@ -39,4 +39,5 @@ public interface ClientTokenService {
      */
     @POST("V2/eshopping/customer/socialLogin")
     Observable<String> getAccessCustomerTokenWithSocialAccount(@Body SocialLoginForm socialLoginForm);
+    
 }

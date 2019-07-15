@@ -26,6 +26,7 @@ public class FetchServerDateTime extends BaseService<List<ServerDateTime>> {
     public FetchServerDateTime(InvokeOnCompleteAsync<List<ServerDateTime>> onCompleteAsync) {
         super(onCompleteAsync);
         request();
+
     }
 
     /**

@@ -2,7 +2,6 @@ package com.planb.thespeed.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.planb.thespeed.R;
@@ -11,7 +10,7 @@ import com.planb.thespeed.constant.ConstantValue;
 /**
  * @author yeakleang.ay
  */
-public class AppErrorHandlerActivity extends AppCompatActivity {
+public class AppErrorHandlerActivity extends NetworkBaseActivity {
 
     private TextView txt_message;
 

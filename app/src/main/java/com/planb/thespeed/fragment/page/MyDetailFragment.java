@@ -1,9 +1,11 @@
 package com.planb.thespeed.fragment.page;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,8 +15,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.planb.thespeed.R;
+import com.planb.thespeed.activity.BaseActivity;
 import com.planb.thespeed.model.Customer;
 import com.planb.thespeed.model.UserSecure;
 import com.planb.thespeed.security.KeyManagement;
@@ -52,6 +56,7 @@ public class MyDetailFragment extends Fragment implements View.OnClickListener {
         btnEditUpdate.setOnClickListener(this);
         setHasOptionsMenu(true);
 
+        Toast.makeText(getContext(), "Please click button Edit to update.", Toast.LENGTH_LONG).show();
         setUserInfo();
         return view;
     }
@@ -91,8 +96,17 @@ public class MyDetailFragment extends Fragment implements View.OnClickListener {
                 edt_first_name.setEnabled(true);
                 edt_last_name.setEnabled(true);
             } else if (btnEditUpdate.getText().equals("Update")) {
-                updateUserDetail();
-                btnEditUpdate.setText("Edit");
+                if (!edt_first_name.getText().toString().equals("") && !edt_last_name.getText().toString().equals("")) {
+                    updateUserDetail();
+                    btnEditUpdate.setText("Edit");
+                } else {
+                    edt_first_name.setError("Enter First name");
+                    edt_last_name.setError("Enter Last name");
+                    edt_first_name.setText("");
+                    edt_last_name.setText("");
+                    edt_first_name.requestFocus();
+                }
+
             }
         }
         container_button.setVisibility(View.GONE);
@@ -106,11 +120,12 @@ public class MyDetailFragment extends Fragment implements View.OnClickListener {
         UserSecure userSecure = new UserSecure();
         Customer customer = userAccount.getCustomer();
         String token = KeyManagement.getInstance().getTokenAdmin();
+//        String token = userAccount.getCustomerToken();
         customer.setFirstname(edt_first_name.getText().toString());
         customer.setLastname(edt_last_name.getText().toString());
         customer.setRpToken(null);
         userSecure.setCustomer(customer);
-        requestUpdate(userSecure, token);
+        requestUpdate(userSecure, token, userAccount.getCustomerToken());
     }
 
     /**
@@ -128,7 +143,7 @@ public class MyDetailFragment extends Fragment implements View.OnClickListener {
     /**
      *
      */
-    private void requestUpdate(final UserSecure user, final String token) {
+    private void requestUpdate(final UserSecure user, final String token, final String newToken) {
         edt_first_name.setEnabled(false);
         edt_last_name.setEnabled(false);
 
@@ -136,11 +151,13 @@ public class MyDetailFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onComplete(Customer customer) {
                 if (customer != null) {
-                    customer.setRpToken(token);
+                    customer.setRpToken(newToken);
                     if (userAccount.insertCustomer(customer)) {
                         edt_first_name.setText(customer.getFirstname());
                         edt_last_name.setText(customer.getLastname());
                         Snackbar.make(parentPanel, "Update success!", Snackbar.LENGTH_LONG).show();
+                        Intent intent = new Intent(getActivity(), BaseActivity.class);
+                        startActivity(intent);
                     } else {
                         Snackbar.make(parentPanel, "Sorry, please try again.", Snackbar.LENGTH_LONG).show();
                     }
@@ -156,4 +173,5 @@ public class MyDetailFragment extends Fragment implements View.OnClickListener {
             }
         });
     }
+
 }

@@ -2,6 +2,7 @@ package com.planb.thespeed.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +22,15 @@ import com.planb.thespeed.util.ImageViewUtil;
 import com.planb.thespeed.util.LoggerHelper;
 import com.planb.thespeed.util.NumberUtils;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import static com.planb.thespeed.util.Utils.FormatDate;
+import static com.planb.thespeed.util.Utils.FormatDateTimeLocal;
 
 /**
  * @author channarith.bong
@@ -87,14 +91,7 @@ public class OrderDetailStickyAdapter extends SectioningAdapter {
         Long storeId = orderDetail.getStoreId();
 
         childHolder.txt_order_id.setText(String.format("%s", orderDetail.getIncrementId()));
-
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH);
-        try {
-            Date date = simpleDateFormat.parse(orderDetail.getUpdatedAt());
-            childHolder.txt_order_time.setText(String.format(" %s", new SimpleDateFormat("MMM dd, yyyy HH:mm:ss", Locale.ENGLISH).format(date)));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        childHolder.txt_order_time.setText(String.format(" %s", FormatDateTimeLocal(orderDetail.getUpdatedAt())));
 
         childHolder.txt_order_status.setText(orderDetail.getStatus());
         if (OrderStatusType.PENDING.toString().equalsIgnoreCase(orderDetail.getStatus()) ||
@@ -156,7 +153,7 @@ public class OrderDetailStickyAdapter extends SectioningAdapter {
      */
     private String getStoreName(String storeFullName) {
         String storeName;
-        String names[] = storeFullName.split("\\n");
+        String[] names = storeFullName.split("\\n");
         try {
             storeName = names[1];
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -195,18 +192,41 @@ public class OrderDetailStickyAdapter extends SectioningAdapter {
         new FetchDeliveryDate(orderId, new FetchDeliveryDate.InvokeOnCompleteAsync() {
             @Override
             public void onComplete(String orderDate) {
+
                 if (orderDate != null && !orderDate.isEmpty()) {
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss", Locale.ENGLISH);
-                    try {
-                        Date date = simpleDateFormat.parse(orderDate);
-                        txtDeliveryDate.setText(String.format(" %s", new SimpleDateFormat("MMM dd, yyyy hh:mm:ss", Locale.ENGLISH).format(date)));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
+//                    txtDeliveryDate.setText(orderDate);
+                    Log.d("ooooo", orderDate);
+                    txtDeliveryDate.setText(String.format(" %s", FormatDate(orderDate)));
                 }
                 else {
                     txtDeliveryDate.setText("N/A");
                 }
+
+//                Log.d(ConstantValue.TAG_LOG, orderDate);
+//                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+//                simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Phnom_Penh"));
+//
+//                try {
+//                    Date date = simpleDateFormat.parse(orderDate);
+//                    txtDeliveryDate.setText(String.format(" %s", new SimpleDateFormat("MMM dd, yyyy HH:mm:ss").format(date)));
+//
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                }
+//
+////                if (orderDate != null && !orderDate.isEmpty()) {
+////
+////                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss", Locale.ENGLISH);
+////
+////                    try {
+////                        Date date = simpleDateFormat.parse(orderDate);
+////                        txtDeliveryDate.setText(String.format(" %s", new SimpleDateFormat("MMM dd, yyyy hh:mm:ss", Locale.ENGLISH).format(date)));
+////                    } catch (ParseException e) {
+////                        e.printStackTrace();
+////                    }
+////                } else {
+////                    txtDeliveryDate.setText("N/A");
+////                }
             }
 
             @Override
@@ -215,6 +235,19 @@ public class OrderDetailStickyAdapter extends SectioningAdapter {
                 LoggerHelper.showErrorLog("Error: ", e);
             }
         });
+    }
+
+    /**
+     *
+     */
+    private class Section {
+        String header;
+        List<OrderDetail> details;
+
+        Section(String header, List<OrderDetail> orderDetails) {
+            this.header = header;
+            this.details = orderDetails;
+        }
     }
 
     /**
@@ -271,5 +304,12 @@ public class OrderDetailStickyAdapter extends SectioningAdapter {
         void setOrderDetail(OrderDetail orderDetail) {
             this.orderDetail = orderDetail;
         }
+    }
+
+
+    private String formatLocale(String dateTime) {
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZZ")
+                .withLocale(Locale.ENGLISH);
+        return fmt.toString();
     }
 }

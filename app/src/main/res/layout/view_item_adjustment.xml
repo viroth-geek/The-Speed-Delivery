@@ -5,39 +5,37 @@
     android:theme="@style/AppTheme">
 
     <View
-        android:clickable="true"
         android:id="@+id/fragment_outside_dialog"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorTransparency" />
+        android:background="@color/colorTransparency"
+        android:clickable="true" />
 
     <LinearLayout
         android:id="@+id/container_dialog"
-        android:clickable="false"
-        android:layout_centerInParent="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:layout_gravity="center"
-        android:background="@color/colorTransparency"
         android:layout_margin="@dimen/margin_address_dialog"
+        android:background="@color/colorTransparency"
+        android:clickable="false"
         android:padding="@dimen/margin_length_5">
 
         <LinearLayout
-            android:layout_margin="10dp"
-            android:clickable="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/shape_box_i"
+            android:layout_margin="10dp"
             android:baselineAligned="true"
+            android:clickable="false"
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_marginRight="30dp"
-                android:layout_marginLeft="30dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/shape_box_i"
                 android:orientation="horizontal"
-                android:padding="@dimen/margin_length_3">
+                android:padding="@dimen/margin_length_10">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -46,62 +44,62 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:layout_marginBottom="5dp"
-                        android:gravity="center_horizontal"
                         android:id="@+id/txt_product_name"
                         style="@style/TextViewHeaderA3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/simple_font_size"
-                        android:text="My Item" />
+                        android:layout_marginBottom="5dp"
+                        android:gravity="center_horizontal"
+                        android:text="My Item"
+                        android:textSize="@dimen/simple_font_size" />
 
                     <!--<View-->
-                        <!--android:layout_marginBottom="@dimen/margin_length_5"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="1dp"-->
-                        <!--android:background="@color/colorTransparencyGray"/>-->
+                    <!--android:layout_marginBottom="@dimen/margin_length_5"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="1dp"-->
+                    <!--android:background="@color/colorTransparencyGray"/>-->
 
                     <RelativeLayout
-                        android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
-                            android:textSize="@dimen/simple_font_size"
-                            android:text="@string/product_price" />
+                            android:text="@string/product_price"
+                            android:textSize="@dimen/simple_font_size" />
 
                         <TextView
                             android:id="@+id/txt_product_price"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
-                            android:textSize="@dimen/simple_font_size"
-                            android:text="$00.00" />
+                            android:text="$00.00"
+                            android:textSize="@dimen/simple_font_size" />
                     </RelativeLayout>
 
                     <RelativeLayout
-                        android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal">
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="5dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
-                            android:textSize="@dimen/simple_font_size"
-                            android:text="Total Price" />
+                            android:text="Total Price"
+                            android:textSize="@dimen/simple_font_size" />
 
                         <TextView
                             android:id="@+id/txt_item_total_price"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
-                            android:textSize="@dimen/simple_font_size"
-                            android:text="$ 00.00" />
+                            android:text="$ 00.00"
+                            android:textSize="@dimen/simple_font_size" />
                     </RelativeLayout>
 
                     <LinearLayout
@@ -140,11 +138,12 @@
                         android:id="@+id/btn_update"
                         android:layout_width="match_parent"
                         android:layout_height="35dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="@dimen/margin_length_8"
+                        android:layout_marginBottom="@dimen/margin_length_8"
                         android:background="@drawable/corner_radius_button"
                         android:text="Update"
-                        android:textStyle="bold"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 

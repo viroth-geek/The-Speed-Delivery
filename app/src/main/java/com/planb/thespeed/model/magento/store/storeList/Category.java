@@ -6,9 +6,10 @@ import com.google.gson.annotations.SerializedName;
 import com.planb.thespeed.model.Entity;
 import com.planb.thespeed.model.Product;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Category extends Entity {
+public class Category extends Entity implements Serializable {
 
     @SerializedName("id")
     @Expose

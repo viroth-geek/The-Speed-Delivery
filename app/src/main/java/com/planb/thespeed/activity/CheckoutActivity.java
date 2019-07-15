@@ -101,7 +101,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_checkout);
         Toolbar toolbar = findViewById(R.id.toolbar);
         userAccount = new UserAccount(this);
-        btn_change_address = findViewById(R.id.btn_change_address);
+        btn_change_address = findViewById(R.id.btn_change_address1);
 
         txt_delivery_address = findViewById(R.id.txt_delivery_address);
         txt_delivery_address.setOnClickListener(view -> this.loadMap());
@@ -621,6 +621,7 @@ public class CheckoutActivity extends AppCompatActivity implements View.OnClickL
      */
     private void showAddressSelectedFragment() {
         AddressSelectFragment addressSelectFragment = new AddressSelectFragment();
+        UserAccount userAccount = new UserAccount(this);
         addressSelectFragment.setOnChangeAddress(new AddressSelectFragment.OnChangeAddress() {
             @Override
             public void onAddressSelect(com.planb.thespeed.model.Address address) {

@@ -8,32 +8,49 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.planb.thespeed.R;
 import com.planb.thespeed.activity.RegisterLocationActivity;
 import com.planb.thespeed.adapter.AddressListRecyclerAdapter;
 import com.planb.thespeed.constant.ConstantValue;
 import com.planb.thespeed.model.Address;
+import com.planb.thespeed.model.Customer;
+import com.planb.thespeed.model.singleton.Singleton;
+import com.planb.thespeed.security.UserAccount;
 import com.planb.thespeed.server.DatabaseHelper;
+import com.planb.thespeed.service.base.InvokeOnCompleteAsync;
 import com.planb.thespeed.service.datahelper.datasource.offine.address.FetchAddressDAO;
+import com.planb.thespeed.service.datahelper.datasource.online.FetchAddressList;
 import com.planb.thespeed.util.LoggerHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author channarith.bong
+ * @author viroth.ty
  */
 public class DeliveryAddressFragment extends Fragment {
 
     private RecyclerView list_address;
-
     private FetchAddressDAO db;
+
+    private FrameLayout flLoadingContainer;
+    private ProgressBar pbLoading;
+    private TextView tvLoadingLabel;
+
+    private List<Address> listAddress = new ArrayList<>();
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_delivery_address, container, false);
 
@@ -41,10 +58,23 @@ public class DeliveryAddressFragment extends Fragment {
         list_address = view.findViewById(R.id.list_address);
         list_address.setLayoutManager(new LinearLayoutManager(getActivity()));
         list_address.setHasFixedSize(true);
-        floatingActionButton.setOnClickListener(v -> showMap());
+
+        flLoadingContainer = view.findViewById(R.id.container_float_loading);
+        pbLoading = view.findViewById(R.id.delivery_address_loading);
+        tvLoadingLabel = view.findViewById(R.id.txt_container_loading_label);
+
         checkDB();
+        getListAddress();
         bindData();
+
+        floatingActionButton.setOnClickListener(v -> showMap());
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        checkAddressList();
     }
 
     @Override
@@ -84,6 +114,33 @@ public class DeliveryAddressFragment extends Fragment {
         }
     }
 
+    /**
+     * fetch address list from server
+     */
+    private void checkAddressList() {
+        UserAccount userAccount = new UserAccount(getContext());
+        Log.d("userId", Singleton.userId.toString() + "//" + userAccount.getCustomerToken());
+        new FetchAddressList(Singleton.userId, new InvokeOnCompleteAsync<Customer>() {
+            @Override
+            public void onComplete(Customer data) {
+                if (data.getAddresses().size() > 0) {
+                    flLoadingContainer.setVisibility(View.GONE);
+                    AddressListRecyclerAdapter recyclerAdapter = new AddressListRecyclerAdapter(getContext(), data.getAddresses(), db);
+                    list_address.setAdapter(recyclerAdapter);
+                } else {
+                    pbLoading.setVisibility(View.GONE);
+                    tvLoadingLabel.setText(R.string.empty_delivery_address);
+                }
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Toast.makeText(getContext(), "Something went wrong!", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
 //    /**
 //     * Convert form Google Address to Project Address
 //     *
@@ -114,21 +171,28 @@ public class DeliveryAddressFragment extends Fragment {
      * Get data from database and server
      */
     private void bindData() {
-        AddressListRecyclerAdapter recyclerAdapter = new AddressListRecyclerAdapter(getContext(), getListAddress(), db);
+        AddressListRecyclerAdapter recyclerAdapter = new AddressListRecyclerAdapter(getContext(), listAddress, db);
         list_address.setAdapter(recyclerAdapter);
     }
 
     /**
      * Get list address
      */
-    private List<Address> getListAddress() {
+    private void getListAddress() {
         List<Address> addressList = null;
         try {
             addressList = db.getListAddress();
+            if (addressList.size() > 0) {
+                flLoadingContainer.setVisibility(View.GONE);
+            } else {
+                flLoadingContainer.setVisibility(View.VISIBLE);
+                pbLoading.setVisibility(View.GONE);
+                tvLoadingLabel.setText("Empty address list");
+            }
         } catch (Exception e) {
             LoggerHelper.showErrorLog("Local Address List Error : " + e.getMessage());
         }
-        return addressList;
+        listAddress = addressList;
     }
 
     /**
@@ -139,4 +203,5 @@ public class DeliveryAddressFragment extends Fragment {
         intent.putExtra(ConstantValue.SAVE_ADDRESS, true);
         startActivityForResult(intent, ConstantValue.INTENT_ACTIVITY_TAG_CODE);
     }
+
 }

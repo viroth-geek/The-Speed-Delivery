@@ -90,7 +90,9 @@ public class ItemAdjustment extends DialogFragment implements View.OnClickListen
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         final View view = inflater.inflate(R.layout.view_item_adjustment, container, false);
+
         btn_update = view.findViewById(R.id.btn_update);
         outside_dialog = view.findViewById(R.id.fragment_outside_dialog);
         View container_dialog = view.findViewById(R.id.container_dialog);
@@ -151,8 +153,6 @@ public class ItemAdjustment extends DialogFragment implements View.OnClickListen
             dismiss();
         } else if (btn_update.equals(view)) {
 
-
-
             if (store != null) {
                 List<Product> wrongProducts = productLocalService.getListItem();
                 wrongProducts = Observable.fromIterable(wrongProducts).filter(wrongProduct -> wrongProduct.getStoreId() != null && !wrongProduct.getStoreId().equals(store.getId())).toList().blockingGet();
@@ -189,6 +189,8 @@ public class ItemAdjustment extends DialogFragment implements View.OnClickListen
 
             productItem.setCount(productItemTemp.getCount());
             productItem.setItem(product);
+
+
             changeValue.onChange(productItem);
 
             view.setVisibility(View.GONE);
@@ -223,4 +225,6 @@ public class ItemAdjustment extends DialogFragment implements View.OnClickListen
     public interface OnChangeValue {
         void onChange(ProductItem productItem);
     }
+
+
 }

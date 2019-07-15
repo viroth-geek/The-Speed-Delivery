@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.BackgroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -183,6 +184,8 @@ public class SearchResultStickyAdapter extends RecyclerView.Adapter {
             SearchStoreResult storeResult = (SearchStoreResult) listAdaptor.getData();
             holderStore.txt_store_name.setText(getSpannableString(storeResult.getStoreName(), this.searchText));
             holderStore.txt_store_desc.setText(storeResult.getStoreDescription());
+
+            Log.d("ooooo", storeResult.getOpen() + "");
             holderStore.txt_is_open.setText(storeResult.getOpen() ? "Open" : "Close");
             ImageViewUtil.loadImageByUrl(context, storeResult.getStoreLogoUrl(), holderStore.img_store_logo);
         }
@@ -210,7 +213,13 @@ public class SearchResultStickyAdapter extends RecyclerView.Adapter {
                 for (SearchProductResult productResult : result.getProducts()) {
                     ItemListAdaptor listAdaptor = new ItemListAdaptor(ItemListAdaptor.SECTION_TYPE_PRO,
                             HEADER_PRODUCT, productResult);
-                    list.add(listAdaptor);
+
+                    //filter product has no store
+                    if (productResult.getStores() != null) {
+                        if (productResult.getStores().size() > 0) {
+                            list.add(listAdaptor);
+                        }
+                    }
                 }
             }
         }

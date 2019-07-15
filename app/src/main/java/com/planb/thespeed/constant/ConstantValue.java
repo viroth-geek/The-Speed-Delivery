@@ -81,4 +81,23 @@ public class ConstantValue {
     // Wat Phnom Coordinate
     public static final double DEFAULT_LAT = 11.576142;
     public static final double DEFAULT_LNT = 104.923050;
+
+    //filter product
+    public static final String PRODUCT_ALL = "all";
+    public static final String PRODUCT_OPEN = "open";
+
+    public static final String TAG_LOG = "data";
+    public static final String VERIFICATION_ID = "verification_id";
+    public static final String PHONE_NUMBER = "phone_number";
+
+    public static final String REGISTER = "register";
+    public static final String SUCCESS = "success";
+    public static final String REGISTER_BY_PHONE_NUMBER = "sign_in_by_phone_number";
+    public static final String EMAIL_EXISTED = "Email already exist";
+
+
+    public static final String VERIFICATION_METHOD = "verification up method";
+    public static final String SAVE_NEW_ADDRESS = "pressback";
+
+    public static final String VIEW_BASKET = "view_basket";
 }
