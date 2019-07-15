@@ -489,6 +489,9 @@ public class BaseActivity extends AppCompatActivity
         if (searchMenuItem != null) {
             searchMenuItem.setVisible(true);
             filterMenuItem.setVisible(true);
+
+            allProductImg.setVisibility(View.VISIBLE);
+            openProductImg.setVisibility(View.GONE);
         }
         displaySelectedFragment(homeFragment);
     }
