@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,14 +17,15 @@ import android.widget.Toast;
 
 import com.planb.thespeed.R;
 import com.planb.thespeed.constant.ConstantValue;
+import com.planb.thespeed.model.AddressByStreetString;
 import com.planb.thespeed.model.Customer;
 import com.planb.thespeed.model.modelForView.Address;
 import com.planb.thespeed.model.modelForView.CreateAddress;
+import com.planb.thespeed.model.modelForView.CreateAddressByStreetString;
 import com.planb.thespeed.security.UserAccount;
 import com.planb.thespeed.server.DatabaseHelper;
 import com.planb.thespeed.service.datahelper.datasource.offine.address.FetchAddressDAO;
 import com.planb.thespeed.service.datahelper.datasource.online.AddNewAddress;
-import com.planb.thespeed.service.datahelper.datasource.online.UpdateAddress;
 import com.planb.thespeed.util.PhoneNumberField;
 
 import java.util.Arrays;
@@ -48,6 +50,7 @@ public class AddAddressActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private FrameLayout loadingLayout;
     private com.planb.thespeed.model.Address address;
+    private com.planb.thespeed.model.AddressByStreetString addressByStreetString;
 
     private Customer customer;
     private FetchAddressDAO db;
@@ -133,6 +136,7 @@ public class AddAddressActivity extends AppCompatActivity {
         if (requestCode == ConstantValue.GET_EDITED_ADDRESS) {
             if (data != null && data.hasExtra(ConstantValue.ADDRESS)) {
                 address = (com.planb.thespeed.model.Address) data.getSerializableExtra(ConstantValue.ADDRESS);
+                addressByStreetString = (com.planb.thespeed.model.AddressByStreetString) data.getSerializableExtra(ConstantValue.ADDRESS);
                 txt_street.setText(address.getAddressLine());
                 txt_city.setText(address.getCity());
                 txt_province.setText(address.getCity());
@@ -152,6 +156,8 @@ public class AddAddressActivity extends AppCompatActivity {
         customer = userAccount.getCustomer();
 
         address = (com.planb.thespeed.model.Address) getIntent().getSerializableExtra(ConstantValue.ADDRESS);
+        addressByStreetString = (AddressByStreetString) getIntent().getSerializableExtra(ConstantValue.ADDRESS_BY_STREET_STRING);
+        Log.d(ConstantValue.TAG_LOG, "bindData: " + addressByStreetString.getStreet());
 
 //        if (address.getAddressLine() != null) {
 //            String[] addressStreet = address.getAddressLine().split(" / ");
@@ -184,6 +190,10 @@ public class AddAddressActivity extends AppCompatActivity {
             toolbar.setTitle("Update Address");
             btn_save.setText(R.string.btn_title_update);
         }
+
+    }
+
+    private void setDataToSddressByStreetString() {
 
     }
 
@@ -235,21 +245,23 @@ public class AddAddressActivity extends AppCompatActivity {
         address.setDefaultBilling(chkDefaultBilling.isChecked());
         address.setDefaultShipping(chkDefaultBilling.isChecked());
 
-        new UpdateAddress(prepareData(address), new UpdateAddress.InvokeOnCompleteAsync() {
-            @Override
-            public void onComplete(List<Address> addresses) {
-                Toast.makeText(AddAddressActivity.this, "Update Successfully!", Toast.LENGTH_SHORT).show();
-                loadingLayout.setVisibility(View.GONE);
-                btn_save.setVisibility(View.VISIBLE);
-            }
+//        new UpdateAddress(prepareData(address), new UpdateAddress.InvokeOnCompleteAsync() {
+//            @Override
+//            public void onComplete(List<Address> addresses) {
+//                Toast.makeText(AddAddressActivity.this, "Update Successfully!", Toast.LENGTH_SHORT).show();
+//                loadingLayout.setVisibility(View.GONE);
+//                btn_save.setVisibility(View.VISIBLE);
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                Toast.makeText(AddAddressActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//                loadingLayout.setVisibility(View.GONE);
+//                btn_save.setVisibility(View.VISIBLE);
+//            }
+//        });
 
-            @Override
-            public void onError(Throwable e) {
-                Toast.makeText(AddAddressActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                loadingLayout.setVisibility(View.GONE);
-                btn_save.setVisibility(View.VISIBLE);
-            }
-        });
+
     }
 
     /**
@@ -274,6 +286,30 @@ public class AddAddressActivity extends AppCompatActivity {
         add.setLatitude(address.getLatitude());
         add.setLongitude(address.getLongitude());
         createAddress.setAddress(add);
+        return createAddress;
+    }
+
+    /**
+     * @param address com.iota.eshopping.model.Address
+     * @return CreateAddress
+     */
+    private CreateAddressByStreetString prepareDataByStreetString(AddressByStreetString address) {
+        CreateAddressByStreetString createAddress = new CreateAddressByStreetString();
+        com.planb.thespeed.model.modelForView.AddressByStreetString add = new com.planb.thespeed.model.modelForView.AddressByStreetString();
+        add.setAddressId(address.getId());
+        add.setFirstName(address.getFirstname());
+        add.setLastName(address.getLastname());
+        add.setCustomerId(address.getCustomerId());
+        add.setPostCode(address.getPostcode());
+        add.setCity(address.getCity());
+        add.setStreet(address.getStreet());
+        add.setTelephone(address.getTelephone());
+        add.setCompany("");
+        add.setDefaultBilling(address.getDefaultBilling());
+        add.setDefaultShipping(address.getDefaultShipping());
+        add.setLatitude(address.getLatitude());
+        add.setLongitude(address.getLongitude());
+        createAddress.setAddressByStreetString(add);
         return createAddress;
     }
 

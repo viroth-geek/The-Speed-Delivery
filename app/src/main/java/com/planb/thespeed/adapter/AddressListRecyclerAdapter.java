@@ -15,10 +15,13 @@ import com.planb.thespeed.R;
 import com.planb.thespeed.activity.AddAddressActivity;
 import com.planb.thespeed.constant.ConstantValue;
 import com.planb.thespeed.model.Address;
+import com.planb.thespeed.model.AddressByStreetString;
 import com.planb.thespeed.service.datahelper.datasource.offine.address.FetchAddressDAO;
 import com.planb.thespeed.service.datahelper.datasource.online.DeleteAddress;
 import com.planb.thespeed.util.LoggerHelper;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,6 +30,7 @@ import java.util.List;
 public class AddressListRecyclerAdapter extends RecyclerView.Adapter<AddressListRecyclerAdapter.ViewHolder> {
 
     private List<Address> addressList;
+    private List<AddressByStreetString> addressByStreetStrings = new ArrayList<>();
     private FetchAddressDAO db;
     private OnChangeAddress onChangeAddress;
     private Context mContext;
@@ -200,9 +204,36 @@ public class AddressListRecyclerAdapter extends RecyclerView.Adapter<AddressList
                 addressList.get(getAdapterPosition()).setLatitude(Double.parseDouble(lat.toString()));
                 addressList.get(getAdapterPosition()).setLongitude(Double.parseDouble(lng.toString()));
                 Intent intent = new Intent(itemView.getContext(), AddAddressActivity.class);
+
+                AddressByStreetString addressByStreetString = new AddressByStreetString();
+                addressByStreetString.setId(addressList.get(getAdapterPosition()).getId());
+                addressByStreetString.setCustomerId(addressList.get(getAdapterPosition()).getCustomerId());
+                addressByStreetString.setRegionId(addressList.get(getAdapterPosition()).getRegionId());
+                addressByStreetString.setCountryId(addressList.get(getAdapterPosition()).getCountryId());
+                addressByStreetString.setStreet(addressList.get(getAdapterPosition()).getStreet().get(0));
+                addressByStreetString.setTelephone(addressList.get(getAdapterPosition()).getTelephone());
+                addressByStreetString.setPostcode(addressList.get(getAdapterPosition()).getPostcode());
+                addressByStreetString.setCity(addressList.get(getAdapterPosition()).getCity());
+                addressByStreetString.setFirstname(addressList.get(getAdapterPosition()).getFirstname());
+                addressByStreetString.setLastname(addressList.get(getAdapterPosition()).getLastname());
+                addressByStreetString.setEmail(addressList.get(getAdapterPosition()).getEmail());
+                addressByStreetString.setDefaultShipping(addressList.get(getAdapterPosition()).getDefaultShipping());
+                addressByStreetString.setDefaultBilling(addressList.get(getAdapterPosition()).getDefaultBilling());
+                addressByStreetString.setLatitude(addressList.get(getAdapterPosition()).getLatitude());
+                addressByStreetString.setLongitude(addressList.get(getAdapterPosition()).getLongitude());
+                addressByStreetString.setCountryCode(addressList.get(getAdapterPosition()).getCountryCode());
+                addressByStreetString.setCountryName(addressList.get(getAdapterPosition()).getCountryName());
+                addressByStreetString.setCountryId(addressList.get(getAdapterPosition()).getCountryId());
+                addressByStreetString.setAddressLine(addressList.get(getAdapterPosition()).getAddressLine());
+                addressByStreetString.setExtensionAttribute(addressList.get(getAdapterPosition()).getExtensionAttribute());
+                addressByStreetString.setCustomAttributes(addressList.get(getAdapterPosition()).getCustomAttributes());
+
+                addressByStreetStrings.add(addressByStreetString);
                 intent.putExtra(ConstantValue.ADDRESS, addressList.get(getAdapterPosition()));
+                intent.putExtra(ConstantValue.ADDRESS_BY_STREET_STRING, (Serializable) addressByStreetStrings);
                 intent.putExtra(ConstantValue.EDIT_ADDRESS, true);
                 itemView.getContext().startActivity(intent);
+                addressByStreetStrings = null;
             });
 
             if (onChangeAddress != null) {

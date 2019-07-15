@@ -7,7 +7,9 @@ import com.planb.thespeed.model.TokenPhoneNumber;
 import com.planb.thespeed.model.UserSecure;
 import com.planb.thespeed.model.form.ForgetPasswordForm;
 import com.planb.thespeed.model.modelForView.Address;
+import com.planb.thespeed.model.modelForView.AddressByStreetString;
 import com.planb.thespeed.model.modelForView.CreateAddress;
+import com.planb.thespeed.model.modelForView.CreateAddressByStreetString;
 
 import java.util.List;
 
@@ -89,6 +91,9 @@ public interface CustomerService {
      */
     @POST("V2/eshopping/customer/updateAddress")
     Observable<List<Address>> updateAddress(@Body CreateAddress createAddress);
+
+    @POST("V2/eshopping/customer/updateAddress")
+    Observable<List<AddressByStreetString>> updateAddressByStreetString(@Body CreateAddressByStreetString createAddressByStreetString);
 
     @PUT("V1/customers/password")
     Observable<Boolean> sendForgetPassword(@Body ForgetPasswordForm forgetPasswordForm);

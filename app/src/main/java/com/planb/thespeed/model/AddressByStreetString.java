@@ -10,7 +10,7 @@ import java.util.List;
  * @author channarith.bong
  */
 
-public class Address extends Entity {
+public class AddressByStreetString extends Entity {
 
     @SerializedName("id")
     @Expose
@@ -30,7 +30,7 @@ public class Address extends Entity {
 
     @SerializedName("street")
     @Expose
-    private List<String> street = null;
+    private String street;
 
     @SerializedName("telephone")
     @Expose
@@ -94,10 +94,10 @@ public class Address extends Entity {
 
     private final static long serialVersionUID = 4349227692488541495L;
 
-    public Address() {
+    public AddressByStreetString() {
     }
 
-    public Address(Double latitude, Double longitude) {
+    public AddressByStreetString(Double latitude, Double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -175,14 +175,14 @@ public class Address extends Entity {
     /**
      * @return List<String>
      */
-    public List<String> getStreet() {
+    public String getStreet() {
         return street;
     }
 
     /**
      * @param street List string
      */
-    public void setStreet(List<String> street) {
+    public void setStreet(String street) {
         this.street = street;
     }
 
@@ -327,7 +327,6 @@ public class Address extends Entity {
     }
 
     /**
-     *
      * @return Boolean
      */
     public Boolean getDefaultShipping() {
@@ -335,7 +334,6 @@ public class Address extends Entity {
     }
 
     /**
-     *
      * @param defaultShipping Boolean
      */
     public void setDefaultShipping(Boolean defaultShipping) {
@@ -343,7 +341,6 @@ public class Address extends Entity {
     }
 
     /**
-     *
      * @return Boolean
      */
     public Boolean getDefaultBilling() {
@@ -351,7 +348,6 @@ public class Address extends Entity {
     }
 
     /**
-     *
      * @param defaultBilling Boolean
      */
     public void setDefaultBilling(Boolean defaultBilling) {
@@ -359,15 +355,14 @@ public class Address extends Entity {
     }
 
     /**
-     * @see ExtensionAttribute
      * @return ExtensionAttribute
+     * @see ExtensionAttribute
      */
     public ExtensionAttribute getExtensionAttribute() {
         return extensionAttribute;
     }
 
     /**
-     *
      * @param extensionAttribute ExtensionAttribute
      */
     public void setExtensionAttribute(ExtensionAttribute extensionAttribute) {
@@ -375,7 +370,6 @@ public class Address extends Entity {
     }
 
     /**
-     *
      * @return list of CustomAttribute
      */
     public List<CustomAttribute> getCustomAttributes() {
@@ -383,7 +377,6 @@ public class Address extends Entity {
     }
 
     /**
-     *
      * @param customAttributes CustomAttribute
      */
     public void setCustomAttributes(List<CustomAttribute> customAttributes) {
@@ -391,7 +384,6 @@ public class Address extends Entity {
     }
 
     /**
-     *
      * @return long
      */
     public static long getSerialVersionUID() {

@@ -24,6 +24,7 @@ public class ConstantValue {
     public static final String LOCATION = "LOCATION";
     public static final String ORDER_NUMBER = "ORDER_NUMBER_INCREMENT";
     public static final String ADDRESS = "ADDRESS";
+    public static final String ADDRESS_BY_STREET_STRING = "ADDRESS_BY_STREET_STRING";
     public static final String MAP_VIEW_TYPE = "MAP_VIEW_TYPE";
     public static final String HOME_CALLING = "HOME_CALLING";
     public static final String LATITUDE = "latitude";
