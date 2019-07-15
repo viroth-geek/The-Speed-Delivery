@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,6 @@ import android.widget.TextView;
 
 import com.planb.thespeed.R;
 import com.planb.thespeed.adapter.NotificationRecyclerAdapter;
-import com.planb.thespeed.constant.ApplicationConfiguration;
 import com.planb.thespeed.model.Notification;
 import com.planb.thespeed.server.DatabaseHelper;
 import com.planb.thespeed.service.datahelper.datasource.offine.localnotification.FetchNotificationDAO;
@@ -39,7 +37,6 @@ public class NotificationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_notificaton, container, false);
-
 
         flLoadingContainer = view.findViewById(R.id.notification_container_float_loading);
         pbLoading = view.findViewById(R.id.notification_delivery_address_loading);
@@ -71,7 +68,6 @@ public class NotificationFragment extends Fragment {
         List<Notification> notificationList = new ArrayList<>();
         FetchNotificationDAO db = new FetchNotificationDAO(DatabaseHelper.getInstance(getActivity()).getDatabase());
 
-        Log.d(ApplicationConfiguration.TAG, "data is " + db.getListNotification().size());
 
         if (db.getListNotification().size() > 0) {
             flLoadingContainer.setVisibility(View.GONE);

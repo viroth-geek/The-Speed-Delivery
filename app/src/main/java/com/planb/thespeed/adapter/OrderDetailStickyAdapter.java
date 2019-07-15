@@ -125,18 +125,6 @@ public class OrderDetailStickyAdapter extends SectioningAdapter {
         headHolder.txt_time_update.setText(s.header);
     }
 
-    /**
-     *
-     */
-    private class Section {
-        String header;
-        List<OrderDetail> details;
-
-        Section(String header, List<OrderDetail> orderDetails) {
-            this.header = header;
-            this.details = orderDetails;
-        }
-    }
 
     /**
      * @param data list of OrderDetail

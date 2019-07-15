@@ -442,7 +442,6 @@ public class BaseActivity extends AppCompatActivity
             public void onComplete(List<UserPlayerId> userPlayerIds) {
                 LoggerHelper.showDebugLog("===> Save user player id successfully" + userPlayerId.toString());
                 Singleton.userId = Long.parseLong(userPlayerId.getUserId());
-                Log.d("oooooId", Singleton.userId.toString());
             }
 
             @Override
