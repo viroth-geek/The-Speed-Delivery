@@ -42,6 +42,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.onesignal.OSPermissionSubscriptionState;
+import com.onesignal.OneSignal;
 import com.planb.thespeed.R;
 import com.planb.thespeed.constant.ConstantValue;
 import com.planb.thespeed.constant.entity.FacebookAccessScope;
@@ -72,8 +74,6 @@ import com.planb.thespeed.service.location.LocationService;
 import com.planb.thespeed.util.AlertUtils;
 import com.planb.thespeed.util.ExceptionUtils;
 import com.planb.thespeed.util.LoggerHelper;
-import com.onesignal.OSPermissionSubscriptionState;
-import com.onesignal.OneSignal;
 
 import org.json.JSONException;
 
