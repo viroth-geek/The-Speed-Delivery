@@ -50,9 +50,7 @@ public class AddAddressActivity extends AppCompatActivity {
     private com.planb.thespeed.model.Address address;
 
     private Customer customer;
-
     private FetchAddressDAO db;
-
     private Boolean isEdit = false;
 
     @Override
