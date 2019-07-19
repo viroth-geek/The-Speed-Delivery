@@ -205,6 +205,7 @@ public class AddressListRecyclerAdapter extends RecyclerView.Adapter<AddressList
                 Intent intent = new Intent(itemView.getContext(), AddAddressActivity.class);
 
                 AddressByStreetString addressByStreetString = new AddressByStreetString();
+
                 addressByStreetString.setId(addressList.get(getAdapterPosition()).getId());
                 addressByStreetString.setCustomerId(addressList.get(getAdapterPosition()).getCustomerId());
                 addressByStreetString.setRegionId(addressList.get(getAdapterPosition()).getRegionId());
