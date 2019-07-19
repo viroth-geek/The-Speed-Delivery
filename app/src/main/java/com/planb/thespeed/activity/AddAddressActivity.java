@@ -26,6 +26,7 @@ import com.planb.thespeed.security.UserAccount;
 import com.planb.thespeed.server.DatabaseHelper;
 import com.planb.thespeed.service.datahelper.datasource.offine.address.FetchAddressDAO;
 import com.planb.thespeed.service.datahelper.datasource.online.AddNewAddress;
+import com.planb.thespeed.service.datahelper.datasource.online.UpdateAddressByStreetString;
 import com.planb.thespeed.util.PhoneNumberField;
 
 import java.util.Arrays;
@@ -104,7 +105,8 @@ public class AddAddressActivity extends AppCompatActivity {
                 db.updateAddress(address);
             }
             else {
-                saveAddress(address);
+//                saveAddress(address);
+                saveAddressByStreetString(addressByStreetString);
             }
         });
     }
@@ -156,9 +158,7 @@ public class AddAddressActivity extends AppCompatActivity {
         customer = userAccount.getCustomer();
 
         address = (com.planb.thespeed.model.Address) getIntent().getSerializableExtra(ConstantValue.ADDRESS);
-        addressByStreetString = (AddressByStreetString) getIntent().getSerializableExtra(ConstantValue.ADDRESS_BY_STREET_STRING);
-        Log.d(ConstantValue.TAG_LOG, "bindData: " + addressByStreetString.getStreet());
-
+        addressByStreetString = (com.planb.thespeed.model.AddressByStreetString) getIntent().getSerializableExtra(ConstantValue.ADDRESS_BY_STREET_STRING);
 //        if (address.getAddressLine() != null) {
 //            String[] addressStreet = address.getAddressLine().split(" / ");
 //            address.setStreet(Arrays.asList(addressStreet));
@@ -193,8 +193,37 @@ public class AddAddressActivity extends AppCompatActivity {
 
     }
 
-    private void setDataToSddressByStreetString() {
+    /**
+     * @param address com.iota.eshopping.model.AddressByStreetString
+     */
+    private void saveAddressByStreetString(AddressByStreetString address) {
+        address.setStreet(txt_street.getText().toString());
+        address.setCustomerId(customer.getId());
+        address.setFirstname(txt_first_name.getText().toString());
+        address.setLastname(txt_last_name.getText().toString());
+        address.setTelephone(txt_phone_number.getText().toString());
+        address.setDefaultBilling(chkDefaultBilling.isChecked());
+        address.setDefaultShipping(chkDefaultBilling.isChecked());
 
+        Log.d(ConstantValue.TAG_LOG, "saveAddressByStreetString: " + address.getStreet());
+
+//        new AddNewAddressByStreetString(prepareDataByStreetString(addressByStreetString), new AddNewAddressByStreetString.InvokeOnCompleteAsync() {
+//            @Override
+//            public void onComplete(List<com.planb.thespeed.model.modelForView.AddressByStreetString> addresses) {
+//                Toast.makeText(AddAddressActivity.this, "Save Successfully!", Toast.LENGTH_SHORT).show();
+//                loadingLayout.setVisibility(View.GONE);
+//                btn_save.setVisibility(View.VISIBLE);
+//                db.insert((com.planb.thespeed.model.Address) addresses);
+//                finish();
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                Toast.makeText(AddAddressActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//                loadingLayout.setVisibility(View.GONE);
+//                btn_save.setVisibility(View.VISIBLE);
+//            }
+//        });
     }
 
     /**
@@ -203,7 +232,7 @@ public class AddAddressActivity extends AppCompatActivity {
      */
     private void saveAddress(com.planb.thespeed.model.Address address) {
 
-        address.setStreet(Arrays.asList(address.getAddressLine(), txtStreet1.getText().toString()));
+        address.setStreet(Arrays.asList(address.getAddressLine()));
         address.setCustomerId(customer.getId());
         address.setFirstname(txt_first_name.getText().toString());
         address.setLastname(txt_last_name.getText().toString());
@@ -261,7 +290,21 @@ public class AddAddressActivity extends AppCompatActivity {
 //            }
 //        });
 
+        new UpdateAddressByStreetString(prepareDataByStreetString(addressByStreetString), new UpdateAddressByStreetString.InvokeOnCompleteAsync() {
+            @Override
+            public void onComplete(List<com.planb.thespeed.model.modelForView.AddressByStreetString> addresses) {
+                Toast.makeText(AddAddressActivity.this, "Update Successfully!", Toast.LENGTH_SHORT).show();
+                loadingLayout.setVisibility(View.GONE);
+                btn_save.setVisibility(View.VISIBLE);
+            }
 
+            @Override
+            public void onError(Throwable e) {
+                Toast.makeText(AddAddressActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                loadingLayout.setVisibility(View.GONE);
+                btn_save.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     /**

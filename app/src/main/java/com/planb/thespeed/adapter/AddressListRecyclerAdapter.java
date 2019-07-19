@@ -20,7 +20,6 @@ import com.planb.thespeed.service.datahelper.datasource.offine.address.FetchAddr
 import com.planb.thespeed.service.datahelper.datasource.online.DeleteAddress;
 import com.planb.thespeed.util.LoggerHelper;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -228,9 +227,8 @@ public class AddressListRecyclerAdapter extends RecyclerView.Adapter<AddressList
                 addressByStreetString.setExtensionAttribute(addressList.get(getAdapterPosition()).getExtensionAttribute());
                 addressByStreetString.setCustomAttributes(addressList.get(getAdapterPosition()).getCustomAttributes());
 
-                addressByStreetStrings.add(addressByStreetString);
                 intent.putExtra(ConstantValue.ADDRESS, addressList.get(getAdapterPosition()));
-                intent.putExtra(ConstantValue.ADDRESS_BY_STREET_STRING, (Serializable) addressByStreetStrings);
+                intent.putExtra(ConstantValue.ADDRESS_BY_STREET_STRING, addressByStreetString);
                 intent.putExtra(ConstantValue.EDIT_ADDRESS, true);
                 itemView.getContext().startActivity(intent);
                 addressByStreetStrings = null;

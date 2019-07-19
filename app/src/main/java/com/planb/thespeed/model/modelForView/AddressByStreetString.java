@@ -3,8 +3,6 @@ package com.planb.thespeed.model.modelForView;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 /**
  * Created by NokorGroup on 6/11/18.
  */

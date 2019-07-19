@@ -2,10 +2,6 @@ package com.planb.thespeed.model.modelForView;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.planb.thespeed.model.CustomAttribute;
-import com.planb.thespeed.model.magento.order.ExtensionAttribute;
-
-import java.util.List;
 
 /**
  * @author yeakleang.ay on 6/11/18.

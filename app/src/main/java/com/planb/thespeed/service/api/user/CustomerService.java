@@ -77,12 +77,21 @@ public interface CustomerService {
     Observable<List<Address>> addNewAddress(@Body CreateAddress address);
 
     /**
+     * @param address
+     * @return
+     */
+    @POST("V2/eshopping/customer/addNewAddress")
+    Observable<List<AddressByStreetString>> addNewAddressByStreetString(@Body CreateAddressByStreetString address);
+
+
+    /**
      *
      * @param addressId
      * @return
      */
     @DELETE("V2/eshopping/customer/deleteAddressById/{addressId}")
     Observable<Integer> deleteAddress(@Path("addressId") Long addressId);
+
 
     /**
      *
