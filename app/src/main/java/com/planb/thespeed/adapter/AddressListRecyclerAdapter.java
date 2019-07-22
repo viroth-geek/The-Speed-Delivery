@@ -191,7 +191,6 @@ public class AddressListRecyclerAdapter extends RecyclerView.Adapter<AddressList
             }
 
             itemView.setOnClickListener(view -> {
-
                 Object lat = null, lng = null;
                 for (int i = 0; i < addressList.get(getAdapterPosition()).getCustomAttributes().size(); i++) {
                     if (addressList.get(getAdapterPosition()).getCustomAttributes().get(i).getAttributeCode().equals("latitude")){

@@ -129,17 +129,11 @@ public class RegisterLocationActivity extends AppCompatActivity implements OnMap
     private View container_button;
 
     private MapViewType mapViewType;
-
     private LatLng storeLatLng;
-
     private MenuItem searchMenuItem;
-
     private String storeName;
-
     private OrderDetail orderDetail;
-
     private Timer refreshDriverLocationTimer;
-
     private MarkerOptions driverMarker;
 
     @Override
@@ -559,6 +553,8 @@ public class RegisterLocationActivity extends AppCompatActivity implements OnMap
                         Address address = addressList.get(0);
 
                         com.planb.thespeed.model.Address add = new com.planb.thespeed.model.Address();
+                        com.planb.thespeed.model.AddressByStreetString addressByStreetString = new com.planb.thespeed.model.AddressByStreetString();
+
                         add.setLatitude(address.getLatitude());
                         add.setLongitude(address.getLongitude());
                         add.setAddressLine(address.getAddressLine(0));
@@ -566,6 +562,14 @@ public class RegisterLocationActivity extends AppCompatActivity implements OnMap
                         add.setCity(address.getAdminArea());
                         add.setPostcode(address.getPostalCode());
                         add.setCountryName(address.getCountryName());
+
+                        addressByStreetString.setLatitude(address.getLatitude());
+                        addressByStreetString.setLongitude(address.getLongitude());
+                        addressByStreetString.setAddressLine(address.getAddressLine(0));
+                        addressByStreetString.setCountryCode(address.getCountryCode());
+                        addressByStreetString.setCity(address.getAdminArea());
+                        addressByStreetString.setPostcode(address.getPostalCode());
+                        addressByStreetString.setCountryName(address.getCountryName());
 
                         if (getIntent().hasExtra(ConstantValue.EDIT_ADDRESS)) {
                             setResult(ConstantValue.GET_EDITED_ADDRESS, new Intent(RegisterLocationActivity.this, AddAddressActivity.class).putExtra(ConstantValue.ADDRESS, add));
@@ -576,6 +580,7 @@ public class RegisterLocationActivity extends AppCompatActivity implements OnMap
                         if (getIntent().hasExtra(ConstantValue.SAVE_ADDRESS)) {
                             Intent intent = new Intent(RegisterLocationActivity.this, AddAddressActivity.class);
                             intent.putExtra(ConstantValue.ADDRESS, add);
+                            intent.putExtra(ConstantValue.ADDRESS_BY_STREET_STRING, addressByStreetString);
                             RegisterLocationActivity.this.startActivityForResult(intent, ConstantValue.HOME_CALLING_CODE);
                             return;
                         }
