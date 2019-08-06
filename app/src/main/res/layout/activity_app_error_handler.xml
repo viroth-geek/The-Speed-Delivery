@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorTransparency"
-    tools:context="com.iota.eshopping.activity.AppErrorHandlerActivity">
+    tools:context="com.planb.thespeed.activity.AppErrorHandlerActivity">
 
     <LinearLayout
         android:orientation="horizontal"

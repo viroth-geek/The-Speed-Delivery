@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.iota.eshopping.activity.LoginActivity">
+    tools:context="com.planb.thespeed.activity.LoginActivity">
     <include layout="@layout/view_toolbar"
         android:id="@+id/toolbar"/>
 
@@ -131,6 +131,14 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:visibility="gone"/>
+
+             <Button
+                 android:id="@+id/btn_continue_phone"
+                 android:layout_width="240dp"
+                 android:layout_height="wrap_content"
+                 android:background="@color/transparent"
+                 android:text="Continue with Phonenumber"
+                 android:textColor="@color/link"/>
 
                 <Button android:id="@+id/btn_facebook_login"
                     android:background="@android:color/transparent"

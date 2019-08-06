@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.iota.eshopping.fragment.page.DeliveryAddressFragment">
+    tools:context="com.planb.thespeed.fragment.page.DeliveryAddressFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list_notification"

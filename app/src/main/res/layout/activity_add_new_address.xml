@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:focusableInTouchMode="true"
     tools:context=".activity.AddAddressActivity">
 
     <include
@@ -76,7 +77,7 @@
                 android:layout_height="wrap_content"
                 android:text="Phone Number:" />
 
-            <com.iota.eshopping.util.PhoneNumberField
+            <com.planb.thespeed.util.PhoneNumberField
                 android:id="@+id/txt_phone_number"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -136,6 +137,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
                 android:layout_weight="1"
+                android:visibility="gone"
                 android:textSize="15sp" />
 
         </LinearLayout>

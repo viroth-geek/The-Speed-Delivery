@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.iota.eshopping.activity.StoreActivity">
+    tools:context="com.planb.thespeed.activity.StoreActivity">
 
     <android.support.design.widget.AppBarLayout
         android:orientation="vertical"
@@ -84,6 +84,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tab_layout_category"
