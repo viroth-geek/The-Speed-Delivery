@@ -15,16 +15,36 @@
       },
       "oauth_client": [
         {
-          "client_id": "53437243757-ua4pskducfqp95h1nmkkdnlng7eopsi8.apps.googleusercontent.com",
+          "client_id": "53437243757-04imtgb57acolt6fh5evcvobg2d5v9g6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.iota.eshopping",
-            "certificate_hash": "aa78abdd07ebd86ab7b270f06f140791912cb356"
+            "certificate_hash": "14c5aded2692244668a8d13ce7dafba1398c8205"
           }
         },
         {
-          "client_id": "53437243757-pgpuf5khuvm3vu1rv9p7meekifl92uiu.apps.googleusercontent.com",
-          "client_type": 3
+          "client_id": "53437243757-euue0mf8q8hrmrg148otb5t4gkipplkk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.iota.eshopping",
+            "certificate_hash": "01d0e243b286eb50dba43bb5da8e3dafc0ac0a7d"
+          }
+        },
+        {
+          "client_id": "53437243757-q6blqjechdoon9m5dpjpsdbpc5llules.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.iota.eshopping",
+            "certificate_hash": "f9f6af5fac8c7bc8fa60af8c95b2cb9c189df2fc"
+          }
+        },
+        {
+          "client_id": "53437243757-2kp1av5m69gne9ip1efdtvr4tfro0s1g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.iota.eshopping",
+            "certificate_hash": "98875733375b588470df58ef893eff8f9e4fa553"
+          }
         }
       ],
       "api_key": [
@@ -33,49 +53,38 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "53437243757-9n7021deacrghbmrkbrq3v3ngec01uc1.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "53437243757-l5q1c8d8a3n07249c68b1ob324qitepp.apps.googleusercontent.com",
+              "client_id": "53437243757-s79oev5h03afpofem7cuts1iacacoh2n.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.thespeeddelivery"
+                "bundle_id": "com.thespeeddelivery.planb"
               }
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:53437243757:android:47ed4749df1c58d5",
+        "mobilesdk_app_id": "1:53437243757:android:80fb3927680846d5",
         "android_client_info": {
-          "package_name": "driver.eshopping.iota.com.delivery_driver_android"
+          "package_name": "com.iota.eshopping.driver"
         }
       },
       "oauth_client": [
         {
-          "client_id": "53437243757-feo3hprjnbt0rtma632hbv404fjipjhi.apps.googleusercontent.com",
+          "client_id": "53437243757-rlnfmgem9j9n9npvpu9tl9pnphrkjs3f.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "driver.eshopping.iota.com.delivery_driver_android",
+            "package_name": "com.iota.eshopping.driver",
             "certificate_hash": "aa78abdd07ebd86ab7b270f06f140791912cb356"
           }
-        },
-        {
-          "client_id": "53437243757-pgpuf5khuvm3vu1rv9p7meekifl92uiu.apps.googleusercontent.com",
-          "client_type": 3
         }
       ],
       "api_key": [
@@ -84,27 +93,20 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "53437243757-9n7021deacrghbmrkbrq3v3ngec01uc1.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "53437243757-l5q1c8d8a3n07249c68b1ob324qitepp.apps.googleusercontent.com",
+              "client_id": "53437243757-s79oev5h03afpofem7cuts1iacacoh2n.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.thespeeddelivery"
+                "bundle_id": "com.thespeeddelivery.planb"
               }
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }
