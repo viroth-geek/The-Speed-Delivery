@@ -88,7 +88,6 @@ public class AddressListRecyclerAdapter extends RecyclerView.Adapter<AddressList
         holder.txt_address_nick_name.setText(address.getCity());
         holder.txt_address_line.setText(addressLine);
         holder.txt_address_postcode.setText(address.getPostcode());
-
     }
 
     @Override

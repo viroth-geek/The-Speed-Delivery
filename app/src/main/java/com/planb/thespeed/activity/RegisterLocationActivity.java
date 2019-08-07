@@ -21,6 +21,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -81,6 +82,7 @@ import com.planb.thespeed.util.preference.LocationPreference;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Timer;
@@ -542,21 +544,19 @@ public class RegisterLocationActivity extends AppCompatActivity implements OnMap
         updateValuesFromBundle(savedInstanceState);
         buildGoogleApiClient();
 
-        btn_confirm_location.setOnClickListener(v -> {
+        btn_confirm_location.setOnClickListener( v -> {
             Intent returnIntent = new Intent(String.valueOf(ConstantValue.MAP_DATA_TAG_CODE));
             if (addressList != null) {
                 if (!addressList.isEmpty()) {
                     if (addressList.size() > 0) {
-
                         returnIntent.putExtra(ConstantValue.ADDRESS, addressList.get(0));
-
                         Address address = addressList.get(0);
-
                         com.planb.thespeed.model.Address add = new com.planb.thespeed.model.Address();
                         com.planb.thespeed.model.AddressByStreetString addressByStreetString = new com.planb.thespeed.model.AddressByStreetString();
 
                         add.setLatitude(address.getLatitude());
                         add.setLongitude(address.getLongitude());
+                        add.setStreet(new ArrayList<>(Arrays.asList(address.getFeatureName(),address.getCountryName(),address.getCountryName())));
                         add.setAddressLine(address.getAddressLine(0));
                         add.setCountryCode(address.getCountryCode());
                         add.setCity(address.getAdminArea());
@@ -571,8 +571,14 @@ public class RegisterLocationActivity extends AppCompatActivity implements OnMap
                         addressByStreetString.setPostcode(address.getPostalCode());
                         addressByStreetString.setCountryName(address.getCountryName());
 
+                        Intent resultIntent = new Intent();
+                        resultIntent.putExtra(ConstantValue.ADDRESS, add);
+                        resultIntent.putExtra(ConstantValue.ADDRESS_BY_STREET_STRING, addressByStreetString);
+
                         if (getIntent().hasExtra(ConstantValue.EDIT_ADDRESS)) {
-                            setResult(ConstantValue.GET_EDITED_ADDRESS, new Intent(RegisterLocationActivity.this, AddAddressActivity.class).putExtra(ConstantValue.ADDRESS, add));
+//                            setResult(ConstantValue.GET_EDITED_ADDRESS, new Intent(RegisterLocationActivity.this, AddAddressActivity.class)
+//                                    .putExtra(ConstantValue.ADDRESS, addressByStreetString));
+                            setResult(ConstantValue.GET_EDITED_ADDRESS, resultIntent);
                             finish();
                             return;
                         }
@@ -581,6 +587,8 @@ public class RegisterLocationActivity extends AppCompatActivity implements OnMap
                             Intent intent = new Intent(RegisterLocationActivity.this, AddAddressActivity.class);
                             intent.putExtra(ConstantValue.ADDRESS, add);
                             intent.putExtra(ConstantValue.ADDRESS_BY_STREET_STRING, addressByStreetString);
+                            Log.d("initMap:", "initMap: " + add);
+                            Log.d("initMap:", "initMap: " + addressByStreetString);
                             RegisterLocationActivity.this.startActivityForResult(intent, ConstantValue.HOME_CALLING_CODE);
                             return;
                         }
@@ -593,7 +601,6 @@ public class RegisterLocationActivity extends AppCompatActivity implements OnMap
                             }
                         }
                         else {
-//                                updateDataInDB(address);
                             LocationPreference.saveLocation(RegisterLocationActivity.this, add);
                         }
 
