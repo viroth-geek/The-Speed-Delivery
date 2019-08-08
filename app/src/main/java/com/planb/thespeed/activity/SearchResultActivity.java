@@ -71,15 +71,12 @@ public class SearchResultActivity extends AppCompatActivity implements View.OnCl
         img_btn_search.setOnClickListener(this);
         img_btn_back.setOnClickListener(this);
 
-        edt_search_input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if (i == EditorInfo.IME_ACTION_SEARCH) {
-                    bindData();
-                    return true;
-                }
-                return false;
+        edt_search_input.setOnEditorActionListener((textView, i, keyEvent) -> {
+            if (i == EditorInfo.IME_ACTION_SEARCH) {
+                bindData();
+                return true;
             }
+            return false;
         });
 
         edt_search_input.requestFocus();
@@ -174,6 +171,7 @@ public class SearchResultActivity extends AppCompatActivity implements View.OnCl
         }
         if (validateInputText()) {
             if (address != null && address.getLatitude() != null && address.getLongitude() != null) {
+//                Log.d("bindData:", "bindData: " + address.getLatitude() + "/" + address.getLongitude());
                 loadProgressBar(true, true, null);
                 requestQuery(searchKey, address.getLatitude(), address.getLongitude());
             }

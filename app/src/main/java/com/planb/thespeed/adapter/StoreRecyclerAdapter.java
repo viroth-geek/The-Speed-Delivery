@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,7 @@ import com.planb.thespeed.util.ImageViewUtil;
 import com.planb.thespeed.util.LoggerHelper;
 import com.planb.thespeed.util.preference.LocationPreference;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,7 +49,7 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     private final int ADS = 0;
     private final int BODY = 1;
-    private boolean isShowAds = true;
+    private boolean isShowAds;
 
     private List<Store> storeList;
     private Context context;
@@ -62,6 +64,9 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
     public StoreRecyclerAdapter(Context context, List<Store> storeList, boolean isShowAds) {
         this.context = context;
         this.storeList = storeList;
+//        this.storeList = new ArrayList<>();
+//        storeList.addAll(storeList);
+        Log.d("StoreRecyclerAdapter: ", "StoreRecyclerAdapter: " + this.storeList.toString());
         this.isShowAds = isShowAds;
     }
 
@@ -75,8 +80,7 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
                 return new AdsStoreRowViewHolder(view);
 
             case BODY:
-                view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.view_estore_list, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_estore_list, parent, false);
                 return new NormalStoreRowViewHolder(view);
         }
         return null;
@@ -96,6 +100,7 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
             if (isShowAds) {
                 position -= 1;
             }
+            Log.d("onBindViewHolder: ", "onBindViewHolder: " + storeList.get(position));
             Store store = storeList.get(position);
             vh.txt_estore_type.setText(store.getName());
             if (store.getNameKh() != null && !store.getNameKh().isEmpty()) {
@@ -177,6 +182,7 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public int getItemCount() {
+        Log.d("StoreRecyclerAdapter: ", "StoreRecyclerAdapter count: " + this.storeList.toString());
         if (isShowAds) {
             return (storeList.size() + 1);
         }

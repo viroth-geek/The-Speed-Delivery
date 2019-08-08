@@ -549,6 +549,7 @@ public class RegisterLocationActivity extends AppCompatActivity implements OnMap
             if (addressList != null) {
                 if (!addressList.isEmpty()) {
                     if (addressList.size() > 0) {
+                        Log.d("initMap:", "initMap: " + addressList.get(0));
                         returnIntent.putExtra(ConstantValue.ADDRESS, addressList.get(0));
                         Address address = addressList.get(0);
                         com.planb.thespeed.model.Address add = new com.planb.thespeed.model.Address();

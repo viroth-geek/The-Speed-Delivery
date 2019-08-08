@@ -477,6 +477,7 @@ public class BaseActivity extends AppCompatActivity
     private boolean checkUserData() {
         UserAccount userAccount = new UserAccount(this);
         customer = userAccount.getCustomer();
+        Log.d("checkUserData:", "checkUserData: " + userAccount.getCustomerToken());
         return customer != null;
     }
 

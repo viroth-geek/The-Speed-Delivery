@@ -18,6 +18,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -454,8 +455,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
         new FetchListStores(restriction, new FetchListStores.InvokeOnCompleteAsync() {
             @Override
             public void onComplete(List<ListStore> listStores) {
+                Log.d("loadStoreList:", "loadStoreList: " + listStores.toString());
                 if (listStores != null && !listStores.isEmpty()) {
-
                     if (HomeFragment.this.listStore == null) {
                         HomeFragment.this.listStore = listStores.get(0);
                     } else {
@@ -466,7 +467,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
                         HomeFragment.this.listStore.setNumberPerPage(listStores.get(0).getNumberPerPage());
                         HomeFragment.this.listStore.setTotalRecord(listStores.get(0).getTotalRecord());
                     }
-
                     if (HomeFragment.this.isAdded()) {
                         if (storeList == null) {
                             storeList = new ArrayList<>();
@@ -480,7 +480,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
                             storeList.addAll(DataMatcher.getInstance().getStoreList(listStores.get(0).getList()));
                             adapter.notifyDataSetChanged();
                         }
-
                         fetchCachedProducts();
                     } else {
                         if (adapter != null) {
@@ -489,6 +488,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
                     }
                 } else {
                     Toast.makeText(getActivity(), "No Store Found!", Toast.LENGTH_SHORT).show();
+                }
+                if (listStores.get(0).getList().isEmpty()) {
+                    storeList = DataMatcher.getInstance().getStoreList(listStores.get(0).getList());
+                    Log.d("onComplete:", "onComplete: " + storeList);
+                    adapter = new StoreRecyclerAdapter(getActivity(), storeList , isShowAds);
                 }
                 loadingProgressBar.setVisibility(View.GONE);
             }

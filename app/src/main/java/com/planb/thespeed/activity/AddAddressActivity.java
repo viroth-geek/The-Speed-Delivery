@@ -141,7 +141,7 @@ public class AddAddressActivity extends AppCompatActivity {
                 addressByStreetString.setCountryCode(addressTemp.getCountryCode());
                 addressByStreetString.setCountryName(addressTemp.getCountryName());
                 addressByStreetString.setAddressLine(addressTemp.getAddressLine());
-                addressByStreetString.setStreet(addressTemp.getStreet());
+                addressByStreetString.setStreet(addressTemp.getAddressLine());
                 Log.d("onActivityResult:", "onActivityResult: " + addressByStreetString);
                 Log.d("onActivityResult:", "onActivityResult: " + addressTemp);
                 txt_street.setText(address.getAddressLine());
