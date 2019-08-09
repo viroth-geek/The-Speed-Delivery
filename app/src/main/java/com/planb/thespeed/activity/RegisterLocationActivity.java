@@ -577,8 +577,6 @@ public class RegisterLocationActivity extends AppCompatActivity implements OnMap
                         resultIntent.putExtra(ConstantValue.ADDRESS_BY_STREET_STRING, addressByStreetString);
 
                         if (getIntent().hasExtra(ConstantValue.EDIT_ADDRESS)) {
-//                            setResult(ConstantValue.GET_EDITED_ADDRESS, new Intent(RegisterLocationActivity.this, AddAddressActivity.class)
-//                                    .putExtra(ConstantValue.ADDRESS, addressByStreetString));
                             setResult(ConstantValue.GET_EDITED_ADDRESS, resultIntent);
                             finish();
                             return;
@@ -588,8 +586,6 @@ public class RegisterLocationActivity extends AppCompatActivity implements OnMap
                             Intent intent = new Intent(RegisterLocationActivity.this, AddAddressActivity.class);
                             intent.putExtra(ConstantValue.ADDRESS, add);
                             intent.putExtra(ConstantValue.ADDRESS_BY_STREET_STRING, addressByStreetString);
-                            Log.d("initMap:", "initMap: " + add);
-                            Log.d("initMap:", "initMap: " + addressByStreetString);
                             RegisterLocationActivity.this.startActivityForResult(intent, ConstantValue.HOME_CALLING_CODE);
                             return;
                         }
@@ -600,8 +596,8 @@ public class RegisterLocationActivity extends AppCompatActivity implements OnMap
                                 Toast.makeText(RegisterLocationActivity.this, "Distance is far than " + ApplicationConfiguration.MAX_DISTANT_ALLOW + "KM. Delivery is not available. Please choose another location.", Toast.LENGTH_SHORT).show();
                                 return;
                             }
-                        }
-                        else {
+                        } else {
+                            Log.d("initMap:", "initMap: 1" + add.toString());
                             LocationPreference.saveLocation(RegisterLocationActivity.this, add);
                         }
 
@@ -610,7 +606,9 @@ public class RegisterLocationActivity extends AppCompatActivity implements OnMap
                             finish();
                             return;
                         }
+                        Log.d("initMap:", "initMap: 2" + add.toString());
                         LocationPreference.saveLocation(RegisterLocationActivity.this, add);
+
                     }
                     setResult(Activity.RESULT_OK, returnIntent);
                     finish();

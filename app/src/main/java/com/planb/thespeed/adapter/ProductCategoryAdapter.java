@@ -42,8 +42,7 @@ import java.util.Locale;
  * @author yeakleang.ay on 9/18/18.
  */
 
-public class ProductCategoryAdapter extends RecyclerView.Adapter<ProductCategoryAdapter.ProductViewHolder>
-        implements ItemAdjustment.OnChangeValue {
+public class ProductCategoryAdapter extends RecyclerView.Adapter<ProductCategoryAdapter.ProductViewHolder> implements ItemAdjustment.OnChangeValue {
 
     private InvokeAnimations invokeAnimation;
 

@@ -436,6 +436,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
         restriction.setPage(PAGE);
         restriction.setLimit(ApplicationConfiguration.LIMIT);
         if (address != null) {
+            Log.d("prepareForGetStore:", "prepareForGetStore: " + address.getLatitude() + "/" + address.getLongitude());
             restriction.setLatitude(address.getLatitude());
             restriction.setLongitude(address.getLongitude());
         }
@@ -452,6 +453,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
         if (loadingProgressBar.getVisibility() == View.GONE) {
             loadingProgressBar.setVisibility(View.VISIBLE);
         }
+        Log.d("loadStoreList:", "loadStoreList: Here");
         new FetchListStores(restriction, new FetchListStores.InvokeOnCompleteAsync() {
             @Override
             public void onComplete(List<ListStore> listStores) {
@@ -477,7 +479,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
                             estoreList.setAdapter(adapter);
                         }
                         else {
+                            if (PAGE == 1){
+                                Toast.makeText(getContext(), "Hello", Toast.LENGTH_SHORT).show();
+                                storeList.clear();
+                            }
+                            Toast.makeText(getContext(), "store " + storeList.size(), Toast.LENGTH_SHORT).show();
                             storeList.addAll(DataMatcher.getInstance().getStoreList(listStores.get(0).getList()));
+                            Toast.makeText(getContext(), "storeModify  " + storeList.size(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "storeModify  " + storeList.size(), Toast.LENGTH_SHORT).show();
                             adapter.notifyDataSetChanged();
                         }
                         fetchCachedProducts();
@@ -489,11 +498,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
                 } else {
                     Toast.makeText(getActivity(), "No Store Found!", Toast.LENGTH_SHORT).show();
                 }
-                if (listStores.get(0).getList().isEmpty()) {
-                    storeList = DataMatcher.getInstance().getStoreList(listStores.get(0).getList());
-                    Log.d("onComplete:", "onComplete: " + storeList);
-                    adapter = new StoreRecyclerAdapter(getActivity(), storeList , isShowAds);
-                }
+//                if (listStores.get(0).getList().isEmpty()) {
+//                    storeList = DataMatcher.getInstance().getStoreList(listStores.get(0).getList());
+//                    Log.d("onComplete:", "onComplete: " + storeList);
+//                    adapter = new StoreRecyclerAdapter(getActivity(), storeList , isShowAds);
+//                }
                 loadingProgressBar.setVisibility(View.GONE);
             }
 
@@ -776,12 +785,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
     public void onViewBasket() {
 
         final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                viewBasketDetail();
-            }
-        }, 1200);
+        handler.postDelayed(() -> viewBasketDetail(), 1200);
     }
 }
 

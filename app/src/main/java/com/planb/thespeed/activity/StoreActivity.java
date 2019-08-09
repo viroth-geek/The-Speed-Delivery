@@ -487,8 +487,6 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
                 categoryPagerFragment.setOptionLoadingProgressBar(optionLoadingProgressBar);
                 categoryPagerFragment.setOnLoadProductCompletedListener(this);
                 categoryPagerFragments.add(categoryPagerFragment);
-
-
             }
 
             CategoryPagerAdapter categoryPagerAdapter = new CategoryPagerAdapter(getSupportFragmentManager(), categoryPagerFragments);
@@ -523,6 +521,7 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
      * Item Adjustment
      */
     private void showItemAdjustment(ProductItem proItem, ProductAttributeOption productAttributeOption) {
+        Log.d("showItemAdjustment:", "showItemAdjustment: ");
         ItemAdjustment adjustment = new ItemAdjustment();
         adjustment.setStore(store);
         adjustment.setProduct(proItem, this);

@@ -64,9 +64,6 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
     public StoreRecyclerAdapter(Context context, List<Store> storeList, boolean isShowAds) {
         this.context = context;
         this.storeList = storeList;
-//        this.storeList = new ArrayList<>();
-//        storeList.addAll(storeList);
-        Log.d("StoreRecyclerAdapter: ", "StoreRecyclerAdapter: " + this.storeList.toString());
         this.isShowAds = isShowAds;
     }
 
@@ -100,7 +97,6 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
             if (isShowAds) {
                 position -= 1;
             }
-            Log.d("onBindViewHolder: ", "onBindViewHolder: " + storeList.get(position));
             Store store = storeList.get(position);
             vh.txt_estore_type.setText(store.getName());
             if (store.getNameKh() != null && !store.getNameKh().isEmpty()) {
@@ -109,17 +105,6 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
             else {
                 vh.txt_estore.setText(store.getName());
             }
-
-//            StringBuilder estoreType = new StringBuilder();
-//            if (store.getStoreTypes() != null) {
-//                for (StoreType type : store.getStoreTypes()) {
-//                    if (store.getStoreTypes().lastIndexOf(type) == store.getStoreTypes().size() - 1) {
-//                        estoreType.append(type.getTypeName()).append(".");
-//                    } else {
-//                        estoreType.append(type.getTypeName()).append(", ");
-//                    }
-//                }
-//            }
 
             Typeface typeface = FontManager.getTypeface(this.context, FontManager.FONTAWESOME);
             String tag = context.getString(R.string.fa_tag) + " " + store.getTag();
@@ -182,7 +167,6 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public int getItemCount() {
-        Log.d("StoreRecyclerAdapter: ", "StoreRecyclerAdapter count: " + this.storeList.toString());
         if (isShowAds) {
             return (storeList.size() + 1);
         }
