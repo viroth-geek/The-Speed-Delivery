@@ -480,13 +480,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
                         }
                         else {
                             if (PAGE == 1){
-                                Toast.makeText(getContext(), "Hello", Toast.LENGTH_SHORT).show();
                                 storeList.clear();
                             }
-                            Toast.makeText(getContext(), "store " + storeList.size(), Toast.LENGTH_SHORT).show();
                             storeList.addAll(DataMatcher.getInstance().getStoreList(listStores.get(0).getList()));
-                            Toast.makeText(getContext(), "storeModify  " + storeList.size(), Toast.LENGTH_SHORT).show();
-                            Toast.makeText(getContext(), "storeModify  " + storeList.size(), Toast.LENGTH_SHORT).show();
                             adapter.notifyDataSetChanged();
                         }
                         fetchCachedProducts();

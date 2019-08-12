@@ -106,9 +106,7 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_estore);
-
         font = FontManager.getTypeface(this, FontManager.FONTAWESOME);
-
         productLocalService = new ProductLocalService(this);
 
         toolbar = findViewById(R.id.toolbar);
@@ -204,7 +202,6 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
                     builder.create().show();
                     return;
                 }
-                Log.d(ConstantValue.TAG_LOG, "onClick: " + productItems.size());
                 Intent intent = new Intent(this, ManageBasketActivity.class);
                 intent.putExtra(ConstantValue.ITEMS, (Serializable) productItems);
                 intent.putExtra(ConstantValue.STORE, store);
@@ -232,7 +229,6 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
         }
         // update item amount from ManageBasket
         else if (requestCode == ConstantValue.GO_TO_BASKET) {
-
             if (data != null) {
                 if (data.hasExtra(ConstantValue.PRODUCT_ITEMS)) {
                     productItems = (List<ProductItem>) data.getSerializableExtra(ConstantValue.PRODUCT_ITEMS);
@@ -249,7 +245,6 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
 
             addToBasket(productItems);
             showBasketBox();
-
         }
     }
 

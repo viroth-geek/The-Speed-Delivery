@@ -5,6 +5,7 @@ import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -302,8 +303,10 @@ public class ProductCategoryAdapter extends RecyclerView.Adapter<ProductCategory
             img_product = itemView.findViewById(R.id.img_product);
 
             itemView.setOnClickListener(view -> {
+                Log.d("ProductViewHolder:", "ProductViewHolder: Click");
                 if (optionLoadingProgressBar.getVisibility() != View.VISIBLE) {
                     Product product = (Product) productItem.getItem();
+                    Log.d("ProductViewHolder:", "ProductViewHolder: " + product.toString());
 
                     com.planb.thespeed.model.Product productForModel = new com.planb.thespeed.model.Product();
                     productForModel.setProductId(product.getId());
@@ -313,7 +316,7 @@ public class ProductCategoryAdapter extends RecyclerView.Adapter<ProductCategory
                     productForModel.setQty(product.getCount());
                     productForModel.setProductType(product.getProductType());
                     productForModel.setId(product.getId());
-
+                    Log.d("ooooo", "ProductViewHolder: " + productForModel.toString());
                     if (product.getProductType().equals(ConstantValue.CONFIGURABLE_PRODUCT)) {
                         optionLoadingProgressBar.setVisibility(View.VISIBLE);
                         fetchOptionProduct(productForModel);
