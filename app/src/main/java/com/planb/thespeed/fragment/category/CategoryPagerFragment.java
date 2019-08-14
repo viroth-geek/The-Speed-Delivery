@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -176,6 +177,7 @@ public class CategoryPagerFragment extends Fragment {
         for (Product product : this.productCategory.getProducts()) {
             productItems.add(new com.planb.thespeed.model.modelForView.ProductItem<>(product.getId(), product.getPrice(), product));
         }
+        Log.d("CategoryPager", "getProductItems: "+this.productCategory.getName()+" product item "+productItems.size());
         return productItems;
     }
 
@@ -233,5 +235,4 @@ public class CategoryPagerFragment extends Fragment {
     public interface OnLoadProductCompletedListener {
         void onLoadProductCompleted(List<Category> categories);
     }
-
 }

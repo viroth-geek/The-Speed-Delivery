@@ -2,6 +2,7 @@ package com.planb.thespeed.fragment.cart;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -155,7 +156,9 @@ public class ItemAdjustment extends DialogFragment implements View.OnClickListen
 
             if (store != null) {
                 List<Product> wrongProducts = productLocalService.getListItem();
+                Log.d("onClick:", "onClick: " + wrongProducts.toString());
                 wrongProducts = Observable.fromIterable(wrongProducts).filter(wrongProduct -> wrongProduct.getStoreId() != null && !wrongProduct.getStoreId().equals(store.getId())).toList().blockingGet();
+                Log.d("onClick:", "onClick: 1" + wrongProducts.toString());
                 for (com.planb.thespeed.model.modelForView.Product wrongProduct : wrongProducts) {
                     productLocalService.deleteWhereProductUid(wrongProduct.getProductUid());
                     productOptionDAO.deleteWhereProductUid(wrongProduct.getProductUid());
@@ -164,7 +167,7 @@ public class ItemAdjustment extends DialogFragment implements View.OnClickListen
             }
 
             Product product = (Product) productItemTemp.getItem();
-
+            Log.d("onClick:", "onClick: " + product.toString());
             productLocalService.deleteWhereProductUid(product.getProductUid());
 
             String productUUID = UUID.randomUUID().toString();
@@ -185,6 +188,7 @@ public class ItemAdjustment extends DialogFragment implements View.OnClickListen
             product.setCount(productItemTemp.getCount());
             product.setProductUid(productUUID);
 
+            Log.d("onClick:", "onClick: " + product.toString());
             productLocalService.insertItem(product);
 
             productItem.setCount(productItemTemp.getCount());

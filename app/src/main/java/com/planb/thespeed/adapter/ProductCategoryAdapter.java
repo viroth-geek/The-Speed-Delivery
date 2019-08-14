@@ -75,10 +75,12 @@ public class ProductCategoryAdapter extends RecyclerView.Adapter<ProductCategory
      * @param productItems list of product item
      */
     public void updateItemAmount(List<ProductItem> productItems, boolean isUpdated) {
-
         if (productItems == null) {
             return;
         }
+
+        this.productItems = getProductItems();
+        Log.d("CategoryPager", "getProductByPageable: "+this.productCategory.getName()+" basket item "+productItems.size()+" product item "+this.productItems.size());
 
         if (productItems.isEmpty()) {
             for (ProductItem productItem : this.productItems) {
@@ -139,12 +141,23 @@ public class ProductCategoryAdapter extends RecyclerView.Adapter<ProductCategory
                             }
 //                                invokeAnimation.invokeAnimationByItems(productItemList);
                         }
+                        Log.d("CategoryPager", "invokeAnimationByItems: "+this.productCategory.getName()+" product item "+this.productItems.size());
                         invokeAnimation.invokeAnimationByItems(this.productItems);
                     }
+                    Log.d("CategoryPager", "getProductByPageable: "+this.productCategory.getName()+" after add basket item "+this.productItems.size());
                     this.notifyDataSetChanged();
                 }
             }
         }
+    }
+
+    public List<ProductItem> getProductItems() {
+        List<com.planb.thespeed.model.modelForView.ProductItem> productItems = new ArrayList<>();
+        for (Product product : this.productCategory.getProducts()) {
+            productItems.add(new com.planb.thespeed.model.modelForView.ProductItem<>(product.getId(), product.getPrice(), product));
+        }
+        Log.d("CategoryPager", "getProductItems: "+this.productCategory.getName()+" product item "+productItems.size());
+        return productItems;
     }
 
     /**
@@ -152,6 +165,8 @@ public class ProductCategoryAdapter extends RecyclerView.Adapter<ProductCategory
      */
     public void setProductItems(List<ProductItem> productItems) {
         this.productItems = productItems;
+        Log.d("CategoryPager", "setProductItems: "+this.productCategory.getName()+" product item "+this.productItems.size());
+
     }
 
     @Override
@@ -164,33 +179,32 @@ public class ProductCategoryAdapter extends RecyclerView.Adapter<ProductCategory
     @Override
     public void onBindViewHolder(ProductViewHolder holder, int position) {
         Product product = this.productCategory.getProducts().get(position);
-        ProductItem productItem = this.productItems.get(position);
+            ProductItem productItem = this.productItems.get(position);
 
-        if (productItem.getCount() > 0) {
-            holder.txt_number_of_item.setVisibility(View.VISIBLE);
-            holder.txt_number_of_item.setText(String.format(Locale.getDefault(), "x %d", productItem.getCount()));
-        }
-        else {
-            holder.txt_number_of_item.setVisibility(View.INVISIBLE);
-        }
+            if (productItem.getCount() > 0) {
+                holder.txt_number_of_item.setVisibility(View.VISIBLE);
+                holder.txt_number_of_item.setText(String.format(Locale.getDefault(), "x %d", productItem.getCount()));
+            }
+            else {
+                holder.txt_number_of_item.setVisibility(View.INVISIBLE);
+            }
 
-        holder.txt_product_name.setText(product.getName());
+            holder.txt_product_name.setText(product.getName());
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            holder.txt_product_detail.setText(Html.fromHtml(product.getDetail() == null ? "" : product.getDetail(), Html.FROM_HTML_MODE_COMPACT));
-        } else {
-            holder.txt_product_detail.setText(Html.fromHtml(product.getDetail() == null ? "" : product.getDetail()));
-        }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                holder.txt_product_detail.setText(Html.fromHtml(product.getDetail() == null ? "" : product.getDetail(), Html.FROM_HTML_MODE_COMPACT));
+            } else {
+                holder.txt_product_detail.setText(Html.fromHtml(product.getDetail() == null ? "" : product.getDetail()));
+            }
 
+            holder.txt_product_price.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(product.getPrice())));
 
-        holder.txt_product_price.setText(String.format("%s%s", CurrencyConfiguration.getDollarSign(), NumberUtils.strMoney(product.getPrice())));
+            holder.setProductItem(productItem);
 
-        holder.setProductItem(productItem);
+            String imageUrl = product.getImageUrl();
 
-        String imageUrl = product.getImageUrl();
-
-        String imageUrlLink = ApplicationConfiguration.PRODUCT_IMAGE_URL + imageUrl;
-        ImageViewUtil.loadImageByUrl(context, imageUrlLink, holder.img_product);
+            String imageUrlLink = ApplicationConfiguration.PRODUCT_IMAGE_URL + imageUrl;
+            ImageViewUtil.loadImageByUrl(context, imageUrlLink, holder.img_product);
     }
 
     @Override
@@ -219,6 +233,7 @@ public class ProductCategoryAdapter extends RecyclerView.Adapter<ProductCategory
 
 //        ((StoreActivity)context).onChange(productItem);
 
+        Log.d("CategoryPager", "getProductByPageable: update from dialog adjustment");
         updateItemAmount(Collections.singletonList(productItem), false);
     }
 

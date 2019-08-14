@@ -251,8 +251,9 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void invokeAnimationByItems(List<ProductItem> productItems) {
         if (productItems != null && !productItems.isEmpty()) {
-            addToBasket(productItems);
-            showBasketBox();
+//            addToBasket(productItems);
+//            showBasketBox();
+            fetchCachedProducts();
         }
     }
 
@@ -516,7 +517,6 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
      * Item Adjustment
      */
     private void showItemAdjustment(ProductItem proItem, ProductAttributeOption productAttributeOption) {
-        Log.d("showItemAdjustment:", "showItemAdjustment: ");
         ItemAdjustment adjustment = new ItemAdjustment();
         adjustment.setStore(store);
         adjustment.setProduct(proItem, this);
@@ -582,8 +582,9 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
 
 //        stickyAdapter.setProductItems(this.productItems);
 //        stickyAdapter.setProductItems(this.productItems);
-        addToBasket(productItems);
-        showBasketBox();
+//        addToBasket(productItems);
+//        showBasketBox();
+        fetchCachedProducts();
     }
 
     @Override
