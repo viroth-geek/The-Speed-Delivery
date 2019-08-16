@@ -205,6 +205,8 @@ public class StoreActivity extends AppCompatActivity implements View.OnClickList
                 Intent intent = new Intent(this, ManageBasketActivity.class);
                 intent.putExtra(ConstantValue.ITEMS, (Serializable) productItems);
                 intent.putExtra(ConstantValue.STORE, store);
+                Log.d("onClick:", "onClick: " + productItems.toString());
+                Log.d("onClick:", "onClick: " + store.toString());
                 startActivityForResult(intent, ConstantValue.GO_TO_BASKET);
                 
             } else {

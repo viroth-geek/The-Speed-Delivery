@@ -881,11 +881,11 @@ public class ManageBasketActivity extends AppCompatActivity implements View.OnCl
 
             @Override
             public void onError(Throwable e) {
-                LoggerHelper.showErrorLog("Error: ", e);
-                Toast.makeText(ManageBasketActivity.this, "Cannot not get delivery fee.", Toast.LENGTH_SHORT).show();
-                AlertUtils.showConfirmDialog(ManageBasketActivity.this, "Message", "Cannot not get delivery fee.", "OK", (dialogInterface, i) -> {
-                    openGoogleMap();
-                });
+//                LoggerHelper.showErrorLog("Error: ", e);
+//                Toast.makeText(ManageBasketActivity.this, "Cannot not get delivery fee.", Toast.LENGTH_SHORT).show();
+//                AlertUtils.showConfirmDialog(ManageBasketActivity.this, "Message", "Cannot not get delivery fee.", "OK", (dialogInterface, i) -> {
+//                    openGoogleMap();
+//                });
             }
         });
     }

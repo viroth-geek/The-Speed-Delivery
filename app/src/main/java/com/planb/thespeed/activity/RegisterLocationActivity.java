@@ -71,6 +71,7 @@ import com.planb.thespeed.model.direction.Step;
 import com.planb.thespeed.model.enumeration.MapViewType;
 import com.planb.thespeed.model.enumeration.OrderStatusType;
 import com.planb.thespeed.model.form.FormForGetDirection;
+import com.planb.thespeed.model.singleton.Singleton;
 import com.planb.thespeed.security.FeeCalculation;
 import com.planb.thespeed.service.base.InvokeOnCompleteAsync;
 import com.planb.thespeed.service.datahelper.datasource.online.FetchDriverLastLocation;
@@ -220,7 +221,7 @@ public class RegisterLocationActivity extends AppCompatActivity implements OnMap
         if (location != null) {
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, MAP_ZOOM_LEVEL_I));
-            storeLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+//            storeLatLng = new LatLng(location.getLatitude(), location.getLongitude());
             drawRoute(latLng);
         } else {
             LatLng latLng = new LatLng(ConstantValue.DEFAULT_LAT, ConstantValue.DEFAULT_LNT);
@@ -483,8 +484,14 @@ public class RegisterLocationActivity extends AppCompatActivity implements OnMap
 
         com.planb.thespeed.model.Address address;
 
-        if (getIntent().hasExtra(ConstantValue.LOCATION)) {
-            location = (Location) getIntent().getExtras().get(ConstantValue.LOCATION);
+//        if (getIntent().hasExtra(ConstantValue.LOCATION)) {
+//            location = (Location) getIntent().getExtras().get(ConstantValue.LOCATION);
+//        }
+
+        if (Singleton.lat != 0 && Singleton.lng != 0){
+            location = new Location(ConstantValue.LOCATION);
+            location.setLatitude(Singleton.lat);
+            location.setLongitude(Singleton.lng);
         }
 
         if (getIntent().hasExtra(ConstantValue.ADDRESS)) {

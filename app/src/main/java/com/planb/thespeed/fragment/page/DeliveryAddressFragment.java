@@ -119,7 +119,7 @@ public class DeliveryAddressFragment extends Fragment {
      */
     private void checkAddressList(){
         UserAccount userAccount = new UserAccount(getContext());
-        Log.d("userId", Singleton.userId.toString() + "//" + userAccount.getCustomerToken());
+//        Log.d("userId", Singleton.userId.toString() + "//" + userAccount.getCustomerToken());
         new FetchAddressList(Singleton.userId, new InvokeOnCompleteAsync<Customer>() {
             @Override
             public void onComplete(Customer data) {

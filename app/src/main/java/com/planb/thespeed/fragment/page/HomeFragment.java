@@ -49,6 +49,7 @@ import com.planb.thespeed.model.magento.store.storeList.StoreRestriction;
 import com.planb.thespeed.model.modelForView.Product;
 import com.planb.thespeed.model.modelForView.ProductItem;
 import com.planb.thespeed.model.modelForView.Store;
+import com.planb.thespeed.model.singleton.Singleton;
 import com.planb.thespeed.security.CurrencyConfiguration;
 import com.planb.thespeed.security.ProductLocalService;
 import com.planb.thespeed.service.base.InvokeOnCompleteAsync;
@@ -254,7 +255,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
     @Override
     public void onResume() {
         super.onResume();
-
         String timeDelivery = TimeDeliveryPreference.getTimeDeliveryText(getContext());
         if (timeDelivery != null && !timeDelivery.isEmpty()) {
             btn_deliver_time.setText(timeDelivery);
@@ -568,10 +568,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
      */
     private void loadAddressFromMap(Intent data) {
         Address address = data.getParcelableExtra(ConstantValue.ADDRESS);
+        Log.d("loadAddressFromMap:", "loadAddressFromMap: " + address.toString());
         if (address != null) {
             Location location = new Location(ConstantValue.LOCATION);
             location.setLatitude(address.getLatitude());
             location.setLongitude(address.getLongitude());
+            Singleton.lat = address.getLatitude(); Singleton.lng = address.getLongitude();
             com.planb.thespeed.model.Address address1 = new com.planb.thespeed.model.Address();
             address1.setPostcode(address.getPostalCode());
             List<String> addressLine = new ArrayList<>();
@@ -580,6 +582,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
             address1.setCity(address.getLocality());
             address1.setLatitude(address.getLatitude());
             address1.setLongitude(address.getLongitude());
+//            Log.d("loadAddressFromMap:", "loadAddressFromMap: address " + address.toString());
+//            Log.d("loadAddressFromMap:", "loadAddressFromMap: address1 " + address1.toString());
             loadStoreList(prepareForGetStore(address1));
         }
     }
@@ -609,6 +613,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener, ISav
         if (longitude != 0d && latitude != 0d && HomeFragment.this.listStore == null) {
             if (alertDialog.isShowing()) {
                 alertDialog.cancel();
+            }
+            if (Singleton.lat != 0 && Singleton.lng != 0) {
+                longitude = Singleton.lng;
+                latitude = Singleton.lat;
             }
             com.planb.thespeed.model.Address address = new com.planb.thespeed.model.Address(latitude, longitude);
             getGeoCode(address.getLongitude(), address.getLatitude());

@@ -166,18 +166,18 @@ public class AddAddressActivity extends AppCompatActivity {
         Log.d("bindData:", "bindData: "+ addressByStreetString);
         if (isEdit){
             txt_street.setText(address.getStreet().get(0));
+            txt_first_name.setText(address.getFirstname());
+            txt_last_name.setText(address.getLastname());
+            txt_phone_number.setText(address.getTelephone());
+            chkDefaultShipping.setChecked(address.getDefaultShipping() != null ? address.getDefaultShipping() : false);
+            chkDefaultBilling.setChecked(address.getDefaultBilling() != null ? address.getDefaultBilling() : false);
         } else {
             txt_first_name.setText(userAccount.getCustomer().getFirstname());
             txt_last_name.setText(userAccount.getCustomer().getLastname());
             txt_phone_number.setText(userAccount.getCustomer().getPhonenumber());
+            Log.d("bindData:", "bindData: phone Number" + userAccount.getCustomer().getPhonenumber());
             txt_street.setText(address.getAddressLine());
         }
-        txt_first_name.setText(address.getFirstname());
-        txt_last_name.setText(address.getLastname());
-        txt_phone_number.setText(address.getTelephone());
-        chkDefaultShipping.setChecked(address.getDefaultShipping() != null ? address.getDefaultShipping() : false);
-        chkDefaultBilling.setChecked(address.getDefaultBilling() != null ? address.getDefaultBilling() : false);
-
         txt_city.setText(address.getCity());
         txt_province.setText(address.getCity());
         txt_country.setText(address.getCountryName() != null ? address.getCountryName() : "Cambodia");
@@ -193,34 +193,48 @@ public class AddAddressActivity extends AppCompatActivity {
      * @param addressByStreetString com.iota.eshopping.model.AddressByStreetString
      */
     private void saveAddressByStreetString(AddressByStreetString addressByStreetString) {
-        addressByStreetString.setStreet(txt_street.getText().toString());
-        addressByStreetString.setCustomerId(customer.getId());
-        addressByStreetString.setFirstname(txt_first_name.getText().toString());
-        addressByStreetString.setLastname(txt_last_name.getText().toString());
-        addressByStreetString.setTelephone(txt_phone_number.getText().toString());
-        addressByStreetString.setDefaultBilling(chkDefaultBilling.isChecked());
-        addressByStreetString.setDefaultShipping(chkDefaultBilling.isChecked());
+        if (!txt_first_name.getText().toString().isEmpty() && !txt_last_name.getText().toString().isEmpty() && !txt_phone_number.getText().toString().isEmpty()){
+            addressByStreetString.setStreet(txt_street.getText().toString());
+            addressByStreetString.setCustomerId(customer.getId());
+            addressByStreetString.setFirstname(txt_first_name.getText().toString());
+            addressByStreetString.setLastname(txt_last_name.getText().toString());
+            addressByStreetString.setTelephone(txt_phone_number.getText().toString());
+            addressByStreetString.setDefaultBilling(chkDefaultBilling.isChecked());
+            addressByStreetString.setDefaultShipping(chkDefaultBilling.isChecked());
 
-        Log.d("saveAddressByStreetString:" , "saveAddressByStreetString: " + addressByStreetString);
-        new AddNewAddressByStreetString(prepareDataByStreetString(addressByStreetString), new AddNewAddressByStreetString.InvokeOnCompleteAsync() {
-            @Override
-            public void onComplete(List<com.planb.thespeed.model.modelForView.AddressByStreetString> addresses) {
-                loadingLayout.setVisibility(View.GONE);
-                btn_save.setVisibility(View.VISIBLE);
-                address.setStreet(Arrays.asList(address.getAddressLine()));
-                db.insertByStreetString((AddressByStreetString) addresses);
-                finish();
-            }
+//            Log.d("saveAddressByStreetString:" , "saveAddressByStreetString: " + addressByStreetString);
+            new AddNewAddressByStreetString(prepareDataByStreetString(addressByStreetString), new AddNewAddressByStreetString.InvokeOnCompleteAsync() {
+                @Override
+                public void onComplete(List<com.planb.thespeed.model.modelForView.AddressByStreetString> addresses) {
+                    loadingLayout.setVisibility(View.GONE);
+                    btn_save.setVisibility(View.VISIBLE);
+                    address.setStreet(Arrays.asList(address.getAddressLine()));
+                    db.insertByStreetString((AddressByStreetString) addresses);
+                    finish();
+                }
 
-            @Override
-            public void onError(Throwable e) {
-                loadingLayout.setVisibility(View.GONE);
-                btn_save.setVisibility(View.VISIBLE);
-                address.setStreet(Arrays.asList(addressByStreetString.getAddressLine()));
-                db.insert(address);
-                finish();
+                @Override
+                public void onError(Throwable e) {
+                    loadingLayout.setVisibility(View.GONE);
+                    btn_save.setVisibility(View.VISIBLE);
+                    address.setStreet(Arrays.asList(addressByStreetString.getAddressLine()));
+                    db.insert(address);
+                    finish();
+                }
+            });
+        }else {
+            if (txt_first_name.getText().toString().isEmpty()){
+                txt_first_name.setError("First name require.");
             }
-        });
+            if (txt_last_name.getText().toString().isEmpty()){
+                txt_last_name.setError("Last name require.");
+            }
+            if (txt_phone_number.getText().toString().isEmpty()){
+                txt_phone_number.setError("Phone number require.");
+            }
+            loadingLayout.setVisibility(View.GONE);
+            btn_save.setVisibility(View.VISIBLE);
+        }
     }
 
     /**
@@ -268,9 +282,8 @@ public class AddAddressActivity extends AppCompatActivity {
         address.setTelephone(txt_phone_number.getText().toString());
         address.setDefaultBilling(chkDefaultBilling.isChecked());
         address.setDefaultShipping(chkDefaultBilling.isChecked());
-
-        Log.d("setCustomerId:", "setCustomerId: "+ address.getCustomerId());
-        Log.d("updateAddress:", "updateAddress: "+ prepareDataByStreetString(addressByStreetString));
+//        Log.d("setCustomerId:", "setCustomerId: "+ address.getCustomerId());
+//        Log.d("updateAddress:", "updateAddress: "+ prepareDataByStreetString(addressByStreetString));
         new UpdateAddressByStreetString(prepareDataByStreetString(addressByStreetString), new UpdateAddressByStreetString.InvokeOnCompleteAsync() {
             @Override
             public void onComplete(List<com.planb.thespeed.model.modelForView.AddressByStreetString> addresses) {

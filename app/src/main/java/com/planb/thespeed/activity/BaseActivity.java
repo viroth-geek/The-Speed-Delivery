@@ -170,7 +170,6 @@ public class BaseActivity extends AppCompatActivity
                 }
             }
         }, 500);
-
         setContentView(R.layout.activity_base);
         toolbar = findViewById(R.id.toolbar);
         drawer = findViewById(R.id.drawer_layout);
@@ -477,7 +476,6 @@ public class BaseActivity extends AppCompatActivity
     private boolean checkUserData() {
         UserAccount userAccount = new UserAccount(this);
         customer = userAccount.getCustomer();
-        Log.d("checkUserData:", "checkUserData: " + userAccount.getCustomerToken());
         return customer != null;
     }
 
