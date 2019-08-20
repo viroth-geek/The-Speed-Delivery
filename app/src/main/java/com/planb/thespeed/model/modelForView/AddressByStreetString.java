@@ -288,6 +288,8 @@ public class AddressByStreetString {
                 ", isDefaultShipping=" + isDefaultShipping +
                 ", longitude=" + longitude +
                 ", latitude=" + latitude +
+                ", first name=" + firstName +
+                ", last name=" + lastName +
                 '}';
     }
 }

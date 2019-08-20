@@ -142,8 +142,6 @@ public class AddAddressActivity extends AppCompatActivity {
                 addressByStreetString.setCountryName(addressTemp.getCountryName());
                 addressByStreetString.setAddressLine(addressTemp.getAddressLine());
                 addressByStreetString.setStreet(addressTemp.getAddressLine());
-                Log.d("onActivityResult:", "onActivityResult: " + addressByStreetString);
-                Log.d("onActivityResult:", "onActivityResult: " + addressTemp);
                 txt_street.setText(address.getAddressLine());
                 txt_city.setText(address.getCity());
                 txt_province.setText(address.getCity());
@@ -163,7 +161,6 @@ public class AddAddressActivity extends AppCompatActivity {
         address = (com.planb.thespeed.model.Address) getIntent().getSerializableExtra(ConstantValue.ADDRESS);
         addressByStreetString = (com.planb.thespeed.model.AddressByStreetString) getIntent().getSerializableExtra(ConstantValue.ADDRESS_BY_STREET_STRING);
 
-        Log.d("bindData:", "bindData: "+ addressByStreetString);
         if (isEdit){
             txt_street.setText(address.getStreet().get(0));
             txt_first_name.setText(address.getFirstname());
@@ -171,11 +168,15 @@ public class AddAddressActivity extends AppCompatActivity {
             txt_phone_number.setText(address.getTelephone());
             chkDefaultShipping.setChecked(address.getDefaultShipping() != null ? address.getDefaultShipping() : false);
             chkDefaultBilling.setChecked(address.getDefaultBilling() != null ? address.getDefaultBilling() : false);
+            txt_first_name.setEnabled(false);
+            txt_last_name.setEnabled(false);
+            txt_phone_number.setEnabled(false);
         } else {
             txt_first_name.setText(userAccount.getCustomer().getFirstname());
             txt_last_name.setText(userAccount.getCustomer().getLastname());
+            txt_first_name.setEnabled(false);
+            txt_last_name.setEnabled(false);
             txt_phone_number.setText(userAccount.getCustomer().getPhonenumber());
-            Log.d("bindData:", "bindData: phone Number" + userAccount.getCustomer().getPhonenumber());
             txt_street.setText(address.getAddressLine());
         }
         txt_city.setText(address.getCity());
@@ -198,11 +199,11 @@ public class AddAddressActivity extends AppCompatActivity {
             addressByStreetString.setCustomerId(customer.getId());
             addressByStreetString.setFirstname(txt_first_name.getText().toString());
             addressByStreetString.setLastname(txt_last_name.getText().toString());
+
             addressByStreetString.setTelephone(txt_phone_number.getText().toString());
             addressByStreetString.setDefaultBilling(chkDefaultBilling.isChecked());
             addressByStreetString.setDefaultShipping(chkDefaultBilling.isChecked());
 
-//            Log.d("saveAddressByStreetString:" , "saveAddressByStreetString: " + addressByStreetString);
             new AddNewAddressByStreetString(prepareDataByStreetString(addressByStreetString), new AddNewAddressByStreetString.InvokeOnCompleteAsync() {
                 @Override
                 public void onComplete(List<com.planb.thespeed.model.modelForView.AddressByStreetString> addresses) {
@@ -282,8 +283,6 @@ public class AddAddressActivity extends AppCompatActivity {
         address.setTelephone(txt_phone_number.getText().toString());
         address.setDefaultBilling(chkDefaultBilling.isChecked());
         address.setDefaultShipping(chkDefaultBilling.isChecked());
-//        Log.d("setCustomerId:", "setCustomerId: "+ address.getCustomerId());
-//        Log.d("updateAddress:", "updateAddress: "+ prepareDataByStreetString(addressByStreetString));
         new UpdateAddressByStreetString(prepareDataByStreetString(addressByStreetString), new UpdateAddressByStreetString.InvokeOnCompleteAsync() {
             @Override
             public void onComplete(List<com.planb.thespeed.model.modelForView.AddressByStreetString> addresses) {
@@ -346,6 +345,7 @@ public class AddAddressActivity extends AppCompatActivity {
         add.setDefaultShipping(address.getDefaultShipping());
         add.setLatitude(address.getLatitude());
         add.setLongitude(address.getLongitude());
+        Log.d("saveAddressByStreetString:", "prepareDataByStreetString: after prepare " + add.toString());
         createAddress.setAddressByStreetString(add);
         return createAddress;
     }
