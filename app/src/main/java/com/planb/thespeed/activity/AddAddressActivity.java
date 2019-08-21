@@ -170,7 +170,6 @@ public class AddAddressActivity extends AppCompatActivity {
             chkDefaultBilling.setChecked(address.getDefaultBilling() != null ? address.getDefaultBilling() : false);
             txt_first_name.setEnabled(false);
             txt_last_name.setEnabled(false);
-            txt_phone_number.setEnabled(false);
         } else {
             txt_first_name.setText(userAccount.getCustomer().getFirstname());
             txt_last_name.setText(userAccount.getCustomer().getLastname());
