@@ -128,7 +128,6 @@ public class SearchResultActivity extends AppCompatActivity implements View.OnCl
                 if (listStore.getList() != null && listStore.getList().size() > 0) {
                     Intent intent = new Intent(SearchResultActivity.this, StoreActivity.class);
                     intent.putExtra(ConstantValue.STORE, DataMatcher.getInstance().getStore(listStore.getList().get(0)));
-                    Log.d("StoreService", DataMatcher.getInstance().getStore(listStore.getList().get(0)) + "");
                     startActivity(intent);
                 }
                 else {

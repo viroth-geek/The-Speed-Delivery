@@ -185,8 +185,10 @@ public class SearchResultStickyAdapter extends RecyclerView.Adapter {
             holderStore.txt_store_name.setText(getSpannableString(storeResult.getStoreName(), this.searchText));
             holderStore.txt_store_desc.setText(storeResult.getStoreDescription());
 
-            Log.d("ooooo", storeResult.getOpen() + "");
-            holderStore.txt_is_open.setText(storeResult.getOpen() ? "Open" : "Close");
+            holderStore.txt_is_open.setText(storeResult.getOpen() ? "Open" : "Closed");
+            if (storeResult.getOpen() == false){
+                holderStore.txt_is_open.setTextColor(Color.RED);
+            }
             ImageViewUtil.loadImageByUrl(context, storeResult.getStoreLogoUrl(), holderStore.img_store_logo);
         }
     }
